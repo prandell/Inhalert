@@ -1,22 +1,27 @@
 extends layout
 
 block content
-    h1 Register
-    form(method = 'POST', action='/users/register')
-        #form-group
-            label Name:
-            input.form-control(name='name', type='text')
-        #form-group
-            label Email:
-            input.form-control(name='email', type='text')
-        #form-group
-            label Username:
-            input.form-control(name='username', type='text')
-        #form-group
-            label Password:
-            input.form-control(name='password', type='password')
-        #form-group
-            label Confirm:
-            input.form-control(name='password2', type='password')
-        br
-        input.btn.btn-primary(type='submit',value='Submit')
+    .main.container
+        .row
+            .col-md-6.col-md-offset-3
+                h1.display-4.m-b-2 Register
+
+                // register form
+                form(method='POST' action='/users/register')
+                    div.form-group
+                        label(for='name') Name:
+                        input#name.form-control(type='text', placeholder='first and last' name='name')
+                    div.form-group
+                        label(for='email') Email:
+                        input#email.form-control(type='email', placeholder='name@email.com' name='email')
+                    div.form-group
+                        label(for='username') Username:
+                        input#favoriteBook.form-control(type='text', placeholder='username' name='username')
+                    div.form-group
+                        label(for='password') Password:
+                        input#pw.form-control(type='password' name='password')
+                    div.form-group
+                        label(for='password2') Confirm Password:
+                        input#pw2.form-control(type='password' name='password2')
+                    button.btn.btn-primary(type='submit') Register
+                a(href='/users/login') Login
