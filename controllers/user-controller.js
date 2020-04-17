@@ -4,133 +4,99 @@ const passport = require('passport');
 const {check, validationResult} = require('express-validator');
 
 // Bring in User Model
-let User = require('../models/user');
+const User = mongoose.model('User');
 
-const registerUser = function(req, res, next) {
-    const name = req.body.name;
-    const email = req.body.email;
-    const username = req.body.username;
-    const password = req.body.password;
-    const password2 = req.body.password2;
+//Express validator check array
+const validationChecks = [check("name", 'Name is required').notEmpty(),
+    check("email", 'Email is required').notEmpty(),
+    check("password", 'Password is required').notEmpty(),
+    check("password", 'Password must be at least 6 Characters').isLength({min:6}),
+    //Email valid
+    check("email", 'Email is not valid').isEmail(),
+    //Passwords match
+    check("password2", 'Passwords do not match').custom((value, {req, loc, path}) => {
+        if (value !== req.body.password) {
+            throw new Error("Passwords don't match");
+        } else {
+            return value;
+        }
+    })]
 
-    //Validation of form
-    check('name', 'Name is required').notEmpty();
-    check('email', 'Email is required').notEmpty();
-    check('email', 'Email is not valid').isEmail();
-    check('username', 'Username is required').notEmpty();
-    check('password', 'Password is required').notEmpty();
-    check('password2', 'Passwords do not match').equals(req.body.password);
+//Register user function
+const registerUser = function(req, res) {
+    const {name, email, password, password2} = req.body
 
     //Get any of the errors
     let errors = validationResult(req);
 
+    console.log(errors)
     //If errors exist, re-render the page, passing along the errors
-    if(!errors.isEmpty()) {
+    if (!errors.isEmpty()) {
         res.render('register', {
-            errors: errors
+            errors: errors.array(),
+            name,
+            email
         });
     } else {
-        let newUser = new User({
-            name:name,
-            email:email,
-            username:username,
-            password:password
-        });
-
-        //Encrypting the password and saving the user's credentials
-        bcrypt.genSalt(10, function(err, salt){
-            bcrypt.hash(newUser.password, salt, function(err, hash){
-                if(err){
-                    console.log(err);
-                }
-                newUser.password = hash;
-                newUser.save(function(err){
-                    if(err){
-                        req.flash("error", err.message);
-                        return res.render("register");
-                    } else {
-                        req.flash('success','You are now registered and can log in');
-                        console.log(newUser)
-                        res.redirect('/users/login');
-                    }
+        // Validation passed, but does user exist?
+        User.findOne({email: email}).then(user => {
+            if(user) {
+                errors = [{msg: 'Email already exists'}]
+                res.render('register', {
+                    errors: errors,
+                    name,
+                    email
                 });
-            });
+            } else {
+                const newUser = new User({
+                    name: name,
+                    email: email,
+                    password: password
+                });
+
+                //Encrypting the password and saving the user's credentials
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(newUser.password, salt, (err, hash) => {
+                        if (err) throw err;
+                        newUser.password = hash;
+                        newUser
+                            .save()
+                            .then(user => {
+                                req.flash(
+                                    'success_msg',
+                                    'You are now registered and can log in'
+                                );
+                                res.redirect('/users/login');
+                            })
+                            .catch(err => console.log(err));
+                    });
+                });
+            }
         });
     }
-};
+}
 
+
+//Login user function
 const loginUser = function(req, res, next) {
     passport.authenticate('local', {
-        successRedirect:'/',
-        failureRedirect:'/users/login',
+        successRedirect: '/dashboard',
+        failureRedirect: '/users/login',
         failureFlash: true
-    })(req, res, next);
-};
-
-const getUser = function(username) {
-    let user = User.find(user => user.username == username);
-    if (user == null) {
-        user = User.find(user => user.email == username)
-    }
-    return user
+    })(req,res,next);
 }
 
-const getUserById = function(id) {
-   return User.find(user => user.id === id);
+//Logout user function
+const logoutUser = function(req, res){
+    req.logout();
+    req.session.destroy();
+    req.flash('success_msg', 'You are logged out');
+    res.redirect('/users/login');
 }
 
 
-// var findAllCafes = function(req, res, next) {
-//     Cafe.find()
-//         .lean()
-//         .then(function(doc) {
-//             res.render('index', {items: doc});
-//         });
-// };
-//
-// var createCafe = function(req, res, next) {
-//     var item = {
-//         name:req.body.name,
-//         address:req.body.address,
-//         distance:req.body.distance,
-//         rating:req.body.rating,
-//         photo:req.body.photo
-//     };
-//
-//     var data = new Cafe(item);
-//     data.save();
-//
-//     res.redirect('/');
-// };
-//
-// var updateCafe = function(req, res, next) {
-//     var id = req.body.id;
-//
-//     Cafe.findById(id, function(err, doc) {
-//         if (err) {
-//             console.error('error, no cafe found');
-//         }
-//         doc.name = req.body.name;
-//         doc.address = req.body.address;
-//         doc.distance = req.body.distance;
-//         doc.rating = req.body.rating;
-//         doc.photo = req.body.photo;
-//         doc.save();
-//     });
-//     res.redirect('/');
-// };
-//
-// var deleteCafe = function(req, res, next) {
-//     var id = req.body.id;
-//     Cafe.findByIdAndRemove(id).exec();
-//     res.redirect('/');
-// };
 
 module.exports.registerUser = registerUser;
 module.exports.loginUser = loginUser;
-module.exports.getUser = getUser;
-module.exports.getUserById = getUserById;
-// module.exports.findAllCafes = findAllCafes;
-// module.exports.createCafe = createCafe;
-// module.exports.updateCafe = updateCafe;
-// module.exports.deleteCafe = deleteCafe;
+module.exports.logoutUser = logoutUser;
+module.exports.validationChecks = validationChecks;

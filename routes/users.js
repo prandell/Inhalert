@@ -3,16 +3,8 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport')
 
-
 // Bring in User Controller
 const userController = require('../controllers/user-controller.js');
-
-//Passport
-// GET THE FUNCTIONS FROM CONTROLLER
-const initialisePassport = require('../config/passport-config')
-initialisePassport(
-    passport, userController.getUser, userController.getUserById
-)
 
 // Get Registration form
 router.get('/register', function(req, res){
@@ -20,7 +12,7 @@ router.get('/register', function(req, res){
 });
 
 //Create User
-router.post('/register', userController.registerUser);
+router.post('/register', userController.validationChecks, userController.registerUser);
 
 // Login Form
 router.get('/login', function(req, res) {
@@ -30,11 +22,7 @@ router.get('/login', function(req, res) {
 // Login Process
 router.post('/login', userController.loginUser);
 
-// // logout
-// router.get('/logout', function(req, res){
-//   req.logout();
-//   req.flash('success', 'You are logged out');
-//   res.redirect('/users/login');
-// });
+//logout
+router.get('/logout', userController.logoutUser);
 
 module.exports = router;

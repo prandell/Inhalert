@@ -1,16 +1,21 @@
 extends layout
+
 block content
-    .main.container
-        .row
-            .col-md-6.col-md-offset-3
-                h1.display-4.m-b-2 Login
-                // register form
-                form(method='POST' action='/users/login')
-                    div.form-group
-                        label(for='username') Username:
-                        input#favoriteBook.form-control(type='text', placeholder='username' name='username')
-                    div.form-group
-                        label(for='password') Password:
-                        input#pw.form-control(type='password' name='password')
-                    button.btn.btn-primary(type='submit') Login
-                a(href='/users/register') Register
+    .row.mt-5
+        .col-md-6.m-auto
+            .card.card-body
+                h1.text-center.mb-3
+                    i.fas.fa-sign-in-alt
+                    |   Login
+                include ./partials/messages
+                form(action='/users/login', method='POST')
+                    .form-group
+                        label(for='email') Email
+                        input#email.form-control(type='email', name='email', placeholder='Enter Email')
+                    .form-group
+                        label(for='password') Password
+                        input#password.form-control(type='password', name='password', placeholder='Enter Password')
+                    button.btn.btn-primary.btn-block(type='submit') Login
+                p.lead.mt-4
+                    | No Account?
+                    a(href='/users/register') Register

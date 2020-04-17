@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-// credit to https://github.com/bradtraversy/nodekb
 // User Schema
-const UserSchema = mongoose.Schema({
+const UserSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -13,19 +13,13 @@ const UserSchema = mongoose.Schema({
         unique: true,
         trim: true
     },
-    username: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-        minlength: 3
-    },
     password: {
         type: String,
         required: true,
     }
 }, {
     timestamps: true,
+    collection: 'users'
 });
 
-const User = module.exports = mongoose.model('User', UserSchema);
+mongoose.model('User', UserSchema);
