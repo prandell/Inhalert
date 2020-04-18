@@ -26,6 +26,7 @@ which gets nodemon running so any changes you make restart the server automatica
 dont think will work first)
 * Register properly
 * Now log in (first with wrong stuff, then correctly)
+* You can delete records from the database on MongoDB Atlas, by going to collections
 #What its using
 * The `.env` file in the repo is generally added to the `.gitignore` file. It contains environment variables that are 
 generally sensitive and carry info that is specific to the developers use of the app. Eg, my Database connect link (containing my password). 
