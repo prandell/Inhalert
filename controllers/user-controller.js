@@ -89,7 +89,7 @@ const loginUser = function(req, res, next) {
 //Logout user function
 const logoutUser = function(req, res){
     req.logout();
-    req.session.destroy();
+    // req.session.destroy();
     req.flash('success_msg', 'You are logged out');
     res.redirect('/users/login');
 }
