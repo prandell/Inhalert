@@ -1,7 +1,7 @@
 # Inhalert
 Web Information Technology (INFO30005) group project repository
 
-#How to get on your branches
+# How to get on your branches
 * From a terminal within your project folder first run
 `git fetch` to get all updates to branches on the remote repo.
 * Then run 
