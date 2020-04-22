@@ -1,19 +1,20 @@
-var myHeaders = new Headers();
-myHeaders.append("X-API-Key", "050c16c08ef84cadb8f92d5d73074b95");
+var request = require("request");
 
-var raw = "";
-
-var requestOptions = {
+var location = "melbourne";
+var data_type = "air"; // or "water"
+var options = {
   method: "GET",
-  headers: myHeaders,
-  body: raw,
-  redirect: "follow",
+  url:
+    "https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/forecasts?environmentalSegment=" +
+    data_type +
+    "&location=" +
+    location +
+    "\n",
+  headers: {
+    "X-API-Key": "050c16c08ef84cadb8f92d5d73074b95",
+  },
 };
-
-fetch(
-  "https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/forecasts?environmentalSegment=air&location=Melbourne\n",
-  requestOptions
-)
-  .then((response) => response.text())
-  .then((result) => console.log(result))
-  .catch((error) => console.log("error", error));
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
