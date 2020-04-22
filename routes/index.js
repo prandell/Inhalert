@@ -7,6 +7,4 @@ router.get('/', forwardAuthenticated, (req, res) => {
   res.render('index');
 });
 
-
-
 module.exports = router;

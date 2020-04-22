@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "devStart": "nodemon app.js"
+    "devStart": "nodemon ./bin/www"
   },
   "repository": {
     "type": "git",
