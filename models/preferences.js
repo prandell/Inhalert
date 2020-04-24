@@ -20,7 +20,7 @@ const PrefSchema = new Schema({
 
 }, {
     timestamps: true,
-    collection: 'users'
+    collection: 'preferences'
 });
 
 mongoose.model('Preferences', PrefSchema);

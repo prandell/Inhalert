@@ -11,7 +11,7 @@ const logger = require('morgan');
 const cors = require('cors');
 
 //Suggested..?
-const methodOverride = require('method-override')
+// const methodOverride = require('method-override')
 
 //App
 const app = express();
@@ -59,7 +59,9 @@ app.use(passport.session())
 const flash = require('connect-flash');
 app.use(flash())
 
+//CORS
 app.use(cors());
+
 //Express Messages Middleware
 app.use(function (req, res, next) {
     // res.locals.messages = require('express-messages')(req, res); /// look into this

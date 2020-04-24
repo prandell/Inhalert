@@ -23,7 +23,7 @@ const SiteSchema = new Schema({
     }
 }, {
     timestamps: true,
-    collection: 'users'
+    collection: 'sites'
 });
 
 mongoose.model('Site', SiteSchema);
