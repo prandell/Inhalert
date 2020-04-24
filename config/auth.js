@@ -1,3 +1,4 @@
+// credit https://github.com/bradtraversy/node_passport_login
 module.exports = {
     ensureAuthenticated: function(req, res, next) {
         if (req.isAuthenticated()) {
