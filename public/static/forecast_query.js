@@ -17,10 +17,8 @@ function getForecastSummary() {
         data: "",
     })
         .done(function (data) {
-            console.log(data)
             document.getElementById("hi").textContent = "Summary"
             for (r in data.records) {
-                console.log(r)
                 document.getElementById("hi").innerHTML += "<li>" + data.records[r].regionName + ": " + data.records[r].title + "</li>";
             }
         })

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-mongoose.set('debug', true);
+// mongoose.set('debug', true);
 mongoose.connect(process.env.DB_URI, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true},
     function(err) {
         if(!err) {

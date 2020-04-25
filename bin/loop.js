@@ -5,6 +5,7 @@ const SiteSub = mongoose.model('SiteSub');
 
 const emailController = require('../controllers/email-controller')
 
+//Does everything in one. Need to separate
 function getUpdate() {
     var data_type = "air";
     var options = {
@@ -36,23 +37,82 @@ function getUpdate() {
                 setDefaultsOnInsert: true,
                 rawResult: true
             };
-            Site.findOneAndUpdate(query, update, options, function(error, result) {
+            Site.findOneAndUpdate(query, update, options, async function(error, result) {
                 if (error) {
                     console.log(error);
                 } else if (result.lastErrorObject.updatedExisting && (result.value.status == 'Poor' || result.value.status =='Moderate')) {
-                    SiteSub.find({siteId: result.value.siteId}).then(subs => {
-                        for (let s in subs) {
-                            emailController.nodeMailerSend(subs[s].email,
-                                "Air Quality "+result.value.status+ " at "+records[r].siteName,
-                                "This message was sent to you by Inhalert. We will notify you when the status changes" )
-                        }
-                    });
+                    const subs = await SiteSub.find({siteId: result.value.siteId}).exec()
+                    let emails = []
+                    for (let s in subs) {
+                        emails.push(subs[s].email)
+                    }
+                    emailController.nodeMailerSend(emails,
+                        "Air Quality " + result.value.status + " at " + records[r].siteName,
+                        "This message was sent to you by Inhalert. We will notify you when the status changes")
                 }
-
             });
         }
     })
 }
+
+//Separated function just fetches records
+function fetchUpdate() {
+    let data_type = "air";
+    let options = {
+        method: "GET",
+        url:
+            "https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites?environmentalSegment=" +
+            data_type +
+            // "&location=" +
+            // location +
+            "\n",
+        headers: {
+            "X-API-Key": process.env.EPA_API_KEY,
+        },
+    };
+    request(options, function (error, response) {
+        if (error) throw new Error(error);
+        return JSON.parse(response.body).records
+    });
+}
+
+//Separated function just mails out to all subbed users in bulk
+async function sendSubMail(siteId, status, siteName) {
+    const subs = await SiteSub.find({siteId: siteId}).exec()
+    let emails = []
+    for (let s in subs) {
+        emails.push(subs[s].email)
+    }
+    emailController.nodeMailerSend(emails,
+        "Air Quality " + status + " at " + siteName,
+        "This message was sent to you by Inhalert. We will notify you when the status changes")
+}
+
+//Separated function combines above
+function updateSites() {
+    let records = fetchUpdate()
+    for (let r in records) {
+        let record = records[r]
+
+        let query = {siteId: record.siteID, siteName: record.siteName};
+
+        if (record.siteHealthAdvices) {
+            let update = {siteId: record.siteID, siteName: record.siteName, status: record.siteHealthAdvices[0].healthAdvice}
+        } else {
+            let update = {siteId: record.siteID, siteName: record.siteName}
+        }
+        let options = {upsert: true, new: true, setDefaultsOnInsert: true, rawResult: true};
+
+        Site.findOneAndUpdate(query, update, options, async function(error, result) {
+            if (error) {
+                console.log(error);
+            } else if (result.lastErrorObject.updatedExisting && (result.value.status == 'Poor' || result.value.status =='Moderate')) {
+                await sendSubMail(result.value.siteId, result.value.status, record.siteName)
+            }
+        });
+    }
+}
+
 
 function injectStatus(status) {
     var query = {siteId: "4afe6adc-cbac-4bf1-afbe-ff98d59564f9", siteName: "Melbourne CBD"};
@@ -63,17 +123,18 @@ function injectStatus(status) {
         setDefaultsOnInsert: true,
         rawResult: true
     };
-    Site.findOneAndUpdate(query, update, options, function (error, result) {
+    Site.findOneAndUpdate(query, update, options, async function (error, result) {
         if (error) {
             console.log(error);
         } else if (result.lastErrorObject.updatedExisting && (result.value.status == 'Poor' || result.value.status == 'Moderate')) {
-            SiteSub.find({siteId: result.value.siteId}).then(subs => {
-                for (let s in subs) {
-                    emailController.nodeMailerSend(subs[s].email,
-                        "Air Quality " + result.value.status + " at " + "Melbourne CBD",
-                        "This message was sent to you by Inhalert. We will notify you when the status changes")
-                }
-            });
+            const subs = await SiteSub.find({siteId: result.value.siteId}).exec()
+            var emails = []
+            for (let s in subs) {
+                emails.push(subs[s].email)
+            }
+            emailController.nodeMailerSend(emails,
+                "Air Quality " + result.value.status + " at " + "Melbourne CBD",
+                "This message was sent to you by Inhalert. We will notify you when the status changes")
         }
     });
 }
@@ -81,11 +142,11 @@ function injectStatus(status) {
 
 setInterval(function() {
     getUpdate();
-}, 180000);
+}, 60000);
 
 setTimeout(function() {
     injectStatus("Poor")
-}, 181000)
+}, 61000)
 
 
 
