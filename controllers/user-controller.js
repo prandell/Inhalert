@@ -65,11 +65,18 @@ const registerUser = function(req, res) {
                         newUser
                             .save()
                             .then(user => {
-                                req.flash(
-                                    'success_msg',
-                                    'Finish registration by subscribing to a Site'
-                                );
-                                res.redirect('/users/preferences');
+                                req.login(user, function (err) {
+                                    if (! err) {
+                                        req.flash(
+                                            'success_msg',
+                                            'Finish registration by subscribing to a Site'
+                                        );
+                                        res.redirect('/users/preferences');
+                                    } else {
+                                        console.log(err)
+                                        res.redirect('/users/login')
+                                    }
+                                })
                             })
                             .catch(err => console.log(err));
                     });
@@ -100,7 +107,6 @@ const logoutUser = function(req, res){
 const selectSite = function(req, res) {
     const {siteSelection} = req.body
     const siteId = siteSelection
-    console.log(req.body)
     Site.findOne({siteId: siteId}).then(site => {
         if(!site) {
             errors = [{msg: 'Site could not be found'}]
@@ -121,7 +127,7 @@ const selectSite = function(req, res) {
                             );
                             res.redirect('/dashboard');
                         })
-                        .catch(err => console.log(err));
+                .catch(err => console.log(err));
         }
     });
 }

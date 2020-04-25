@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// User Schema
+// This model will be for enhancing the preferences a user can alter.
 const PrefSchema = new Schema({
     email: {
         type: String,

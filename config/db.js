@@ -16,7 +16,7 @@ var options = {
         data_type +
         "\n",
     headers: {
-        "X-API-Key": "050c16c08ef84cadb8f92d5d73074b95",
+        "X-API-Key": process.env.EPA_API_KEY,
     },
 };
 request(options, function (error, response) {

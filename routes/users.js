@@ -11,12 +11,14 @@ router.get('/register', function(req, res){
   res.render('register');
 });
 
+//Load preference form
 router.get('/preferences', ensureAuthenticated, function(req, res) {
   res.render('preferences', {
     user: req.user
   });
 })
 
+//Add Site preference
 router.post('/preferences', ensureAuthenticated, userController.selectSite);
 
 //Create User

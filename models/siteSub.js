@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// User Schema
+// Site Sub Schema.
+// A new entry is created for each Site a user subscribes to.
 const SiteSubSchema = new Schema({
     email: {
         type: String,

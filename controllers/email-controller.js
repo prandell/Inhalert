@@ -4,6 +4,8 @@ const crypt = require('../config/crypt');
 const password = crypt.encrypt(process.env.GMAIL_PASSWORD);
 const sender = process.env.GMAIL_ADDRESS;
 
+//This was just for testing the functionalitiy. Emails are sent automatically now in bin/loop.js
+
 const transport = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -33,7 +35,7 @@ function sendEmail(req, res) {
         from: sender,
         to: req.user.email,
         subject: "Air Quality Report",
-        html: "aosdhaosihdoaijsdfsofjhdsf",
+        html: "Inhalert",
     };
     transport.sendMail(mailOptions, (error, info) => {
         if (error) {

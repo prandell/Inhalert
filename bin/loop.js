@@ -16,7 +16,7 @@ function getUpdate() {
             // location +
             "\n",
         headers: {
-            "X-API-Key": "050c16c08ef84cadb8f92d5d73074b95",
+            "X-API-Key": process.env.EPA_API_KEY,
         },
     };
     request(options, function (error, response) {
@@ -54,16 +54,6 @@ function getUpdate() {
     })
 }
 
-setInterval(function() {
-    getUpdate();
-}, 180000);
-
-setTimeout(function() {
-    injectStatus("Poor")
-}, 181000)
-
-
-
 function injectStatus(status) {
     var query = {siteId: "4afe6adc-cbac-4bf1-afbe-ff98d59564f9", siteName: "Melbourne CBD"};
     var update = {status: status}
@@ -87,4 +77,16 @@ function injectStatus(status) {
         }
     });
 }
+
+
+setInterval(function() {
+    getUpdate();
+}, 180000);
+
+setTimeout(function() {
+    injectStatus("Poor")
+}, 181000)
+
+
+
 
