@@ -1,0 +1,21 @@
+extends layout
+
+block extraHeader
+    script(type='text/javascript' src="/static/sites.js")
+
+block content
+    .row.mt-5
+        .col-md-6.m-auto
+            .card.card-body
+                h1.text-center.mb-3 Choose Site to be Notified for
+                include ./partials/messages
+                form(action='/users/preferences', method='POST')
+                    select.form-select#sel(name="siteSelection" onchange="show(this)") Select Site
+                        option(value="") >-- Select --<
+                    button.btn.btn-primary.btn-block(type='submit')
+                        | Submit
+
+    p#msg
+    script(type = 'text/javascript').
+        $(document).ready(populateSelect());
+

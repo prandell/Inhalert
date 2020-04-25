@@ -13,5 +13,7 @@ mongoose.connection.once('open', () => {
 });
 
 require('./user');
-
+require('./site');
+require('./siteSub')
+require('../config/db')
 

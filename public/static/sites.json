@@ -1,0 +1,164 @@
+{
+    "sites": [
+        {
+            "siteID": "c69ed768-34d2-4d72-86f3-088c250758a8",
+            "siteName": "Alphington"
+        },
+        {
+            "siteID": "1adaf80a-f20f-4fd3-8fa1-60d87acfce61",
+            "siteName": "Boolarra"
+        },
+        {
+            "siteID": "dd8279c0-018d-469b-92c7-49eeeecd27de",
+            "siteName": "Boolarra South"
+        },
+        {
+            "siteID": "77062cb7-3e3b-4984-b6d0-03dda76177f2",
+            "siteName": "Box Hill"
+        },
+        {
+            "siteID": "d56ede8c-637a-41e9-a055-f53198e9456a",
+            "siteName": "Brighton"
+        },
+        {
+            "siteID": "c45c92d1-7996-4bf0-b90d-249d15deabd2",
+            "siteName": "Brooklyn"
+        },
+        {
+            "siteID": "56a01f92-efd2-4f9f-8ee8-19a2138434bd",
+            "siteName": "Callignee"
+        },
+        {
+            "siteID": "91a601ba-143e-4577-a8ba-5812dce27744",
+            "siteName": "Campbellfield"
+        },
+        {
+            "siteID": "ee780b50-0240-4c7e-99f8-0df759caf3a3",
+            "siteName": "Churchill"
+        },
+        {
+            "siteID": "a3f4cefe-eabb-47c7-b3eb-a6088cf6ddae",
+            "siteName": "Coolaroo"
+        },
+        {
+            "siteID": "72db581f-19e3-4079-9e9b-80feaed6edb8",
+            "siteName": "Dallas"
+        },
+        {
+            "siteID": "69088979-01eb-4b48-9535-22b6d69421ec",
+            "siteName": "Dandenong"
+        },
+        {
+            "siteID": "86a49d71-03f4-4589-af5a-cc63b730faaf",
+            "siteName": "Flynn"
+        },
+        {
+            "siteID": "7e56abba-a570-4139-ad68-f45033862599",
+            "siteName": "Flynns Creek"
+        },
+        {
+            "siteID": "d9345e0a-5eaf-4d0b-a07b-6bdfb8e98bac",
+            "siteName": "Footscray"
+        },
+        {
+            "siteID": "5fa9b7aa-651d-4c9d-96b1-8f6813b2d933",
+            "siteName": "Geelong South"
+        },
+        {
+            "siteID": "3d1a81e7-ef78-4800-80c6-cc7e6ea01cf4",
+            "siteName": "Glengarry"
+        },
+        {
+            "siteID": "23b060c0-ec81-412f-bf49-885ca55bf2af",
+            "siteName": "Healesville"
+        },
+        {
+            "siteID": "63fc308f-baf4-4dd5-9c3e-abe8f996342b",
+            "siteName": "Hernes Oak"
+        },
+        {
+            "siteID": "fd9971b2-130e-4163-b56c-a37beadc7846",
+            "siteName": "Macleod"
+        },
+        {
+            "siteID": "4afe6adc-cbac-4bf1-afbe-ff98d59564f9",
+            "siteName": "Melbourne CBD"
+        },
+        {
+            "siteID": "ea40fbea-46ce-4acf-8f3e-eb76c26c712b",
+            "siteName": "Melton"
+        },
+        {
+            "siteID": "f5c385fd-c136-4398-99b0-35696b711b7b",
+            "siteName": "Moe"
+        },
+        {
+            "siteID": "a535938e-57b9-4b1d-8749-5cb38457feae",
+            "siteName": "Mooroolbark"
+        },
+        {
+            "siteID": "032edf91-3cb9-42be-8ff3-70d3f56dba68",
+            "siteName": "Morwell East"
+        },
+        {
+            "siteID": "33f48fb3-f771-49e8-b554-0fcec8eb70bb",
+            "siteName": "Morwell South"
+        },
+        {
+            "siteID": "f86eb787-f0e5-4a7b-af59-d0e1b6a3c1ad",
+            "siteName": "Newborough"
+        },
+        {
+            "siteID": "15b90658-97fe-42a4-8bb8-cfc5cc90cdc9",
+            "siteName": "Point Cook"
+        },
+        {
+            "siteID": "63a73778-4244-481b-82d9-3a7c416832eb",
+            "siteName": "Rosedale"
+        },
+        {
+            "siteID": "70584bae-a7e7-4ae9-adf5-1e8e92b15386",
+            "siteName": "Traralgon"
+        },
+        {
+            "siteID": "33fd2638-98ff-4b6c-8b75-5feecae706df",
+            "siteName": "Traralgon East"
+        },
+        {
+            "siteID": "cddf953a-b932-4918-97ea-1d19583d507a",
+            "siteName": "Traralgon South"
+        },
+        {
+            "siteID": "ce30ee54-f7f7-4d34-9708-0762c9f86878",
+            "siteName": "Tyers"
+        },
+        {
+            "siteID": "69fa2d5e-557c-457a-9103-21bc2609f5eb",
+            "siteName": "Tyers North"
+        },
+        {
+            "siteID": "8413d21d-5440-4f2b-81f9-2e5cfb8620d0",
+            "siteName": "Wangaratta"
+        },
+        {
+            "siteID": "670b2f1e-ce47-44bf-bb5d-c0e17d1493e0",
+            "siteName": "Warburton"
+        },
+        {
+            "siteID": "3a0e909b-a278-4c5b-8786-975c5ef4c4c9",
+            "siteName": "Willow Grove"
+        },
+        {
+            "siteID": "a4f9fa11-1e9b-45eb-9473-9a8418a1c6bf",
+            "siteName": "Yallourn North"
+        },
+        {
+            "siteID": "aa39a036-4514-4b51-aaf4-6276e98b036c",
+            "siteName": "Yinnar"
+        },
+        {
+            "siteID": "932e8220-8d30-4e51-9200-e5b1ec8f87fb",
+            "siteName": "Yinnar"
+        }
+    ]
+}

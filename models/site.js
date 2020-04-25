@@ -9,11 +9,8 @@ const SiteSchema = new Schema({
     },
     status: {
         type: String,
-        required: true
-    },
-    isActive: {
-        type: Boolean,
-        required: true
+        required: true,
+        default: "Unavailable"
     },
     siteId: {
         type: String,

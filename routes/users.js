@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const passport = require('passport')
+const {ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
+
 
 // Bring in User Controller
 const userController = require('../controllers/user-controller.js');
@@ -11,12 +11,24 @@ router.get('/register', function(req, res){
   res.render('register');
 });
 
+router.get('/preferences', ensureAuthenticated, function(req, res) {
+  res.render('preferences', {
+    user: req.user
+  });
+})
+
+router.post('/preferences', ensureAuthenticated, userController.selectSite);
+
 //Create User
 router.post('/register', userController.validationChecks, userController.registerUser);
 
 // Login Form
 router.get('/login', function(req, res) {
   res.render('login');
+});
+
+router.get('/', function(req, res) {
+  res.redirect('/');
 });
 
 // Login Process
