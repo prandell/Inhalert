@@ -21,10 +21,9 @@ function nodeMailerSend(to, subject, message) {
     };
     transport.sendMail(mailOptions, (error, info) => {
         if (error) {
-            error.msg
-            return error
+            console.log(error)
         } else {
-
+            console.log(info)
         }
     });
 };
@@ -49,25 +48,8 @@ function sendEmail(req, res) {
             res.redirect('/dashboard');
         }
     });
-
-
-
-
-
-
-    // if (nodeMailerSend(req.user.email, "Notification", "message")) {
-    //     let errors = [{msg: 'Message sending failed'}];
-    //     res.render('dashboard', {
-    //         errors: errors
-    //     });
-    // } else {
-    //     req.flash(
-    //         'success_msg',
-    //         'Email sent'
-    //     );
-    //     res.redirect('/');
-    // }
 }
 
 
 module.exports.sendEmail = sendEmail;
+module.exports.nodeMailerSend = nodeMailerSend;
