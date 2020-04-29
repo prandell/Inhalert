@@ -16,6 +16,7 @@ const transport = nodemailer.createTransport({
     },
 });
 
+//Send with options
 function nodeMailerSend(to, subject, message) {
     const mailOptions = {
         from: sender,
@@ -32,6 +33,7 @@ function nodeMailerSend(to, subject, message) {
     });
 };
 
+//Stock sender function to test functionality
 function sendEmail(req, res) {
     let mailOptions = {
         from: sender,
