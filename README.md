@@ -1,41 +1,27 @@
 # Inhalert
 Web Information Technology (INFO30005) group project repository
 
-# How to get on your branches
-* From a terminal within your project folder first run
-`git fetch` to get all updates to branches on the remote repo.
-* Then run 
-`git branch` to see what branch you are currently on.
-    * If your own branch doesnt exist, create one with `git branch <your-branch-name>`.
-To see that its now there, run `git branch` again.
-* Now, switch to your branch with `git checkout <your-branch-name>` if you werent on it already
-* Now merge in the changes from my branch with `git merge patrick`
-    * You may have some conflicts, in which case you go into the files that conflicts exist in, delete everything you 
-    dont want, keep everything you do want, and then finish with `git commit`
-* You have now merged and can play around with it on your branch
-# How to get it running
-* First run `npm install`
-* Visit [MondoDb Atlas](https://cloud.mongodb.com/) and log in with my credentials
-    * Email: prandell@student.unimelb.edu.au
-    * Password: Inhalert1
-* Go to the `Network Access` tab on the left hand side and add your computer IP address to the whitelist.
-* Typing `node app devStart` will now get it started. if you go into the package.json file you will see I have added a script 'devStart'
-which gets nodemon running so any changes you make restart the server automatically.
-* First visit `localhost:3000/`
-* Press the links, and try registering (try some things you
-dont think will work first)
-* Register properly
-* Now log in (first with wrong stuff, then correctly)
-* You can delete records from the database on MongoDB Atlas, by going to collections
-#What its using
-* The `.env` file in the repo is generally added to the `.gitignore` file. It contains environment variables that are 
-generally sensitive and carry info that is specific to the developers use of the app. Eg, my Database connect link (containing my password). 
-I've left it in there on purpose so we are all using my MongoDb Atlas free tier, but feel free to set your own up and replace that env variable!
-    * This is the [link](https://canvas.lms.unimelb.edu.au/courses/8135/modules/items/1827299) for the tutorial in making a free tier and connecting.
-* App.js contains most of the library imports and configuration required, the rest is in the config folder in files.
-* [Passport](http://www.passportjs.org/) is used for authentication (logging in, staying logged in, logging out)
-* MongoDB handles storing users in the database.
-* [Bcrypt](https://www.npmjs.com/package/bcrypt) hashes passwords and compares them when logging in
-* I used a few free templates for stylesheets and views, namely [Bootstrap](getbootstrap.com), [Bootswatch](bootswatch.com)
-and [FontAwesome](fontawesome.com). Just scroll down on most of them.
+# How to test if visiting website
+* Visit https://inhalert.herokuapp.com/
+* Register, first trying erroneous values to test validation of input. When you do register, make sure the email you are using is one you can check.
+* From here you will be re-directed to a preferences page. **For the sake of demonstration, make sure you select "Melbourne CBD"**
+and submit. This means you have subscribed to updates for Air quality at the Melbourne CBD site.
+* From here you should be re-directed to the dashboard. The dashboard gets a live update on the summary of 12 major site locations in Victoria and displays them on the page.
+* In roughly a minute, you should receieve an email telling you that the weather at Melbourne CBD is "Poor" or "Moderate". Our app has been set to inject this status for the sake of demonstration.
+* From the dashboard you may also:
+    * Press the "send email" button to send a stock email
+    * Add more sites by pressing "Change alert preferences"
+    * logout and log back in again, testing that functionality
+
+# How to test using POSTMAN (have not tried other similar apps)
+* Set up the interceptor for Postman. It saves session cookies and will be needed to test certain endpoints. 
+It is the satellite looking button in the top right corner of the desktop app. You will need to install a chrome extension. Clicking it will show you how to set it up. 
+* Make sure you add the domain http://inhalert.herokuapp.com/ to the list of domains.
+* Make a post request to https://inhalert.herokuapp.com/users/register using
+url-encoded option containing name, email, password and password2 key-value pairs.
+* Make a post request to https://inhalert.herokuapp.com/users/ with url-encoded email and password key-value pairs. You should now have a session cookie stored.
+* Make a post request to https://inhalert.herokuapp.com/users/preferences with url-encoded key value pair:
+`selectedSite: 4afe6adc-cbac-4bf1-afbe-ff98d59564f9`
+* A get request can now be made to https://inhalert.herokuapp.com/emails/send to receive a stock email. 
+* Emails will be sent automatically be sent to your email address about Melbourne CBD same as explained in the website testing section.
 
