@@ -1,10 +1,26 @@
 //Ajax is imported in layout.pug. Wont work without importing ajax.
 //https://cors-anywhere.herokuapp.com/ is needed before url for CORS issues
 //Everything inside done was just to get it working
-function getForecastSummary() {
+const getLongLat = require('location');
+
+async function getForecastSummary() {
+
+    var postcode = document.getElementById("postcode").value;
+    document.getElementById("post").innerHTML += '<p>' + postcode + '</p>';
+    console.log(postcode);
+
+    try {
+        var loc = await getLongLat(postcode);
+        document.getElementById("post").innerHTML += '<p>' + loc + '</p>';
+        document.getElementById("post").innerHTML += '<p>' + 'failed' + '</p>';
+        console.log(loc);
+    } catch (error) {
+        console.log(error);
+    }
+
     var params = {
         // Request parameters
-        "environmentalSegment": "air"
+        "environmentalSegment": "air",
     };
     $.ajax({
         url: "https://cors-anywhere.herokuapp.com/https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/forecasts?" + $.param(params),

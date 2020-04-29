@@ -11,6 +11,12 @@ router.get('/',  (req, res) =>
     })
 );
 
+router.post('/', (req, res) =>
+    res.render('dashboard', {
+
+    })
+);
+
 router.get('/send', ensureAuthenticated, emailController.sendEmail)
 
 
