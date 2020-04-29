@@ -35,7 +35,11 @@ const registerUser = function(req, res) {
     console.log(errors)
     //If errors exist, re-render the page, passing along the errors
     if (!errors.isEmpty()) {
-        res.render('register', {
+        // res.status(400).json({
+        //     success: false,
+        //     errors: errors.array()
+        // })
+        res.status(400).render('register', {
             errors: errors.array(),
             name,
             email

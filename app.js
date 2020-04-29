@@ -75,9 +75,13 @@ app.use(function (req, res, next) {
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
 let dashRouter = require('./routes/dashboard');
+let sitesRouter = require('./routes/sites');
+let emailsRouter = require('./routes/emails');
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/dashboard', dashRouter);
+app.use('/emails', emailsRouter);
+app.use('/sites', sitesRouter);
 
 
 // catch 404 and forward to error handler
@@ -97,8 +101,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-//Get backend loop running
-require('./bin/loop')
 
 
 
