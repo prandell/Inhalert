@@ -9,7 +9,7 @@ const emailController = require('../controllers/email-controller')
 //* ------------------ AUTOMATED FUNCTIONS -------------------*//
 
 // Function called periodically, calls other functions and updates DB records of sites
-const fetchAndUpdate = function() {
+const updateDB = function() {
     let data_type = "air";
     let options = {
         method: "GET",
@@ -86,7 +86,7 @@ async function injectStatus(siteName, status) {
 //*------------------------ MANUAL FUNCTIONS ----------------------------*//
 
 //Update DB records of sites with new ones. Returns result summary
-const updateDB = async function(req, res) {
+const updateDBWrapper = async function(req, res) {
 
     let data_type = "air";
     let options = {
@@ -165,11 +165,10 @@ function injectStatusWrapper(req, res) {
 }
 
 
-module.exports.fetchAndUpdate = fetchAndUpdate;
-module.exports.updateSites = updateSites;
+module.exports.updateDB = updateDB;
 module.exports.injectStatus = injectStatus;
 module.exports.checkStatus = checkStatus;
 //Manual
-module.exports.updateDB = updateDB;
+module.exports.updateDBWrapper = updateDBWrapper;
 module.exports.checkStatusWrapper = checkStatusWrapper;
 module.exports.injectStatusWrapper = injectStatusWrapper;

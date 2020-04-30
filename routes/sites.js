@@ -6,7 +6,7 @@ const siteController = require('../controllers/site-controller.js');
 //*----------------------- AUTOMATIC ------------------------*//
 //Updates DB every 2 minutes
 setInterval(function() {
-    siteController.fetchAndUpdate();
+    siteController.updateDB();
 
     //Checks for alerting every 2 minutes, offset by a minute
     setTimeout(function() {
@@ -18,18 +18,18 @@ setInterval(function() {
 //Injects the bad status after a minute
 setTimeout(function() {
     siteController.injectStatus("Melbourne CBD", "Poor")
-}, 60000)
+}, 150000)
 
 
 //*------------------------- MANUAL ----------------------------*//
 // Get site updates
-router.get('/update', siteController.updateDB);
+router.get('/update', siteController.updateDBWrapper);
 
 //Trigger emails to be sent by checking DB for updates
 router.get('/check', siteController.checkStatusWrapper);
 
 //Inject a status to a site (needs req.body.siteName and req.body.status)
-router.get('/inject', siteController.injectStatusWrapper);
+router.post('/inject', siteController.injectStatusWrapper);
 
 
 module.exports = router;
