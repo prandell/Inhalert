@@ -1,6 +1,6 @@
-// if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
-// }
+}
 
 //Default, check if using as I go
 const createError = require('http-errors');

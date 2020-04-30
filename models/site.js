@@ -11,6 +11,7 @@ const SiteSchema = new Schema({
     status: {
         type: String,
         required: true,
+        trim: true,
         default: "Unavailable"
     },
     siteId: {
@@ -18,6 +19,11 @@ const SiteSchema = new Schema({
         required: true,
         unique: true,
         trim: true
+    },
+    alerted: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 }, {
     timestamps: true,
