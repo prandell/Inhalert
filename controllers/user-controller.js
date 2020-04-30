@@ -5,8 +5,6 @@ const {check, validationResult} = require('express-validator');
 
 // Bring in User Model
 const User = mongoose.model('User');
-const Site = mongoose.model('Site');
-const SiteSub = mongoose.model('SiteSub')
 
 
 //Express validator check array
@@ -103,37 +101,8 @@ const loginUser = function(req, res, next) {
 //Logout user function
 const logoutUser = function(req, res){
     req.logout();
-    // req.session.destroy();
     req.flash('success_msg', 'You are logged out');
     res.redirect('/users/login');
-}
-
-const selectSite = function(req, res) {
-    const {siteSelection} = req.body
-    const siteId = siteSelection
-    Site.findOne({siteId: siteId}).then(site => {
-        if(!site) {
-            errors = [{msg: 'Site could not be found'}]
-            res.render('preferences', {
-                errors: errors
-            });
-        } else {
-            const newSiteSub = new SiteSub({
-                email: req.user.email,
-                siteId: site.siteId
-            });
-            newSiteSub
-                .save()
-                .then(SiteSub => {
-                            req.flash(
-                                'success_msg',
-                                'You will now receive alerts for the selected site'
-                            );
-                            res.redirect('/dashboard');
-                        })
-                .catch(err => console.log(err));
-        }
-    });
 }
 
 
@@ -141,5 +110,4 @@ const selectSite = function(req, res) {
 module.exports.registerUser = registerUser;
 module.exports.loginUser = loginUser;
 module.exports.logoutUser = logoutUser;
-module.exports.selectSite = selectSite;
 module.exports.validationChecks = validationChecks;

@@ -3,6 +3,7 @@ const router = express.Router();
 
 const siteController = require('../controllers/site-controller.js');
 
+//*----------------------- AUTOMATIC ------------------------*//
 //Updates DB every 2 minutes
 setInterval(function() {
     siteController.fetchAndUpdate();
@@ -20,11 +21,12 @@ setTimeout(function() {
 }, 60000)
 
 
+//*------------------------- MANUAL ----------------------------*//
 // Get site updates
 router.get('/update', siteController.updateDB);
 
 //Trigger emails to be sent by checking DB for updates
-router.get('/trigger', siteController.checkStatusWrapper);
+router.get('/check', siteController.checkStatusWrapper);
 
 //Inject a status to a site (needs req.body.siteName and req.body.status)
 router.get('/inject', siteController.injectStatusWrapper);
