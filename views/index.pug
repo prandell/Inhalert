@@ -14,27 +14,40 @@ html(lang='en')
     link(href='https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic', rel='stylesheet', type='text/css')
     // Custom styles for this template
     link(href='/css/landing-page.min.css', rel='stylesheet')
-  body
+  body#page-top
     // Navigation
-    nav.navbar.navbar-light.bg-light.static-top
-      .container
-        a.navbar-brand(href='#') Start Bootstrap
-        a.btn.btn-primary(href='#') Sign In
-        a.btn.btn-secondary(href='#') Register
+    //nav.navbar.navbar-light.bg-light.static-top
+    //  a.navbar-brand(href='#') Start Bootstrap
+    //  .navbar-nav.ml-auto
+    //    a.btn.btn-primary(href='#') Sign In
+    //  .navbar-nav.ml-auto
+    //    a.btn.btn-secondary(href='#') Register
+    // Navigation
+    nav#mainNav.navbar.navbar-expand-sm.bg-light.navbar-light.justify-content-end.fixed-top
+      a.mr-auto.mr-1.navbar-brand.js-scroll-trigger(href='#page-top') Inhalert
+      button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent')
+        span.navbar-toggler-icon
+      #navbarSupportedContent.collapse.navbar-collapse.flex-grow-0
+        ul.navbar-nav.text-right
+          li.nav-item.active
+            a.nav-link(href='/users/login') Login
+          li.nav-item.active
+            a.nav-link(href='/users/register') Register
+
     // Masthead
-    header.masthead.text-white.text-center
+    header#top.masthead.text-white.text-center
       .overlay
       .container
         .row
           .col-xl-9.mx-auto
-            h1.mb-5 Build a landing page for your business or project and generate more leads!
+            h1.mb-5 Get a live Air Quality report for your area!
           .col-md-10.col-lg-8.col-xl-7.mx-auto
             form
               .form-row
                 .col-12.col-md-9.mb-2.mb-md-0
-                  input.form-control.form-control-lg(type='email', placeholder='Enter your email...')
+                  input.form-control.form-control-lg(type='text', placeholder='Enter your postcode...')
                 .col-12.col-md-3
-                  button.btn.btn-block.btn-lg.btn-primary(type='submit') Sign up!
+                  button.btn.btn-block.btn-lg.btn-primary(type='submit') Show me!
     // Icons Grid
     section.features-icons.bg-light.text-center
       .container
@@ -43,8 +56,8 @@ html(lang='en')
             .features-icons-item.mx-auto.mb-5.mb-lg-0.mb-lg-3
               .features-icons-icon.d-flex
                 i.icon-screen-desktop.m-auto.text-primary
-              h3 Fully Responsive
-              p.lead.mb-0 This theme will look great on any device, no matter the size!
+              h3 This should show summary
+              p.lead.mb-0 Table with live status
           .col-lg-4
             .features-icons-item.mx-auto.mb-5.mb-lg-0.mb-lg-3
               .features-icons-icon.d-flex
@@ -144,4 +157,8 @@ html(lang='en')
                   i.fab.fa-instagram.fa-2x.fa-fw
     // Bootstrap core JavaScript
     script(src='/vendor/jquery/jquery.min.js')
+    script(src='vendor/jquery-easing/jquery.easing.min.js')
+
     script(src='/vendor/bootstrap/js/bootstrap.bundle.min.js')
+    script(src='js/grayscale.min.js')
+
