@@ -6,6 +6,7 @@ const {check, validationResult} = require('express-validator');
 // Bring in User Model
 const User = mongoose.model('User');
 
+
 //Express validator check array
 const validationChecks = [check("name", 'Name is required').notEmpty(),
     check("email", 'Email is required').notEmpty(),
@@ -32,7 +33,11 @@ const registerUser = function(req, res) {
     console.log(errors)
     //If errors exist, re-render the page, passing along the errors
     if (!errors.isEmpty()) {
-        res.render('register', {
+        // res.status(400).json({
+        //     success: false,
+        //     errors: errors.array()
+        // })
+        res.status(400).render('register', {
             errors: errors.array(),
             name,
             email
@@ -62,11 +67,18 @@ const registerUser = function(req, res) {
                         newUser
                             .save()
                             .then(user => {
-                                req.flash(
-                                    'success_msg',
-                                    'You are now registered and can log in'
-                                );
-                                res.redirect('/users/login');
+                                req.login(user, function (err) {
+                                    if (! err) {
+                                        req.flash(
+                                            'success_msg',
+                                            'Finish registration by subscribing to a Site'
+                                        );
+                                        res.redirect('/users/preferences');
+                                    } else {
+                                        console.log(err)
+                                        res.redirect('/users/login')
+                                    }
+                                })
                             })
                             .catch(err => console.log(err));
                     });
@@ -89,7 +101,6 @@ const loginUser = function(req, res, next) {
 //Logout user function
 const logoutUser = function(req, res){
     req.logout();
-    // req.session.destroy();
     req.flash('success_msg', 'You are logged out');
     res.redirect('/users/login');
 }

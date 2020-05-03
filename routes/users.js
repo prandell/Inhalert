@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const passport = require('passport')
+const {ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
+
 
 // Bring in User Controller
 const userController = require('../controllers/user-controller.js');
@@ -19,10 +19,28 @@ router.get('/login', function(req, res) {
   res.render('login');
 });
 
+router.get('/', function(req, res) {
+  res.redirect('/');
+});
+
 // Login Process
 router.post('/login', userController.loginUser);
 
 //logout
 router.get('/logout', userController.logoutUser);
+
+
+//*------------------ Preferences Routes -------------------* //
+const prefController = require('../controllers/preferences-controller.js');
+
+//Load preference form
+router.get('/preferences', ensureAuthenticated, function(req, res) {
+  res.render('preferences', {
+    user: req.user
+  });
+})
+
+//Add Site preference
+router.post('/preferences', ensureAuthenticated, prefController.selectSite);
 
 module.exports = router;

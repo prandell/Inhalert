@@ -8,9 +8,10 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 
 //Suggested..?
-const methodOverride = require('method-override')
+// const methodOverride = require('method-override')
 
 //App
 const app = express();
@@ -20,7 +21,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(logger('dev'));
 app.use(express.json());
-app.use(methodOverride('_method'))
 
 //Body parser (req.body)
 app.use(express.urlencoded({ extended: false }));
@@ -58,6 +58,8 @@ app.use(passport.session())
 const flash = require('connect-flash');
 app.use(flash())
 
+//CORS
+app.use(cors());
 
 //Express Messages Middleware
 app.use(function (req, res, next) {
@@ -73,9 +75,13 @@ app.use(function (req, res, next) {
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
 let dashRouter = require('./routes/dashboard');
+let sitesRouter = require('./routes/sites');
+let emailsRouter = require('./routes/emails');
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/dashboard', dashRouter);
+app.use('/emails', emailsRouter);
+app.use('/sites', sitesRouter);
 
 
 // catch 404 and forward to error handler
@@ -94,6 +100,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 
 
