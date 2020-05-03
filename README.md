@@ -30,7 +30,7 @@ url-encoded option containing name, email, password and password2 key-value pair
     * GET to https://inhalert.herokuapp.com/sites/update: Updates DB records manually, lets you know how many were updated.
     * GET to https://inhalert.herokuapp.com/sites/check: Checks if any DB Site records meet alert conditions and sends out alerts.
     
-# What's recommended to test with
+# Some important notes
 * Might be easiest to clone the repo, and comment out the automatic updating in `routes/sites` to then do manual site testing without interference to localhost, and visit the live website for everything else.
-* The automatic injection of a bad status for Melbourne CBD only happens 2 minutes after the website is launched, so that will need to be tested manually or just press the send email button on the dashboard when logged in.
+* The automatic injection of a bad status for Melbourne CBD only happens 2 minutes after the website is launched, so that will need to be tested manually using the inject endpoint (has to be in the minute between checking and updating so try it a few times) or just press the send email button on the dashboard when logged in to see that that functionality is working.
 
