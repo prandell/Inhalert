@@ -1,14 +1,14 @@
 var request = require("request");
 
-var location = "[-37.78,145.023]"
+var location = "[-37.8004,144.9681]"
 var data_type = "air"; // or "water"
 var options = {
   method: "GET",
   url:
     "https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites?environmentalSegment=" +
     data_type +
-    // "&location=" +
-    // location +
+    "&location=" +
+    location +
     "\n",
   headers: {
     "X-API-Key": "050c16c08ef84cadb8f92d5d73074b95",
@@ -31,7 +31,7 @@ request(options, function (error, response) {
 // https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites/c69ed768-34d2-4d72-86f3-088c250758a8/parameters
 
 
-//POSTCODEAPI
+// POSTCODEAPI
 // var request = require("request");
 //
 // var postcode= "3055"
