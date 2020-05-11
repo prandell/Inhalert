@@ -11,16 +11,6 @@ router.get('/register', function(req, res){
   res.render('register');
 });
 
-//Load preference form
-router.get('/preferences', ensureAuthenticated, function(req, res) {
-  res.render('preferences', {
-    user: req.user
-  });
-})
-
-//Add Site preference
-router.post('/preferences', ensureAuthenticated, userController.selectSite);
-
 //Create User
 router.post('/register', userController.validationChecks, userController.registerUser);
 
@@ -38,5 +28,19 @@ router.post('/login', userController.loginUser);
 
 //logout
 router.get('/logout', userController.logoutUser);
+
+
+//*------------------ Preferences Routes -------------------* //
+const prefController = require('../controllers/preferences-controller.js');
+
+//Load preference form
+router.get('/preferences', ensureAuthenticated, function(req, res) {
+  res.render('preferences', {
+    user: req.user
+  });
+})
+
+//Add Site preference
+router.post('/preferences', ensureAuthenticated, prefController.selectSite);
 
 module.exports = router;

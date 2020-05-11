@@ -1,10 +1,12 @@
 const nodemailer = require('nodemailer');
 const crypt = require('../config/crypt');
+const mongoose = require('mongoose');
 
 const password = crypt.encrypt(process.env.GMAIL_PASSWORD);
 const sender = process.env.GMAIL_ADDRESS;
 
-//This was just for testing the functionalitiy. Emails are sent automatically now in bin/loop.js
+//Bring in models
+const SiteSub = mongoose.model('SiteSub');
 
 const transport = nodemailer.createTransport({
     service: 'gmail',
@@ -14,6 +16,7 @@ const transport = nodemailer.createTransport({
     },
 });
 
+//Send with options
 function nodeMailerSend(to, subject, message) {
     const mailOptions = {
         from: sender,
@@ -30,6 +33,7 @@ function nodeMailerSend(to, subject, message) {
     });
 };
 
+//Stock sender function to test functionality
 function sendEmail(req, res) {
     let mailOptions = {
         from: sender,
@@ -43,6 +47,7 @@ function sendEmail(req, res) {
             req.flash('error_msg', 'Email failed to send');
             res.redirect('/dashboard');
         } else {
+            console.log(req.user)
             req.flash(
                 'success_msg',
                 'Email sent'
@@ -53,5 +58,19 @@ function sendEmail(req, res) {
 }
 
 
+//Separated function just mails out to all subbed users in bulk
+async function sendSubMail(siteId, status, siteName) {
+    const subs = await SiteSub.find({siteId: siteId}).exec()
+    let emails = []
+    for (let s in subs) {
+        emails.push(subs[s].email)
+    }
+    nodeMailerSend(emails,
+        "Air Quality " + status + " at " + siteName,
+        "This message was sent to you by Inhalert. We will notify you when the status changes")
+}
+
+
 module.exports.sendEmail = sendEmail;
 module.exports.nodeMailerSend = nodeMailerSend;
+module.exports.sendSubMail = sendSubMail;
