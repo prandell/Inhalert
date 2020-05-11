@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-mongoose.set('debug', true);
+// mongoose.set('debug', true);
 mongoose.connect(process.env.DB_URI, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true},
     function(err) {
         if(!err) {
@@ -13,5 +13,7 @@ mongoose.connection.once('open', () => {
 });
 
 require('./user');
-
+require('./site');
+require('./siteSub')
+require('../config/db')
 

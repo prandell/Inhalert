@@ -5,6 +5,9 @@ const {check, validationResult} = require('express-validator');
 
 // Bring in User Model
 const User = mongoose.model('User');
+const Site = mongoose.model('Site');
+const SiteSub = mongoose.model('SiteSub')
+
 
 //Express validator check array
 const validationChecks = [check("name", 'Name is required').notEmpty(),
@@ -62,11 +65,18 @@ const registerUser = function(req, res) {
                         newUser
                             .save()
                             .then(user => {
-                                req.flash(
-                                    'success_msg',
-                                    'You are now registered and can log in'
-                                );
-                                res.redirect('/users/login');
+                                req.login(user, function (err) {
+                                    if (! err) {
+                                        req.flash(
+                                            'success_msg',
+                                            'Finish registration by subscribing to a Site'
+                                        );
+                                        res.redirect('/users/preferences');
+                                    } else {
+                                        console.log(err)
+                                        res.redirect('/users/login')
+                                    }
+                                })
                             })
                             .catch(err => console.log(err));
                     });
@@ -94,9 +104,38 @@ const logoutUser = function(req, res){
     res.redirect('/users/login');
 }
 
+const selectSite = function(req, res) {
+    const {siteSelection} = req.body
+    const siteId = siteSelection
+    Site.findOne({siteId: siteId}).then(site => {
+        if(!site) {
+            errors = [{msg: 'Site could not be found'}]
+            res.render('preferences', {
+                errors: errors
+            });
+        } else {
+            const newSiteSub = new SiteSub({
+                email: req.user.email,
+                siteId: site.siteId
+            });
+            newSiteSub
+                .save()
+                .then(SiteSub => {
+                            req.flash(
+                                'success_msg',
+                                'You will now receive alerts for the selected site'
+                            );
+                            res.redirect('/dashboard');
+                        })
+                .catch(err => console.log(err));
+        }
+    });
+}
+
 
 
 module.exports.registerUser = registerUser;
 module.exports.loginUser = loginUser;
 module.exports.logoutUser = logoutUser;
+module.exports.selectSite = selectSite;
 module.exports.validationChecks = validationChecks;

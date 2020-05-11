@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Site Schema
+// Stores the Sensor Site along with its ID and current healthAdvice status
 const SiteSchema = new Schema({
     siteName: {
         type: String,
@@ -9,11 +10,8 @@ const SiteSchema = new Schema({
     },
     status: {
         type: String,
-        required: true
-    },
-    isActive: {
-        type: Boolean,
-        required: true
+        required: true,
+        default: "Unavailable"
     },
     siteId: {
         type: String,
@@ -23,7 +21,7 @@ const SiteSchema = new Schema({
     }
 }, {
     timestamps: true,
-    collection: 'users'
+    collection: 'sites'
 });
 
 mongoose.model('Site', SiteSchema);

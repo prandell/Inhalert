@@ -12,11 +12,12 @@ request(options, function (error, response) {
 // https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/forecasts?environmentalSegment=air
 //
 // After Entering postcode, use this to get site ID
+// All sites (Takes in location header)
 // https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites?environmentalSegment=air&location=[long,lat]
 //
 // By site ID with scientfic parameters
 // https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites/c69ed768-34d2-4d72-86f3-088c250758a8/parameters
-// All sites (Takes in location header)
+
 
 //POSTCODEAPI
 // var request = require("request");
