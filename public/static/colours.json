@@ -1,0 +1,8 @@
+{
+  "Good": "#339900",
+  "Moderate": "#99cc33",
+  "Poor": "#ffcc33",
+  "Very poor": "#ff9966",
+  "Hazardous": "#cc3300",
+  "Unavailable": "#A9A9A9"
+}

@@ -7,8 +7,8 @@ var options = {
   url:
     "https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites?environmentalSegment=" +
     data_type +
-    "&location=" +
-    location +
+    // "&location=" +
+    // location +
     "\n",
   headers: {
     "X-API-Key": "050c16c08ef84cadb8f92d5d73074b95",

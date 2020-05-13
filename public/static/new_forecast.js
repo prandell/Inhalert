@@ -18,6 +18,7 @@ function getForecastSummary() {
     })
         .done(function (data) {
             // document.getElementById("summaryTable").textContent = "Summary"
+
             for (let r in data.records) {
                 if (document.getElementById("row"+r)) {
                     document.getElementById("row"+r).innerHTML=

@@ -38,8 +38,10 @@ const updateSites = function(records) {
 
         let update = {siteId: record.siteID, siteName: record.siteName}
 
-        if (record.siteHealthAdvices) {
+        if (record.siteHealthAdvices && record.siteHealthAdvices[0].healthAdvice) {
             update.status = record.siteHealthAdvices[0].healthAdvice
+        } else {
+            update.status = "Unavailable"
         }
         let options = {upsert: true};
 
@@ -111,7 +113,7 @@ const updateDBWrapper = async function(req, res) {
 
                 let query = {siteId: record.siteID};
 
-                if (record.siteHealthAdvices) {
+                if (record.siteHealthAdvices && record.siteHealthAdvices[0].healthAdvice) {
                     var status = record.siteHealthAdvices[0].healthAdvice
                 } else {
                     var status = "Unavailable"
@@ -164,7 +166,10 @@ function injectStatusWrapper(req, res) {
     }
 }
 
-
+async function fetchSites(req, res) {
+    let result = await Site.find().sort('siteName').exec()
+    res.send(result)
+}
 module.exports.updateDB = updateDB;
 module.exports.injectStatus = injectStatus;
 module.exports.checkStatus = checkStatus;
@@ -172,3 +177,4 @@ module.exports.checkStatus = checkStatus;
 module.exports.updateDBWrapper = updateDBWrapper;
 module.exports.checkStatusWrapper = checkStatusWrapper;
 module.exports.injectStatusWrapper = injectStatusWrapper;
+module.exports.fetchSites = fetchSites;

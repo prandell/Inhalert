@@ -3,6 +3,7 @@ html(lang='en')
   head
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
     script(type='text/javascript' src="/static/new_forecast.js")
+    script(type='text/javascript' src="/static/site_summary.js")
     script(type='text/javascript' src="/static/printPostcode.js")
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
@@ -54,18 +55,19 @@ html(lang='en')
     // Icons Grid
     section.features-icons.bg-light.text-center
       script(type = 'text/javascript').
-        $(document).ready(getForecastSummary());
+        $(document).ready(getSiteSummary());
       .container
         h3 Live Air Quality Report for Victoria
+        h6 Click on site name to load scientific summary
         br
         table.table.table-bordered#summaryTable
-          thead.table-warning
+          thead.table-info
             tr
-              th(scope='col') Region
+              th(scope='col') Site
               th(scope='col') Air Quality Status
           tbody
-        button.btn.btn-light(onclick='getForecastSummary()') Refresh
-          br
+        //button#loadmore.btn.btn-light(onclick='loadMoreButton()') Show More
+        a#loadmore.btn.btn-light(onclick='loadMoreButton()')  Show More
     // Image Showcases
     section.showcase
       .container-fluid.p-0
