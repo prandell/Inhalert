@@ -5,6 +5,7 @@ html(lang='en')
         script(type='text/javascript' src="/static/new_forecast.js")
         script(type='text/javascript' src="/static/site_summary.js")
         script(type='text/javascript' src="/static/printPostcode.js")
+        script(type='text/javascript' src="/static/display_summary.js")
         meta(charset='utf-8')
         meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
         meta(name='description', content='')
@@ -55,6 +56,7 @@ html(lang='en')
         // Icons Grid
         section.features-icons.bg-light.text-center
             script(type = 'text/javascript').
+                $(document).ready(displaySummary());
             .container
                 if summary
                     h3 Air Quality Report for #{summary.siteName}
@@ -62,73 +64,65 @@ html(lang='en')
                     br
                     #accordion
                         .card
-                            #heading-1.card-header
+                            #heading-3.card-header
                                 h5.mb-0
-                                    a(role='button', data-toggle='collapse', href='#collapse-1', aria-expanded='true', aria-controls='collapse-1')
-                                        | Health Advice
-                            #collapse-1.collapse.show(data-parent='#accordion', aria-labelledby='heading-1')
-                                .card-body
-                                    #accordion-1
-                                        .card
-                                            #heading-1-1.card-header
-                                                h5.mb-0
-                                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-1-1', aria-expanded='false', aria-controls='collapse-1-1')
-                                                        | #{summary.siteHealthAdvices[0].healthAdvice}
-                                            #collapse-1-1.collapse(data-parent='#accordion-1', aria-labelledby='heading-1-1')
-                                                .card-body
-                                                    #accordion-1-1
-                                                        .card
-                                                            #heading-1-1-1.card-header
-                                                                h5.mb-0
-                                                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-1-1-1', aria-expanded='false', aria-controls='collapse-1-1-1')
-                                                                        | Item 1 > 1 > 1
-                                                            #collapse-1-1-1.collapse(data-parent='#accordion-1-1', aria-labelledby='heading-1-1-1')
-                                                                .card-body
-                                                                    | Text 1 > 1 > 1
-                                                        .card
-                                                            #heading-1-1-2.card-header
-                                                                h5.mb-0
-                                                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-1-1-2', aria-expanded='false', aria-controls='collapse-1-1-2')
-                                                                        | Item 1 > 1 > 2
-                                                            #collapse-1-1-2.collapse(data-parent='#accordion-1-1', aria-labelledby='heading-1-1-2')
-                                                                .card-body
-                                                                    | Text 1 > 1 > 2
-                                                        .card
-                                                            #heading-1-1-3.card-header
-                                                                h5.mb-0
-                                                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-1-1-3', aria-expanded='false', aria-controls='collapse-1-1-3')
-                                                                        | Item 1 > 1 > 3
-                                                            #collapse-1-1-3.collapse(data-parent='#accordion-1-1', aria-labelledby='heading-1-1-3')
-                                                                .card-body
-                                                                    | Text 1 > 1 > 3
-                                        .card
-                                            #heading-1-2.card-header
-                                                h5.mb-0
-                                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-1-2', aria-expanded='false', aria-controls='collapse-1-2')
-                                                        | Item 1 > 2
-                                            #collapse-1-2.collapse(data-parent='#accordion-1', aria-labelledby='heading-1-2')
-                                                .card-body
-                                                    | Text 1 > 2
+                                    a(role='button', data-toggle='collapse', href='#collapse-3', aria-expanded='true', aria-controls='collapse-3')
+                                        | Site Details
+                            #collapse-3.collapse.show(data-parent='#accordion', aria-labelledby='heading-3')
+                                ul.list-group
+                                    li.list-group-item
+                                        | !{'<strong> Site Name: </strong>'} #{summary.siteName}
+                                    li.list-group-item
+                                        | !{'<strong> Site Type: </strong>'} #{summary.siteType}
                         .card
                             #heading-2.card-header
                                 h5.mb-0
-                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-2', aria-expanded='false', aria-controls='collapse-2')
+                                    a(role='button', data-toggle='collapse', href='#collapse-2', aria-expanded='true', aria-controls='collapse-2')
                                         | Health Advice
-                            #collapse-2.collapse(data-parent='#accordion', aria-labelledby='heading-2')
+                            #collapse-2.collapse.show(data-parent='#accordion', aria-labelledby='heading-2')
                                 ul.list-group
                                     li.list-group-item(style={color: summary.siteHealthAdvices[0].healthAdviceColor, 'font-weight': 'bold'}) #{summary.siteHealthAdvices[0].healthAdvice}
-                                    li.list-group-item Based on: #{summary.siteHealthAdvices[0].healthParameter}
                                     li.list-group-item
-                                        | averageValue: #{summary.siteHealthAdvices[0].averageValue} !{summary.siteHealthAdvices[0].unit}
-
+                                        | !{'<strong> Based on: </strong>'} #{summary.siteHealthAdvices[0].healthParameter}
+                                    li.list-group-item
+                                        | !{'<strong> Average Value: </strong>'} #{summary.siteHealthAdvices[0].averageValue} !{summary.siteHealthAdvices[0].unit}
                         .card
-                            #heading-3.card-header
+                            #heading-1.card-header
                                 h5.mb-0
-                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-3', aria-expanded='false', aria-controls='collapse-3')
-                                        | Item 3
-                            #collapse-3.collapse(data-parent='#accordion', aria-labelledby='heading-3')
+                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-1', aria-expanded='false', aria-controls='collapse-1')
+                                        | Parameters
+                            #collapse-1.collapse(data-parent='#accordion', aria-labelledby='heading-1')
                                 .card-body
-                                    | Text 3
+                                    #accordion-1
+                                        each val, index in summary.parameters
+                                            .card
+                                                .card-header(id="heading-1-" + (index + 1))
+                                                    h5.mb-0
+                                                        a.collapsed(role='button', data-toggle='collapse', href='#collapse-1-' + (index + 1), aria-expanded='false', aria-controls='collapse-1-' + (index + 1))
+                                                            | #{val.name}
+                                                .collapse(data-parent='#accordion-1', aria-labelledby='heading-1-' + (index + 1), id='collapse-1-' + (index + 1))
+                                                    ul.list-group
+                                                        li.list-group-item(style={
+                                                            color: val.timeSeriesReadings[0].readings[0].healthAdviceColor,
+                                                            'font-weight': 'bold'
+                                                        }) #{val.timeSeriesReadings[0].readings[0].healthAdvice}
+                                                        li.list-group-item
+                                                            | !{'<strong> Average Value: </strong>'} #{val.timeSeriesReadings[0].readings[0].averageValue} !{val.timeSeriesReadings[0].readings[0].unit}
+                                                        li.list-group-item
+                                                            | !{'<strong> Confidence: </strong>'} #{val.timeSeriesReadings[0].readings[0].confidence}
+                        if summary.cameraImageURL || summary.timeLapseURL
+                            .card
+                                #heading-4.card-header
+                                    h5.mb-0
+                                        a.collapsed(role='button', data-toggle='collapse', href='#collapse-4', aria-expanded='false', aria-controls='collapse-4')
+                                            | Site Details
+                                #collapse-4.collapse(data-parent='#accordion', aria-labelledby='heading-4')
+                                    ul.list-group
+                                        li.list-group-item
+                                            | !{'<strong> Camera Image: </strong>'} #{summary.cameraImageURL}
+                                        li.list-group-item
+                                            | !{'<strong> Time Lapse: </strong>'} #{summary.timeLapseURL}
+
 
                 else
                     p.lead.mb-0 Could not load content
