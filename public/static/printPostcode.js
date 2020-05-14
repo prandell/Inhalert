@@ -11,8 +11,12 @@ function printPostcode() {
         // Request body
         data: "",
     }).done(function (data) {
+        if (!data[0]) {
+            console.log("Failed at postcode")
+            window.location = 'http://localhost:3000/dashboard/siteSummary';
+            return
+        }
         var location = `[${data[0].latitude}, ${data[0].longitude}]`
-        console.log(location)
         var params = {
             // Request parameters
             "location": location
@@ -27,21 +31,17 @@ function printPostcode() {
             // Request body
             data: "",
         }).done(function (data) {
+            if (!data.records|| !data.records[0].siteID) {
+                console.log("failed at EPA")
+                window.location = 'http://localhost:3000/dashboard/siteSummary';
+                return
+            }
             var siteId = data.records[0].siteID
-            $.ajax({
-                url: `https://cors-anywhere.herokuapp.com/https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites/${siteId}/parameters`,
-                beforeSend: function (xhrObj) {
-                    // Request headers
-                    xhrObj.setRequestHeader("X-API-Key", "050c16c08ef84cadb8f92d5d73074b95");
-                },
-                type: "GET",
-                // Request body
-                data: "",
-            }).done(function (data) {
-                console.log(data)
-            });
-
+            window.location.href = 'http://localhost:3000/dashboard/siteSummary/'+siteId
         });
+    }).fail( function() {
+        window.location = 'http://localhost:3000/dashboard/siteSummary'
+        return
     });
 
 }
