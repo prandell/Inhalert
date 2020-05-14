@@ -125,3 +125,18 @@ footer.footer {
     font-size: 95%;
     padding: 7px 20px !important;
 }
+
+.mb-0 > a {
+    display: block;
+    position: relative;
+    text-align: left;
+}
+.mb-0 > a:after {
+    content: "\f078"; /* fa-chevron-down */
+    font-family: "Font Awesome 5 Free";
+    position: absolute;
+    right: 0;
+}
+.mb-0 > a[aria-expanded="true"]:after {
+    content: "\f077"; /* fa-chevron-up */
+}

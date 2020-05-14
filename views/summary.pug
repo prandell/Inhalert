@@ -55,19 +55,82 @@ html(lang='en')
         // Icons Grid
         section.features-icons.bg-light.text-center
             script(type = 'text/javascript').
-                $(document).ready(getSiteSummary());
             .container
-                h3 Live Air Quality Report for Victoria
-                h6 Click on site name to load scientific summary
-                br
-                table.table.table-bordered#summaryTable
-                    thead.table-info
-                        tr
-                            th(scope='col') Site
-                            th(scope='col') Air Quality Status
-                    tbody
-                //button#loadmore.btn.btn-light(onclick='loadMoreButton()') Show More
-                a#loadmore.btn.btn-light(onclick='loadMoreButton()')  Show More
+                if summary
+                    h3 Air Quality Report for #{summary.siteName}
+                    h6 Click on site name to load scientific summary
+                    br
+                    #accordion
+                        .card
+                            #heading-1.card-header
+                                h5.mb-0
+                                    a(role='button', data-toggle='collapse', href='#collapse-1', aria-expanded='true', aria-controls='collapse-1')
+                                        | Health Advice
+                            #collapse-1.collapse.show(data-parent='#accordion', aria-labelledby='heading-1')
+                                .card-body
+                                    #accordion-1
+                                        .card
+                                            #heading-1-1.card-header
+                                                h5.mb-0
+                                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-1-1', aria-expanded='false', aria-controls='collapse-1-1')
+                                                        | #{summary.siteHealthAdvices[0].healthAdvice}
+                                            #collapse-1-1.collapse(data-parent='#accordion-1', aria-labelledby='heading-1-1')
+                                                .card-body
+                                                    #accordion-1-1
+                                                        .card
+                                                            #heading-1-1-1.card-header
+                                                                h5.mb-0
+                                                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-1-1-1', aria-expanded='false', aria-controls='collapse-1-1-1')
+                                                                        | Item 1 > 1 > 1
+                                                            #collapse-1-1-1.collapse(data-parent='#accordion-1-1', aria-labelledby='heading-1-1-1')
+                                                                .card-body
+                                                                    | Text 1 > 1 > 1
+                                                        .card
+                                                            #heading-1-1-2.card-header
+                                                                h5.mb-0
+                                                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-1-1-2', aria-expanded='false', aria-controls='collapse-1-1-2')
+                                                                        | Item 1 > 1 > 2
+                                                            #collapse-1-1-2.collapse(data-parent='#accordion-1-1', aria-labelledby='heading-1-1-2')
+                                                                .card-body
+                                                                    | Text 1 > 1 > 2
+                                                        .card
+                                                            #heading-1-1-3.card-header
+                                                                h5.mb-0
+                                                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-1-1-3', aria-expanded='false', aria-controls='collapse-1-1-3')
+                                                                        | Item 1 > 1 > 3
+                                                            #collapse-1-1-3.collapse(data-parent='#accordion-1-1', aria-labelledby='heading-1-1-3')
+                                                                .card-body
+                                                                    | Text 1 > 1 > 3
+                                        .card
+                                            #heading-1-2.card-header
+                                                h5.mb-0
+                                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-1-2', aria-expanded='false', aria-controls='collapse-1-2')
+                                                        | Item 1 > 2
+                                            #collapse-1-2.collapse(data-parent='#accordion-1', aria-labelledby='heading-1-2')
+                                                .card-body
+                                                    | Text 1 > 2
+                        .card
+                            #heading-2.card-header
+                                h5.mb-0
+                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-2', aria-expanded='false', aria-controls='collapse-2')
+                                        | Health Advice
+                            #collapse-2.collapse(data-parent='#accordion', aria-labelledby='heading-2')
+                                ul.list-group
+                                    li.list-group-item(style={color: summary.siteHealthAdvices[0].healthAdviceColor, 'font-weight': 'bold'}) #{summary.siteHealthAdvices[0].healthAdvice}
+                                    li.list-group-item Based on: #{summary.siteHealthAdvices[0].healthParameter}
+                                    li.list-group-item averageValue: #{summary.siteHealthAdvices[0].averageValue} #{summary.siteHealthAdvices[0].unit}
+
+                        .card
+                            #heading-3.card-header
+                                h5.mb-0
+                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-3', aria-expanded='false', aria-controls='collapse-3')
+                                        | Item 3
+                            #collapse-3.collapse(data-parent='#accordion', aria-labelledby='heading-3')
+                                .card-body
+                                    | Text 3
+
+                else
+                    p.lead.mb-0 Could not load content
         // Image Showcases
         section.showcase
             .container-fluid.p-0
