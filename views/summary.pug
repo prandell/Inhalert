@@ -118,7 +118,8 @@ html(lang='en')
                                 ul.list-group
                                     li.list-group-item(style={color: summary.siteHealthAdvices[0].healthAdviceColor, 'font-weight': 'bold'}) #{summary.siteHealthAdvices[0].healthAdvice}
                                     li.list-group-item Based on: #{summary.siteHealthAdvices[0].healthParameter}
-                                    li.list-group-item averageValue: #{summary.siteHealthAdvices[0].averageValue} #{summary.siteHealthAdvices[0].unit}
+                                    li.list-group-item
+                                        | averageValue: #{summary.siteHealthAdvices[0].averageValue} !{summary.siteHealthAdvices[0].unit}
 
                         .card
                             #heading-3.card-header
