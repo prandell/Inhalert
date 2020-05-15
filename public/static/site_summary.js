@@ -49,6 +49,13 @@ function getSiteSummary() {
 
 //Show more button functionality
 function loadMoreButton() {
+
+    if (document.getElementById("loadmore").innerText=="Show Less") {
+        $('html, body').animate({
+            scrollTop: 180,
+        }, 1000, "easeInOutExpo"); // for all browsers
+    }
+
     var second = document.getElementsByClassName('rows2')
     if (second[0].style.display == 'none') {
         for (var i=0; i<second.length; i++) {
@@ -71,25 +78,18 @@ function loadMoreButton() {
             fourth[i].style.display='table-row';
         }
         document.getElementById('loadmore').innerText= "Show Less"
-        setTimeout(function() {
-            document.getElementById('loadmore').className += " js-scroll-trigger"
-            document.getElementById('loadmore').href = "#top"
-        }, 500)
         return
     }
-
 
     setTimeout( function() {
         var hide = document.querySelectorAll('.rows2, .rows3, .rows4')
         for (var i=0; i<hide.length; i++) {
             hide[i].style.display='none';
         }
-    }, 500)
-    setTimeout(function () {
-        document.getElementById('loadmore').className = document.getElementById('loadmore').className.replace(" js-scroll-trigger", "")
-        document.getElementById('loadmore').removeAttribute("href")
         document.getElementById('loadmore').innerText= "Show More"
-    }, 1000)
+    }, 1200)
+
+    // document.getElementById('loadmore').innerText= "Show More"
 
     return
 }
