@@ -13,7 +13,6 @@ router.get('/',  (req, res) =>
 //Handling siteId parameter
 router.param('siteId', dashController.getSiteSummary);
 
-
 //loading summary page
 router.get('/siteSummary/:siteId', dashController.sendSiteSummary);
 

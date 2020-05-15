@@ -1,8 +1,8 @@
 {
-  "Good": "#59b929",
-  "Moderate": "#99cc33",
-  "Poor": "#ffcc33",
-  "Very poor": "#ff9966",
-  "Hazardous": "#cc3300",
+  "Good": "#64a13c",
+  "Moderate": "#eac51c",
+  "Poor": "#d67900",
+  "Very poor": "#a90737",
+  "Hazardous": "#50051e",
   "Unavailable": "#A9A9A9"
 }
