@@ -9,7 +9,9 @@ function getSiteSummary() {
         data: "",
     })
         .done(function (data) {
-
+            if (document.getElementById("summaryTable").childElementCount > 2) {
+                document.getElementById("summaryTable").innerHTML="<thead class=\"table-primary\"><tr><th scope=\"col\">Site</th><th scope=\"col\">Air Quality Status</th></tr></thead>"
+            }
             //Creating table entries
             for (let r in data) {
                 //Giving each row group of 10 unique classes, for the see more button functionality
