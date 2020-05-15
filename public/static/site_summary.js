@@ -18,15 +18,20 @@ function getSiteSummary() {
                     "<tr class =" + "rows" + Math.ceil(r/10) +  " id=" + "row"+ r + ">"
 
                     //Adding values, and relevant classes
-                    + "<td>" + data[r].siteName + "</td>"
+                    + "<td>"
+                    + "<a" + " style=\"color:black;\"" + " href=\"/dashboard/siteSummary/" + data[r].siteId+ "\">"
+                    + data[r].siteName + "</a>"
+                    + "</td>"
                     + "<td id =" + "el" + r + " class="+ "\"status_cell badge badge-pill\"" + ">"
-                    + "<strong>" + data[r].status + "</strong>"
+                    + data[r].status
                     + "</td>"
                     + "</tr>";
 
                 //Changing the colour of the badge depending on the status
                 $.getJSON("/static/colours.json", function (data) {
                     document.getElementById("el" + r).style.backgroundColor = data[document.getElementById("el" + r).innerText]
+                    document.getElementById("el" + r).style.fontWeight = "350"
+                    document.getElementById("el" + r).style.color = "#f9faff"
                 })
 
                 //Alternating table row background colours

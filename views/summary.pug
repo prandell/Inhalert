@@ -4,7 +4,7 @@ html(lang='en')
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
         script(type='text/javascript' src="/static/new_forecast.js")
         script(type='text/javascript' src="/static/site_summary.js")
-        script(type='text/javascript' src="/static/printPostcode.js")
+        script(type='text/javascript' src="/static/convert_postcode.js")
         script(type='text/javascript' src="/static/display_summary.js")
         meta(charset='utf-8')
         meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
@@ -20,31 +20,20 @@ html(lang='en')
         // Custom styles for this template
         link(href='/css/landing-page.min.css', rel='stylesheet')
     body#page-top
-        // Navigation
-        //nav.navbar.navbar-light.bg-light.static-top
-        //  a.navbar-brand(href='#') Start Bootstrap
-        //  .navbar-nav.ml-auto
-        //    a.btn.btn-primary(href='#') Sign In
-        //  .navbar-nav.ml-auto
-        //    a.btn.btn-secondary(href='#') Register
-        // Navigation
         nav#mainNav.navbar.navbar-expand-sm.bg-light.navbar-light.justify-content-end.fixed-top
             a.mr-auto.mr-1.navbar-brand(href='/') Inhalert
             button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent')
                 span.navbar-toggler-icon
             #navbarSupportedContent.collapse.navbar-collapse.flex-grow-0
                 ul.navbar-nav.text-right
-                    li.nav-item.active
-                        a.nav-link(href='/users/login') Login
-                    li.nav-item.active
-                        a.nav-link(href='/users/register') Register
+                    include ./partials/welcome_new
         // Masthead
-        header#top.masthead.text-white.text-center
+        header#top.masthead.text-black.text-center
             .overlay
             .container
                 .row
-                    .col-xl-9.mx-auto
-                        h2.mb-5 Enter your postcode to get summary closest to you!
+                    .col-xl-8.mx-auto
+                        h3.mb-5 Enter your postcode to get summary closest to you!
                         include ./partials/messages
                     .col-md-10.col-lg-8.col-xl-7.mx-auto
                         form
@@ -52,7 +41,7 @@ html(lang='en')
                                 .col-12.col-md-9.mb-2.mb-md-0
                                     input#whatsup.form-control.form-control-lg(type='text', placeholder='Enter your postcode...')
                                 .col-12.col-md-3
-                                    button.btn.btn-block.btn-lg.btn-secondary(type='button', onclick='printPostcode()') Show me!
+                                    button.btn.btn-block.btn-lg.text-black(type='button', style={'background-color':'#b8daff'}, onclick='convert_postcode()') Show me!
         // Icons Grid
         section.features-icons.bg-light.text-center
             script(type = 'text/javascript').
@@ -81,11 +70,13 @@ html(lang='en')
                                         | Health Advice
                             #collapse-2.collapse.show(data-parent='#accordion', aria-labelledby='heading-2')
                                 ul.list-group
-                                    li.list-group-item(style={color: summary.siteHealthAdvices[0].healthAdviceColor, 'font-weight': 'bold'}) #{summary.siteHealthAdvices[0].healthAdvice}
+                                    - var kolor = (summary.siteHealthAdvices[0].healthAdviceColor ? summary.siteHealthAdvices[0].healthAdviceColor : 'grey')
+                                    li.list-group-item(style={'color': kolor, 'font-weight': 'bold'}) #{summary.siteHealthAdvices[0].healthAdvice ? summary.siteHealthAdvices[0].healthAdvice : "Unavailable"}
                                     li.list-group-item
-                                        | !{'<strong> Based on: </strong>'} #{summary.siteHealthAdvices[0].healthParameter}
+                                        | !{'<strong> Based on: </strong>'} #{summary.siteHealthAdvices[0].healthParameter ? summary.siteHealthAdvices[0].healthParameter : "N/A"}
                                     li.list-group-item
-                                        | !{'<strong> Average Value: </strong>'} #{summary.siteHealthAdvices[0].averageValue} !{summary.siteHealthAdvices[0].unit}
+                                        | !{'<strong> Average Value: </strong>'} #{summary.siteHealthAdvices[0].averageValue ? summary.siteHealthAdvices[0].averageValue + " " : "N/A"}
+                                        | !{summary.siteHealthAdvices[0].unit}
                         .card
                             #heading-1.card-header
                                 h5.mb-0
@@ -102,14 +93,16 @@ html(lang='en')
                                                             | #{val.name}
                                                 .collapse(data-parent='#accordion-1', aria-labelledby='heading-1-' + (index + 1), id='collapse-1-' + (index + 1))
                                                     ul.list-group
+                                                        - var kolor = (val.timeSeriesReadings[0].readings[0].healthAdviceColor ? val.timeSeriesReadings[0].readings[0].healthAdviceColor : (val.timeSeriesReadings[1] ? (val.timeSeriesReadings[1].readings[0].healthAdviceColor ? val.timeSeriesReadings[1].readings[0].healthAdviceColor : "grey") : "grey"))
                                                         li.list-group-item(style={
-                                                            color: val.timeSeriesReadings[0].readings[0].healthAdviceColor,
+                                                            color: kolor,
                                                             'font-weight': 'bold'
-                                                        }) #{val.timeSeriesReadings[0].readings[0].healthAdvice}
+                                                        }) #{val.timeSeriesReadings[0].readings[0].healthAdvice? val.timeSeriesReadings[0].readings[0].healthAdvice: (val.timeSeriesReadings[1] ? (val.timeSeriesReadings[1].readings[0].healthAdvice ? val.timeSeriesReadings[1].readings[0].healthAdvice: "Unavailable") : "Unavailable") }
                                                         li.list-group-item
-                                                            | !{'<strong> Average Value: </strong>'} #{val.timeSeriesReadings[0].readings[0].averageValue} !{val.timeSeriesReadings[0].readings[0].unit}
+                                                            | !{'<strong> Average Value: </strong>'} #{val.timeSeriesReadings[0].readings[0].averageValue ? val.timeSeriesReadings[0].readings[0].averageValue + " " : (val.timeSeriesReadings[1] ? (val.timeSeriesReadings[1].readings[0].averageValue ? val.timeSeriesReadings[1].readings[0].averageValue: "N/A") : "N/A")}
+                                                            | !{val.timeSeriesReadings[0].readings[0].unit}
                                                         li.list-group-item
-                                                            | !{'<strong> Confidence: </strong>'} #{val.timeSeriesReadings[0].readings[0].confidence}
+                                                            | !{'<strong> Confidence: </strong>'} #{val.timeSeriesReadings[0].readings[0].averageValue? val.timeSeriesReadings[0].readings[0].confidence: (val.timeSeriesReadings[1] ? val.timeSeriesReadings[1].readings[0].confidence: "0") }
                         if summary.cameraImageURL || summary.timeLapseURL
                             .card
                                 #heading-4.card-header
@@ -132,10 +125,11 @@ html(lang='en')
                 .row.no-gutters
                     .col-lg-6.order-lg-2.text-white.showcase-img(style="background-image: url('/img/clouds.jpg');")
                     .col-lg-6.order-lg-1.my-auto.showcase-text
-                        h2 Register to receive alerts
-                        p.lead.mb-0
-                            | Inhalert is a Victorian air quality alert app, sending you notifications when the air quality in your local area
-                            | drops below recommended levels
+                        h3 What does each category mean?
+                        p.lead
+                            | See more on our
+                            a.d-inline(href='/dashboard/about')  About page
+                            |.
                 //.row.no-gutters
                 //  .col-lg-6.text-white.showcase-img(style="background-image: url('/img/bg-showcase-2.jpg');")
                 //  .col-lg-6.my-auto.showcase-text

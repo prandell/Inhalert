@@ -5,7 +5,7 @@ const dashController = require('../controllers/dashboard-controller.js');
 
 // Dashboard
 router.get('/',  (req, res) =>
-    res.render('dashboard', {
+    res.render('index', {
         user: req.user
     })
 );
@@ -19,7 +19,7 @@ router.get('/siteSummary/:siteId', dashController.sendSiteSummary);
 
 router.get('/siteSummary', function(req, res) {
     req.flash('error_msg', 'Please enter a valid Victorian postcode or select a site from the list below.');
-    res.redirect('/');
+    res.redirect('/dashboard');
 });
 
 module.exports=router;

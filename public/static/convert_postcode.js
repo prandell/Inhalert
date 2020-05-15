@@ -1,5 +1,8 @@
-function printPostcode() {
+function convert_postcode() {
     let postcode = document.getElementById('whatsup').value
+    if (postcode.length < 4 || isNaN(postcode)) {
+        window.location = 'http://localhost:3000/dashboard/siteSummary';
+    }
     $.ajax({
         url: "https://cors-anywhere.herokuapp.com/http://v0.postcodeapi.com.au/suburbs/" + postcode +
             ".json",

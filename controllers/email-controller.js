@@ -68,6 +68,7 @@ async function sendSubMail(siteId, status, siteName) {
     nodeMailerSend(emails,
         "Air Quality " + status + " at " + siteName,
         "This message was sent to you by Inhalert. We will notify you when the status changes")
+    console.log("sent emails")
 }
 
 

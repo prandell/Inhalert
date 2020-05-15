@@ -40,11 +40,13 @@ const getSiteSummary = function(req, res, next, id) {
 const sendSiteSummary = function(req, res) {
     if (req.error) {
         res.render('summary', {
+            user: req.user,
             error: req.error
         });
     } else {
         // res.flash = req.flash
         res.render('summary', {
+            user: req.user,
             summary: req.summary,
             success_msg: req.success_msg
         })

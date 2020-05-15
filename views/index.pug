@@ -2,9 +2,8 @@ doctype html
 html(lang='en')
   head
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
-    script(type='text/javascript' src="/static/new_forecast.js")
     script(type='text/javascript' src="/static/site_summary.js")
-    script(type='text/javascript' src="/static/printPostcode.js")
+    script(type='text/javascript' src="/static/convert_postcode.js")
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
     meta(name='description', content='')
@@ -19,30 +18,19 @@ html(lang='en')
     // Custom styles for this template
     link(href='/css/landing-page.min.css', rel='stylesheet')
   body#page-top
-    // Navigation
-    //nav.navbar.navbar-light.bg-light.static-top
-    //  a.navbar-brand(href='#') Start Bootstrap
-    //  .navbar-nav.ml-auto
-    //    a.btn.btn-primary(href='#') Sign In
-    //  .navbar-nav.ml-auto
-    //    a.btn.btn-secondary(href='#') Register
-    // Navigation
     nav#mainNav.navbar.navbar-expand-sm.bg-light.navbar-light.justify-content-end.fixed-top
       a.mr-auto.mr-1.navbar-brand.js-scroll-trigger(href='#page-top') Inhalert
       button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent')
         span.navbar-toggler-icon
       #navbarSupportedContent.collapse.navbar-collapse.flex-grow-0
         ul.navbar-nav.text-right
-          li.nav-item.active
-            a.nav-link(href='/users/login') Login
-          li.nav-item.active
-            a.nav-link(href='/users/register') Register
+          include ./partials/welcome_new
 
     // Masthead
-    header#top.masthead.text-white.text-center
+    header#top.masthead.text-center.text-black
       .overlay
       .container
-        .row
+        row
           .col-xl-9.mx-auto
             h1.mb-5 Get a live Air Quality report for your area!
             include ./partials/messages
@@ -52,22 +40,21 @@ html(lang='en')
                 .col-12.col-md-9.mb-2.mb-md-0
                   input#whatsup.form-control.form-control-lg(type='text', placeholder='Enter your postcode...')
                 .col-12.col-md-3
-                  button.btn.btn-block.btn-lg.btn-secondary(type='button', onclick='printPostcode()') Show me!
+                  button.btn.btn-block.btn-lg.text-black(type='button',style={'background-color':'#b8daff'}, onclick='convert_postcode()') Show me!
     // Icons Grid
     section.features-icons.bg-light.text-center
       script(type = 'text/javascript').
         $(document).ready(getSiteSummary());
       .container
         h3 Live Air Quality Report for Victoria
-        h6 Click on site name to load scientific summary
+        p.lead.mb-0 Click on site name to load scientific summary
         br
         table.table.table-bordered#summaryTable
-          thead.table-info
+          thead.table-primary
             tr
               th(scope='col') Site
               th(scope='col') Air Quality Status
           tbody
-        //button#loadmore.btn.btn-light(onclick='loadMoreButton()') Show More
         a#loadmore.btn.btn-light(onclick='loadMoreButton()')  Show More
     // Image Showcases
     section.showcase

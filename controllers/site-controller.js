@@ -170,6 +170,8 @@ async function fetchSites(req, res) {
     let result = await Site.find().sort('siteName').exec()
     res.send(result)
 }
+
+
 module.exports.updateDB = updateDB;
 module.exports.injectStatus = injectStatus;
 module.exports.checkStatus = checkStatus;
