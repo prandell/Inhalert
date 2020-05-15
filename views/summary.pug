@@ -63,58 +63,64 @@ html(lang='en')
                                         | !{'<strong> Site Name: </strong>'} #{summary.siteName}
                                     li.list-group-item
                                         | !{'<strong> Site Type: </strong>'} #{summary.siteType}
-                        .card
-                            #heading-2.card-header
-                                h5.mb-0
-                                    a(role='button', data-toggle='collapse', href='#collapse-2', aria-expanded='true', aria-controls='collapse-2')
-                                        | Health Advice
-                            #collapse-2.collapse.show(data-parent='#accordion', aria-labelledby='heading-2')
-                                ul.list-group
-                                    - var kolor = (summary.siteHealthAdvices[0].healthAdviceColor ? summary.siteHealthAdvices[0].healthAdviceColor : 'grey')
-                                    li.list-group-item(style={'color': kolor, 'font-weight': 'bold'}) #{summary.siteHealthAdvices[0].healthAdvice ? summary.siteHealthAdvices[0].healthAdvice : "Unavailable"}
-                                    li.list-group-item
-                                        | !{'<strong> Based on: </strong>'} #{summary.siteHealthAdvices[0].healthParameter ? summary.siteHealthAdvices[0].healthParameter : "N/A"}
-                                    li.list-group-item
-                                        | !{'<strong> Average Value: </strong>'} #{summary.siteHealthAdvices[0].averageValue ? summary.siteHealthAdvices[0].averageValue + " " : "N/A"}
-                                        | !{summary.siteHealthAdvices[0].unit}
-                        .card
-                            #heading-1.card-header
-                                h5.mb-0
-                                    a.collapsed(role='button', data-toggle='collapse', href='#collapse-1', aria-expanded='false', aria-controls='collapse-1')
-                                        | Parameters
-                            #collapse-1.collapse(data-parent='#accordion', aria-labelledby='heading-1')
-                                .card-body
-                                    #accordion-1
-                                        each val, index in summary.parameters
-                                            .card
-                                                .card-header(id="heading-1-" + (index + 1))
-                                                    h5.mb-0
-                                                        a.collapsed(role='button', data-toggle='collapse', href='#collapse-1-' + (index + 1), aria-expanded='false', aria-controls='collapse-1-' + (index + 1))
-                                                            | #{val.name}
-                                                .collapse(data-parent='#accordion-1', aria-labelledby='heading-1-' + (index + 1), id='collapse-1-' + (index + 1))
-                                                    ul.list-group
-                                                        - var kolor = (val.timeSeriesReadings[0].readings[0].healthAdviceColor ? val.timeSeriesReadings[0].readings[0].healthAdviceColor : (val.timeSeriesReadings[1] ? (val.timeSeriesReadings[1].readings[0].healthAdviceColor ? val.timeSeriesReadings[1].readings[0].healthAdviceColor : "grey") : "grey"))
-                                                        li.list-group-item(style={
-                                                            color: kolor,
-                                                            'font-weight': 'bold'
-                                                        }) #{val.timeSeriesReadings[0].readings[0].healthAdvice? val.timeSeriesReadings[0].readings[0].healthAdvice: (val.timeSeriesReadings[1] ? (val.timeSeriesReadings[1].readings[0].healthAdvice ? val.timeSeriesReadings[1].readings[0].healthAdvice: "Unavailable") : "Unavailable") }
-                                                        li.list-group-item
-                                                            | !{'<strong> Average Value: </strong>'} #{val.timeSeriesReadings[0].readings[0].averageValue ? val.timeSeriesReadings[0].readings[0].averageValue + " " : (val.timeSeriesReadings[1] ? (val.timeSeriesReadings[1].readings[0].averageValue ? val.timeSeriesReadings[1].readings[0].averageValue: "N/A") : "N/A")}
-                                                            | !{val.timeSeriesReadings[0].readings[0].unit}
-                                                        li.list-group-item
-                                                            | !{'<strong> Confidence: </strong>'} #{val.timeSeriesReadings[0].readings[0].averageValue? val.timeSeriesReadings[0].readings[0].confidence: (val.timeSeriesReadings[1] ? val.timeSeriesReadings[1].readings[0].confidence: "0") }
+                        if summary.siteHealthAdvices
+                            .card
+                                #heading-2.card-header
+                                    h5.mb-0
+                                        a(role='button', data-toggle='collapse', href='#collapse-2', aria-expanded='true', aria-controls='collapse-2')
+                                            | Health Advice
+                                #collapse-2.collapse.show(data-parent='#accordion', aria-labelledby='heading-2')
+                                    ul.list-group
+                                        - var kolor = (summary.siteHealthAdvices[0].healthAdviceColor ? summary.siteHealthAdvices[0].healthAdviceColor : 'grey')
+                                        li.list-group-item(style={'color': kolor, 'font-weight': 'bold'}) #{summary.siteHealthAdvices[0].healthAdvice ? summary.siteHealthAdvices[0].healthAdvice : "Unavailable"}
+                                        li.list-group-item
+                                            | !{'<strong> Based on: </strong>'} #{summary.siteHealthAdvices[0].healthParameter ? summary.siteHealthAdvices[0].healthParameter : "N/A"}
+                                        li.list-group-item
+                                            | !{'<strong> Average Value: </strong>'} #{summary.siteHealthAdvices[0].averageValue ? summary.siteHealthAdvices[0].averageValue + " " : "N/A"}
+                                            | !{summary.siteHealthAdvices[0].unit}
+                        if summary.parameters
+                            .card
+                                #heading-1.card-header
+                                    h5.mb-0
+                                        a.collapsed(role='button', data-toggle='collapse', href='#collapse-1', aria-expanded='false', aria-controls='collapse-1')
+                                            | Parameters
+                                #collapse-1.collapse(data-parent='#accordion', aria-labelledby='heading-1')
+                                    .card-body
+                                        #accordion-1
+                                            each val, index in summary.parameters
+                                                .card
+                                                    .card-header(id="heading-1-" + (index + 1))
+                                                        h5.mb-0
+                                                            a.collapsed(role='button', data-toggle='collapse', href='#collapse-1-' + (index + 1), aria-expanded='false', aria-controls='collapse-1-' + (index + 1))
+                                                                | #{val.name}
+                                                    .collapse(data-parent='#accordion-1', aria-labelledby='heading-1-' + (index + 1), id='collapse-1-' + (index + 1))
+                                                        ul.list-group
+                                                            - var kolor = (val.timeSeriesReadings[0].readings[0].healthAdviceColor ? val.timeSeriesReadings[0].readings[0].healthAdviceColor : (val.timeSeriesReadings[1] ? (val.timeSeriesReadings[1].readings[0].healthAdviceColor ? val.timeSeriesReadings[1].readings[0].healthAdviceColor : "grey") : "grey"))
+                                                            li.list-group-item(style={
+                                                                color: kolor,
+                                                                'font-weight': 'bold'
+                                                            }) #{val.timeSeriesReadings[0].readings[0].healthAdvice? val.timeSeriesReadings[0].readings[0].healthAdvice: (val.timeSeriesReadings[1] ? (val.timeSeriesReadings[1].readings[0].healthAdvice ? val.timeSeriesReadings[1].readings[0].healthAdvice: "Unavailable") : "Unavailable") }
+                                                            li.list-group-item
+                                                                | !{'<strong> Average Value: </strong>'} #{val.timeSeriesReadings[0].readings[0].averageValue ? val.timeSeriesReadings[0].readings[0].averageValue + " " : (val.timeSeriesReadings[1] ? (val.timeSeriesReadings[1].readings[0].averageValue ? val.timeSeriesReadings[1].readings[0].averageValue: "N/A") : "N/A")}
+                                                                | !{val.timeSeriesReadings[0].readings[0].unit}
+                                                            li.list-group-item
+                                                                | !{'<strong> Confidence: </strong>'} #{val.timeSeriesReadings[0].readings[0].averageValue? val.timeSeriesReadings[0].readings[0].confidence: (val.timeSeriesReadings[1] ? val.timeSeriesReadings[1].readings[0].confidence: "0") }
                         if summary.cameraImageURL || summary.timeLapseURL
                             .card
                                 #heading-4.card-header
                                     h5.mb-0
                                         a.collapsed(role='button', data-toggle='collapse', href='#collapse-4', aria-expanded='false', aria-controls='collapse-4')
-                                            | Site Details
+                                            | Camera URL's
                                 #collapse-4.collapse(data-parent='#accordion', aria-labelledby='heading-4')
                                     ul.list-group
+                                        - var camURL = (summary.cameraImageURL ? summary.cameraImageURL: "Unavailable")
+                                        - var tlURL = (summary.timeLapseURL ? summary.timeLapseURL: "Unavailable")
                                         li.list-group-item
-                                            | !{'<strong> Camera Image: </strong>'} #{summary.cameraImageURL}
+                                            | !{'<strong> Camera Image: </strong>'}
+                                            a(href=camURL) #{summary.cameraImageURL}
                                         li.list-group-item
-                                            | !{'<strong> Time Lapse: </strong>'} #{summary.timeLapseURL}
+                                            | !{'<strong> Time Lapse: </strong>'}
+                                            a(href=tlURL) #{summary.timeLapseURL}
 
 
                 else
