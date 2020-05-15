@@ -8,8 +8,12 @@ function getSiteSummary() {
         // Request body
         data: "",
     })
-        .done(function (data) {
+        .done(async function (data) {
             if (document.getElementById("summaryTable").childElementCount > 2) {
+                $('html, body').animate({
+                    scrollTop: 250,
+                }, 1000, "easeInOutExpo"); // for all browsers
+                await sleep(1000)
                 document.getElementById("summaryTable").innerHTML="<thead class=\"table-primary\"><tr><th scope=\"col\">Site</th><th scope=\"col\">Air Quality Status</th></tr></thead>"
             }
             //Creating table entries
@@ -49,10 +53,13 @@ function getSiteSummary() {
             }
         })
         .fail(function () {
-            console.log()
-            alert("error");
+            alert("Error occured retrieving content");
         })
 };
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 //Show more button functionality
 function loadMoreButton() {
