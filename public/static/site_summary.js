@@ -14,43 +14,40 @@ function getSiteSummary() {
                     scrollTop: 250,
                 }, 1000, "easeInOutExpo"); // for all browsers
                 await sleep(1000)
-                document.getElementById("summaryTable").innerHTML="<thead class=\"table-primary\"><tr><th scope=\"col\">Site</th><th scope=\"col\">Air Quality Status</th></tr></thead>"
+                document.getElementById("summaryTable").innerHTML = "<thead class=\"table-primary\"><tr><th scope=\"col\">Site</th><th scope=\"col\">Air Quality Status</th></tr></thead>"
             }
-            //Creating table entries
-            for (let r in data) {
-                //Giving each row group of 10 unique classes, for the see more button functionality
-                document.getElementById("summaryTable").innerHTML +=
+            $.getJSON("/static/colours.json", function (jsonstuff) {
+                for (let r in data) {
                     //Giving each row group of 10 unique classes, for the see more button functionality
-                    "<tr class =" + "rows" + Math.ceil(r/10) +  " id=" + "row"+ r + ">"
+                    document.getElementById("summaryTable").innerHTML +=
+                        //Giving each row group of 10 unique classes, for the see more button functionality
+                        "<tr class =" + "rows" + Math.ceil(r / 10) + " id=" + "row" + r + ">"
 
-                    //Adding values, and relevant classes
-                    + "<td>"
-                    + "<a" + " style=\"color:black;\"" + " href=\"/dashboard/siteSummary/" + data[r].siteId+ "\">"
-                    + data[r].siteName + "</a>"
-                    + "</td>"
-                    + "<td id =" + "el" + r + " class="+ "\"status_cell badge badge-pill\""
-                    + " style='color:#f9faff;'"
-                    + ">"
-                    + data[r].status
-                    + "</td>"
-                    + "</tr>";
+                        //Adding values, and relevant classes
+                        + "<td>"
+                        + "<a" + " style=\"color:black;\"" + " href=\"/dashboard/siteSummary/" + data[r].siteId + "\">"
+                        + data[r].siteName + "</a>"
+                        + "</td>"
+                        + "<td id =" + "el" + r + " class=" + "\"status_cell badge badge-pill\""
+                        + " style=\"color:#f9faff;background-color:" + jsonstuff[data[r].status]+"\""
+                        + ">"
+                        + data[r].status
+                        + "</td>"
+                        + "</tr>";
 
-                //Changing the colour of the badge depending on the status
-                $.getJSON("/static/colours.json", function (data) {
-                    document.getElementById("el" + r).style.backgroundColor = data[document.getElementById("el" + r).innerText]
-                })
 
-                //Alternating table row background colours
-                if (r % 2 == 0) {
-                    document.getElementById("row" + r).className += " table-secondary"
+                    //Alternating table row background colours
+                    if (r % 2 == 0) {
+                        document.getElementById("row" + r).className += " table-secondary"
+                    }
                 }
-            }
 
-            //Hiding most of the entries
-            var hide = document.querySelectorAll('.rows2, .rows3, .rows4')
-            for (var i=0; i<hide.length; i++) {
-                hide[i].style.display='none';
-            }
+                //Hiding most of the entries
+                var hide = document.querySelectorAll('.rows2, .rows3, .rows4')
+                for (var i = 0; i < hide.length; i++) {
+                    hide[i].style.display = 'none';
+                }
+            })
         })
         .fail(function () {
             alert("Error occured retrieving content");
