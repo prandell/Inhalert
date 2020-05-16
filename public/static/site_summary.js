@@ -3,7 +3,7 @@
 //Everything inside done was just to get it working
 function getSiteSummary() {
     $.ajax({
-        url: "http://localhost:3000/sites/fetchAll",
+        url: "/sites/fetchAll",
         type: "GET",
         // Request body
         data: "",
