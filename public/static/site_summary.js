@@ -28,7 +28,9 @@ function getSiteSummary() {
                     + "<a" + " style=\"color:black;\"" + " href=\"/dashboard/siteSummary/" + data[r].siteId+ "\">"
                     + data[r].siteName + "</a>"
                     + "</td>"
-                    + "<td id =" + "el" + r + " class="+ "\"status_cell badge badge-pill\"" + ">"
+                    + "<td id =" + "el" + r + " class="+ "\"status_cell badge badge-pill\""
+                    + " style='color:#f9faff;'"
+                    + ">"
                     + data[r].status
                     + "</td>"
                     + "</tr>";
@@ -36,8 +38,6 @@ function getSiteSummary() {
                 //Changing the colour of the badge depending on the status
                 $.getJSON("/static/colours.json", function (data) {
                     document.getElementById("el" + r).style.backgroundColor = data[document.getElementById("el" + r).innerText]
-                    document.getElementById("el" + r).style.fontWeight = "350"
-                    document.getElementById("el" + r).style.color = "#f9faff"
                 })
 
                 //Alternating table row background colours

@@ -129,6 +129,7 @@ footer.footer {
   margin-top: 8px;
   font-size: 95%;
   padding: 7px 20px !important;
+  font-weight: 300;
 }
 
 .mb-0 > a {
