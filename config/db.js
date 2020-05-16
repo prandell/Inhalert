@@ -33,15 +33,19 @@ request(options, function (error, response) {
 
     for (let r in records) {
         var query = {siteId: records[r].siteID, siteName: records[r].siteName};
-        if (records[r].siteHealthAdvices && records[r].siteHealthAdvices[0].healthAdvice) {
-            var update = {
-                siteId: records[r].siteID,
-                siteName: records[r].siteName,
-                alerted: false,
-                status: records[r].siteHealthAdvices[0].healthAdvice
+        if (records[r].siteHealthAdvices) {
+            if (records[r].siteHealthAdvices[0].healthAdvice) {
+                var update = {
+                    siteId: records[r].siteID,
+                    siteName: records[r].siteName,
+                    alerted: false,
+                    status: records[r].siteHealthAdvices[0].healthAdvice
+                }
+            } else {
+                var update = {siteId: records[r].siteID, siteName: records[r].siteName, alerted: false, status: "Unavailable"}
             }
         } else {
-            var update = {siteId: records[r].siteID, siteName: records[r].siteName, alerted: false, status: "Unavailable"}
+            var update = {siteId: records[r].siteID, siteName: records[r].siteName, alerted: false, status: "Camera"}
         }
         options = {upsert: true, new: true, setDefaultsOnInsert: true};
         Site.findOneAndUpdate(query, update, options, function(error, result) {

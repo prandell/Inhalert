@@ -38,10 +38,14 @@ const updateSites = function(records) {
 
         let update = {siteId: record.siteID, siteName: record.siteName}
 
-        if (record.siteHealthAdvices && record.siteHealthAdvices[0].healthAdvice) {
-            update.status = record.siteHealthAdvices[0].healthAdvice
+        if (record.siteHealthAdvices) {
+            if (record.siteHealthAdvices[0].healthAdvice) {
+                update.status = record.siteHealthAdvices[0].healthAdvice
+            } else {
+                update.status = "Unavailable"
+            }
         } else {
-            update.status = "Unavailable"
+            update.status = "Camera"
         }
         let options = {upsert: true};
 
@@ -55,7 +59,7 @@ const updateSites = function(records) {
 
 //Checks the DB to determine whether alerts need to be sent
 const checkStatus = async function() {
-    const toTrue = await Site.find({status: {$nin: ["Good", "Unavailable", null]}, alerted: false}).exec()
+    const toTrue = await Site.find({status: {$nin: ["Good", "Unavailable", "Camera", null]}, alerted: false}).exec()
     const toFalse = await Site.find({status: {$in: ["Good"]}, alerted: true}).exec()
     for (let s in toTrue) {
         await emailController.sendSubMail(toTrue[s].siteId, toTrue[s].status, toTrue[s].siteName)
@@ -113,10 +117,14 @@ const updateDBWrapper = async function(req, res) {
 
                 let query = {siteId: record.siteID};
 
-                if (record.siteHealthAdvices && record.siteHealthAdvices[0].healthAdvice) {
-                    var status = record.siteHealthAdvices[0].healthAdvice
+                if (record.siteHealthAdvices) {
+                    if (record.siteHealthAdvices[0].healthAdvice) {
+                        var status = record.siteHealthAdvices[0].healthAdvice
+                    } else {
+                        var status = "Unavailable"
+                    }
                 } else {
-                    var status = "Unavailable"
+                    var status = "Camera"
                 }
 
                 let result = await Site.updateOne(query, {status: status});
