@@ -9,6 +9,8 @@ function getSiteSummary() {
         data: "",
     })
         .done(async function (data) {
+
+            //Upon refresh being pressed, scroll to top and reset table
             if (document.getElementById("summaryTable").childElementCount > 2) {
                 $('html, body').animate({
                     scrollTop: 250,
@@ -16,10 +18,14 @@ function getSiteSummary() {
                 await sleep(1000)
                 document.getElementById("summaryTable").innerHTML = "<thead class=\"table-primary\"><tr><th scope=\"col\">Site</th><th scope=\"col\">Air Quality Status</th></tr></thead>"
             }
+            //Load in the colours array so that status values can be loaded in with their correct colour, not after being loaded
             $.getJSON("/static/colours.json", function (jsonstuff) {
+
+                //Creating table entries from data
                 for (let r in data) {
-                    //Giving each row group of 10 unique classes, for the see more button functionality
+
                     document.getElementById("summaryTable").innerHTML +=
+
                         //Giving each row group of 10 unique classes, for the see more button functionality
                         "<tr class =" + "rows" + Math.ceil(r / 10) + " id=" + "row" + r + ">"
 
@@ -54,6 +60,7 @@ function getSiteSummary() {
         })
 };
 
+//Custom sleep function used in the timing of scrolling on refresh
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -61,12 +68,14 @@ function sleep(ms) {
 //Show more button functionality
 function loadMoreButton() {
 
+    //Scroll first
     if (document.getElementById("loadmore").innerText=="Show Less") {
         $('html, body').animate({
             scrollTop: 180,
         }, 1000, "easeInOutExpo"); // for all browsers
     }
 
+    //Second group of 10
     var second = document.getElementsByClassName('rows2')
     if (second[0].style.display == 'none') {
         for (var i=0; i<second.length; i++) {
@@ -75,6 +84,7 @@ function loadMoreButton() {
         return
     }
 
+    //Third group of 10
     var third = document.getElementsByClassName('rows3')
     if (third[0].style.display == 'none') {
         for (var i=0; i<third.length; i++) {
@@ -83,6 +93,7 @@ function loadMoreButton() {
         return
     }
 
+    //Last group of 10
     var fourth = document.getElementsByClassName('rows4')
     if (fourth[0].style.display == 'none') {
         for (var i=0; i<fourth.length; i++) {
@@ -92,6 +103,7 @@ function loadMoreButton() {
         return
     }
 
+    //Back to the start
     setTimeout( function() {
         var hide = document.querySelectorAll('.rows2, .rows3, .rows4')
         for (var i=0; i<hide.length; i++) {
@@ -99,8 +111,6 @@ function loadMoreButton() {
         }
         document.getElementById('loadmore').innerText= "Show More"
     }, 1200)
-
-    // document.getElementById('loadmore').innerText= "Show More"
 
     return
 }

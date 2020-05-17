@@ -1,5 +1,7 @@
 function convert_postcode() {
     let postcode = document.getElementById('whatsup').value
+
+    //Checking bad values
     if (postcode.length != 4 || isNaN(postcode)) {
         window.location = '/dashboard/siteSummary';
     }
@@ -14,11 +16,14 @@ function convert_postcode() {
         // Request body
         data: "",
     }).done(function (data) {
+        //Postcode doesnt exist
         if (!data[0]) {
             console.log("Failed at postcode")
             window.location = '/dashboard/siteSummary';
             return
         }
+
+        //Using longitude/latitude of postcode
         var location = `[${data[0].latitude}, ${data[0].longitude}]`
         var params = {
             // Request parameters
@@ -34,15 +39,20 @@ function convert_postcode() {
             // Request body
             data: "",
         }).done(function (data) {
+            //No site close to this postcode (ie, its not Victorian)
             if (!data.records|| !data.records[0].siteID) {
                 console.log("failed at EPA")
                 window.location = '/dashboard/siteSummary';
                 return
             }
+
+            //Display the summary
             var siteId = data.records[0].siteID
             window.location.href = '/dashboard/siteSummary/'+siteId
         });
     }).fail( function() {
+
+        //Any other failure
         window.location = '/dashboard/siteSummary'
         return
     });
