@@ -4,18 +4,15 @@ block extraHeader
     script(type='text/javascript' src="/static/sites.js")
 
 block content
-    .row.mt-5
-        .col-md-6.m-auto
-            .card.card-body
-                h1.text-center.mb-2 Choose Site to be Notified for
-                include ./partials/messages
-                form(action='/users/preferences', method='POST')
-                    select.form-group#sel(name="siteSelection" onchange="show(this)") Select Site
-                        option.form-control(value="") >-- Select --<
-                    button.btn.btn-primary.btn-block(type='submit')
-                        | Submit
+    .card.card-body
+        h4.text-center.mb-2 Choose Site to be Notified for
+        include ./partials/messages
+        form(action='/users/preferences', method='POST')
+            select.form-group.form-control#sel(name="siteSelection" onchange="show(this)") Select Site
+                option.form-control.text-secondary(value="") Choose...
+            button.form-group.btn.btn-primary.btn-block(type='submit', style={'background-color':'#b8daff', 'font-size':'120%', 'color':'black'})
+                | Submit
 
     p#msg
     script(type = 'text/javascript').
         $(document).ready(populateSelect());
-

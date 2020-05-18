@@ -10,6 +10,5 @@ function populateSelect() {
 
 function show(element) {
     var msg = document.getElementById('msg');
-    msg.innerHTML = 'Selected: <b>' + element.options[element.selectedIndex].text + '</b> </br>' +
-        'ID: <b>' + element.value + '</b>';
+    msg.innerHTML = 'Selected: <b>' + element.options[element.selectedIndex].text + '</b> </br>'
 }

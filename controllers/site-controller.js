@@ -39,7 +39,13 @@ const updateSites = function(records) {
         let update = {siteId: record.siteID, siteName: record.siteName}
 
         if (record.siteHealthAdvices) {
-            update.status = record.siteHealthAdvices[0].healthAdvice
+            if (record.siteHealthAdvices[0].healthAdvice) {
+                update.status = record.siteHealthAdvices[0].healthAdvice
+            } else {
+                update.status = "Unavailable"
+            }
+        } else {
+            update.status = "Camera"
         }
         let options = {upsert: true};
 
@@ -53,7 +59,7 @@ const updateSites = function(records) {
 
 //Checks the DB to determine whether alerts need to be sent
 const checkStatus = async function() {
-    const toTrue = await Site.find({status: {$nin: ["Good", "Unavailable", null]}, alerted: false}).exec()
+    const toTrue = await Site.find({status: {$nin: ["Good", "Unavailable", "Camera", null]}, alerted: false}).exec()
     const toFalse = await Site.find({status: {$in: ["Good"]}, alerted: true}).exec()
     for (let s in toTrue) {
         await emailController.sendSubMail(toTrue[s].siteId, toTrue[s].status, toTrue[s].siteName)
@@ -112,9 +118,13 @@ const updateDBWrapper = async function(req, res) {
                 let query = {siteId: record.siteID};
 
                 if (record.siteHealthAdvices) {
-                    var status = record.siteHealthAdvices[0].healthAdvice
+                    if (record.siteHealthAdvices[0].healthAdvice) {
+                        var status = record.siteHealthAdvices[0].healthAdvice
+                    } else {
+                        var status = "Unavailable"
+                    }
                 } else {
-                    var status = "Unavailable"
+                    var status = "Camera"
                 }
 
                 let result = await Site.updateOne(query, {status: status});
@@ -164,6 +174,11 @@ function injectStatusWrapper(req, res) {
     }
 }
 
+async function fetchSites(req, res) {
+    let result = await Site.find().sort('siteName').exec()
+    res.send(result)
+}
+
 
 module.exports.updateDB = updateDB;
 module.exports.injectStatus = injectStatus;
@@ -172,3 +187,4 @@ module.exports.checkStatus = checkStatus;
 module.exports.updateDBWrapper = updateDBWrapper;
 module.exports.checkStatusWrapper = checkStatusWrapper;
 module.exports.injectStatusWrapper = injectStatusWrapper;
+module.exports.fetchSites = fetchSites;

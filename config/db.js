@@ -6,12 +6,12 @@ const SiteSub = mongoose.model('SiteSub');
 const User = mongoose.model('User');
 
 // Records deletion and management
-// Site.deleteMany({},  function (err) {})
+Site.deleteMany({},  function (err) {})
 // SiteSub.deleteMany({},  function (err) {})
 // User.deleteMany({},  function (err) {})
-// Site.collection.dropIndexes(function (err, results) {
-//     console.log(results)
-// });
+Site.collection.dropIndexes(function (err, results) {
+    console.log(results)
+});
 
 //Upon Initialisation this script calls the EPA API and updates all site documents in the DB.
 //If there are new sites, it will add them.
@@ -34,9 +34,18 @@ request(options, function (error, response) {
     for (let r in records) {
         var query = {siteId: records[r].siteID, siteName: records[r].siteName};
         if (records[r].siteHealthAdvices) {
-            var update = {siteId: records[r].siteID, siteName: records[r].siteName, alerted: false, status: records[r].siteHealthAdvices[0].healthAdvice}
+            if (records[r].siteHealthAdvices[0].healthAdvice) {
+                var update = {
+                    siteId: records[r].siteID,
+                    siteName: records[r].siteName,
+                    alerted: false,
+                    status: records[r].siteHealthAdvices[0].healthAdvice
+                }
+            } else {
+                var update = {siteId: records[r].siteID, siteName: records[r].siteName, alerted: false, status: "Unavailable"}
+            }
         } else {
-            var update = {siteId: records[r].siteID, siteName: records[r].siteName, alerted: false}
+            var update = {siteId: records[r].siteID, siteName: records[r].siteName, alerted: false, status: "Camera"}
         }
         options = {upsert: true, new: true, setDefaultsOnInsert: true};
         Site.findOneAndUpdate(query, update, options, function(error, result) {

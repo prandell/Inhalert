@@ -9,9 +9,9 @@ const selectSite = function(req, res) {
     const siteId = siteSelection
     Site.findOne({siteId: siteId}).then(site => {
         if(!site) {
-            errors = [{msg: 'Site could not be found'}]
+            var error = 'Site could not be found'
             res.render('preferences', {
-                errors: errors
+                error: error
             });
         } else {
             const newSiteSub = new SiteSub({

@@ -14,11 +14,11 @@ setInterval(function() {
     }, 60000)
 
 }, 120000);
-
-//Injects the bad status after a minute
-setTimeout(function() {
-    siteController.injectStatus("Melbourne CBD", "Poor")
-}, 150000)
+//
+// //Injects the bad status after a minute
+// setTimeout(function() {
+//     siteController.injectStatus("Melbourne CBD", "Poor")
+// }, 150000)
 
 
 //*------------------------- MANUAL ----------------------------*//
@@ -30,6 +30,9 @@ router.get('/check', siteController.checkStatusWrapper);
 
 //Inject a status to a site (needs req.body.siteName and req.body.status)
 router.post('/inject', siteController.injectStatusWrapper);
+
+//Get all sites
+router.get('/fetchAll', siteController.fetchSites);
 
 
 module.exports = router;

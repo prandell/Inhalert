@@ -7,13 +7,17 @@ and allowing users to register to receive notifications when the air quality in 
 * Register, first trying erroneous values to test validation of input. When you do register, make sure the email you are using is one you can check.
 * From here you will be re-directed to a preferences page. **For the sake of demonstration, make sure you select "Melbourne CBD"**
 and submit. This means you have subscribed to updates for Air quality at the Melbourne CBD site.
-* From here you should be re-directed to the dashboard. The dashboard gets a live update on the summary of 12 major site locations in Victoria and displays them on the page.
-* In roughly 2 minutes, you should receieve an email telling you that the weather at Melbourne CBD is "Poor" or "Moderate". Our app has been set to inject this status for the sake of demonstration.
-In another 2 minutes, the automatic updates should set it back to "Good" and you'll get another email.
+* From here you should be re-directed to the dashboard. The dashboard gets a live update on the summary of all major site locations in Victoria and displays them on the page.
+* ~~In roughly 2 minutes, you should receieve an email telling you that the weather at Melbourne CBD is "Poor" or "Moderate". Our app has been set to inject this status for the sake of demonstration.
+In another 2 minutes, the automatic updates should set it back to "Good" and you'll get another email.~~ This has been changed, as it would continuously send emails. Instead we recommend using the button after logging in or to manually inject a bad status using the manual endpoint.
 * From the dashboard you may also:
     * Press the "send email" button to send a stock email
     * Add more sites by pressing "Change alert preferences"
     * logout and log back in again, testing that functionality
+* _New functionalities now implemented:_
+    * Dashboard displays a list of all sites, the list has a show more and refresh button.
+    * Clicking on the name of these sites takes you to a summary page where scientific details can be seen for those sites
+    * Entering a Victorian postcode in the form at the top also takes you to a summary page for the closest site.
 
 # How to test using POSTMAN (have not tried other similar apps)
 * Set up the interceptor for Postman. It saves session cookies and will be needed to test certain endpoints. 
