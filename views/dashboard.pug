@@ -9,16 +9,10 @@ block content
                 h1.mt-4 Inhalert
                 include ./partials/messages
                 include ./partials/welcome
-                form#frm1
-                    | Postcode:
-                    input(type='text' id='postcode' name='postcode')
-                    br
-                    br
-                    input(type='button' onclick='getForecastSummary()' value='Submit')
     script(type = 'text/javascript').
         $(document).ready(getForecastSummary());
 
-    p#post Postcode
+
     ul#hi Fetching Air Quality Summary
 
 

@@ -10,12 +10,12 @@ block content
                 h1.text-center.mb-2 Choose Site to be Notified for
                 include ./partials/messages
                 form(action='/users/preferences', method='POST')
-                    select.form-group#sel(name="siteSelection" onchange="show(this)") Select Site
+                    select.form-group#sel(name="siteSelection" onchange="show(this) ; removeSelected()") Select Site
                         option.form-control(value="") >-- Select --<
-                    button.btn.btn-primary.btn-block(type='submit')
+                    button.btn.btn-primary.btn-block#btn(type='button' onclick='getSubs()' )
                         | Submit
 
-    p#msg
+    ul#msg
     script(type = 'text/javascript').
         $(document).ready(populateSelect());
 
