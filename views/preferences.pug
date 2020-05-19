@@ -8,11 +8,13 @@ block content
         h4.text-center.mb-2 Choose Site to be Notified for
         include ./partials/messages
         form(action='/users/preferences', method='POST')
-            select.form-group.form-control#sel(name="siteSelection" onchange="show(this)") Select Site
+            select.form-group.form-control#sel(name="siteSelection" onchange="show(this) ; removeSelected()") Select Site
                 option.form-control.text-secondary(value="") Choose...
+            //onclick='getSubs()'
             button.form-group.btn.btn-primary.btn-block(type='submit', style={'background-color':'#b8daff', 'font-size':'120%', 'color':'black'})
                 | Submit
 
-    p#msg
+
+    ul#msg
     script(type = 'text/javascript').
         $(document).ready(populateSelect());
