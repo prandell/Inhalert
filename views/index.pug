@@ -1,5 +1,7 @@
 doctype html
 html(lang='en')
+
+  //All this is essential
   head
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
     script(type='text/javascript' src="/static/site_summary.js")
@@ -20,6 +22,8 @@ html(lang='en')
     script(type = 'text/javascript').
       getSiteSummary();
   body#page-top
+
+    //Nav bar should be pretty consistent, its now in layout template too
     nav#mainNav.navbar.navbar-expand-sm.bg-light.navbar-light.justify-content-end.fixed-top
       a.mr-auto.mr-1.navbar-brand.js-scroll-trigger(href='#page-top') Inhalert
       button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent')
@@ -113,6 +117,7 @@ html(lang='en')
     //              input.form-control.form-control-lg(type='email', placeholder='Enter your email...')
     //            .col-12.col-md-3
     //              button.btn.btn-block.btn-lg.btn-primary(type='submit') Sign up!
+
     // Footer
     footer.footer.bg-light
       .container
