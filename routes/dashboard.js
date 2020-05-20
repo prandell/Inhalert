@@ -6,6 +6,7 @@ const dashController = require('../controllers/dashboard-controller.js');
 // Dashboard
 router.get('/',  (req, res) =>
     res.render('index', {
+        errors: req.errors,
         user: req.user
     })
 );

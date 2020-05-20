@@ -34,11 +34,7 @@ router.get('/logout', userController.logoutUser);
 const prefController = require('../controllers/preferences-controller.js');
 
 //Load preference form
-router.get('/preferences', ensureAuthenticated, function(req, res) {
-  res.render('preferences', {
-    user: req.user
-  });
-})
+router.get('/preferences', ensureAuthenticated, prefController.userSubscribed);
 
 //Add Site preference
 router.post('/preferences', ensureAuthenticated, prefController.selectSite);

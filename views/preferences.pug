@@ -1,20 +1,24 @@
 extends layout
 
 block extraHeader
-    script(type='text/javascript' src="/static/sites.js")
+    script(type='text/javascript' src="/static/preferences.js")
 
 block content
     .card.card-body
         h4.text-center.mb-2 Choose Site to be Notified for
         include ./partials/messages
-        form(action='/users/preferences', method='POST')
-            select.form-group.form-control#sel(name="siteSelection" onchange="show(this) ; removeSelected()") Select Site
-                option.form-control.text-secondary(value="") Choose...
-            //onclick='getSubs()'
-            button.form-group.btn.btn-primary.btn-block(type='submit', style={'background-color':'#b8daff', 'font-size':'120%', 'color':'black'})
-                | Submit
+        select.form-group.form-control#sel(name="siteSelection" onchange="show(this) ; removeSelected()") Select Site
+            option.form-control.text-secondary(value="") Choose...
 
+        ul#msg
+            if subbed
+                each val in subbed
+                    li(class="selected" id=(val.siteId) name=(val.siteName.toString()) value = (val.siteId)) Already subbed to:  #{val.siteName}
+                        span(class='close') x
+        button.form-group.btn.btn-primary.btn-block(type='button', onclick='submitPreferences()', style={'background-color':'#b8daff', 'font-size':'120%', 'color':'black'})
+            | Submit
+        form#preferences-form(action='/users/preferences', method='POST')
 
-    ul#msg
     script(type = 'text/javascript').
         $(document).ready(populateSelect());
+        $(document).ready(removeSelected());

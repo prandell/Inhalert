@@ -34,7 +34,5 @@
     "express-messages": "^1.0.1",
     "express-session": "^1.17.0"
   },
-  "devDependencies": {
-
-  }
+  "devDependencies": {}
 }

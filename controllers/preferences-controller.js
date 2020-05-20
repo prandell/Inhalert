@@ -4,56 +4,94 @@ const mongoose = require('mongoose');
 const Site = mongoose.model('Site');
 const SiteSub = mongoose.model('SiteSub')
 
-const selectSite = function(req, res) {
 
-    const {siteSelection} = req.body
-    const siteId = siteSelection
+const selectSite = async function(req, res) {
 
-    console.log('request body : ', siteId);
-    for (let i = 0; i < siteId.length; i++) {
-        Site.findOne({siteId: siteId[i]}).then(site => {
+    await addSiteSubs(req, res)
+    req.flash(
+        'success_msg',
+        'Preferences Updated Successfully'
+    );
+    res.redirect('/dashboard')
+}
+
+const addSiteSubs = async function (req, res) {
+    const siteSelection = JSON.parse(req.body.siteSelection)
+
+    console.log('request body: ', siteSelection);
+
+    var errors = []
+    var info = []
+    var success = []
+    const ids = [];
+
+    for (const selection of siteSelection) {
+        await ids.push(selection.siteId)
+        await Site.findOne({siteId: selection.siteId}).then(async site => {
             if (!site) {
-                errors = [{msg: 'Site could not be found'}]
-                res.render('preferences', {
-                    errors: errors
-                });
+
+                await errors.push({msg: 'No site ID found for ' + selection.siteName})
             } else {
-                SiteSub.findOne({email: req.user.email, siteId: siteId[i]}, function (err, result) {
-                    if(err) {
-                        console.log(err);
-                    }
-                    if(!result) {
-                        const newSiteSub = new SiteSub({
+
+                await SiteSub.findOne({email: req.user.email, siteId: site.siteId}).then(async (siteSub) => {
+                    if (!siteSub) {
+
+                        let newSiteSub = await new SiteSub({
                             email: req.user.email,
                             siteId: site.siteId
                         });
-                        newSiteSub
-                            .save()
-                            .then(siteSub => {
-                                console.log(siteSub);
-                                req.flash(
-                                    'success_msg',
-                                    'You will now receive alerts for the selected site'
-                                );
-                                ///res.redirect('/dashboard');
+                        await newSiteSub.save()
+                            .then(async siteSubResult => {
+                                console.log(siteSubResult);
+                                await success.push(selection.siteName)
+                                console.log(success)
                             })
                             .catch(err => console.log(err));
+                    } else {
+
                     }
                 })
             }
         })
+            .catch(err => console.log(err))
     }
+
+    const inThere = await SiteSub.find({email: req.user.email}).exec()
+    console.log(ids)
+    for (const subbed of inThere) {
+        console.log(subbed.siteId)
+        if (ids.includes(subbed.siteId)) {
+            continue
+        } else {
+            await SiteSub.deleteOne({email: req.user.email, siteId: subbed.siteId})
+        }
+    }
+
+    // var success_msg = 'Subscribed to '
+    // if (success[0]) {
+    //     for (const yes of success) {
+    //         success_msg.concat(yes, ', ')
+    //     }
+    //     success_msg = success_msg.substring(0, success_msg.length - 2)
+    //     console.log(success_msg)
+    // }
+
+    // console.log(errors)
+    // console.log(info)
+    // console.log(success)
 }
 
-const userSubscribed = function (req, res) {
-    SiteSub.find({email: req.user.email}, function(err, result) {
-        if(err) {
-            console.log(err);
-        } else {
-            console.log(result)
-        }
-
-    })
+const userSubscribed = async function (req, res) {
+    var subbed = await SiteSub.find({email: req.user.email}).exec()
+    var ids = []
+    for (let i=0; i<subbed.length; i++) {
+        await ids.push(subbed[i].siteId)
+    }
+    var subbedSites = await Site.find({siteId: {$in: ids}}).exec()
+    res.render('preferences', {
+        user: req.user,
+        subbed: subbedSites
+    });
 }
 
 module.exports.selectSite = selectSite;
