@@ -27,8 +27,8 @@ app.use(express.urlencoded({ extended: false }));
 
 
 //DB
-const mongoose = require('mongoose');
-require('./models/db');
+// const mongoose = require('mongoose');
+// require('./models/db');
 
 
 //Passport Initialisation
@@ -100,8 +100,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-
-
 
 module.exports = app;

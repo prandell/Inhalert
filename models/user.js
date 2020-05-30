@@ -21,5 +21,4 @@ const UserSchema = new Schema({
     timestamps: true,
     collection: 'users'
 });
-
 mongoose.model('User', UserSchema);

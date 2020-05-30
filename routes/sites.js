@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const siteController = require('../controllers/site-controller.js');
+const siteController = require('../controllers/sites.js');
 
 
 //*----------------------- AUTOMATIC ------------------------*//

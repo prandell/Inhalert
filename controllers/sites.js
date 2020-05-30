@@ -4,7 +4,7 @@ const request = require("request");
 const Site = mongoose.model('Site');
 const SiteSub = mongoose.model('SiteSub')
 
-const emailController = require('../controllers/email-controller')
+const emailController = require('../controllers/emails')
 
 //* ------------------ AUTOMATED FUNCTIONS -------------------*//
 

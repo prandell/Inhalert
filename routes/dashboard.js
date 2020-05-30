@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const dashController = require('../controllers/dashboard-controller.js');
+const dashController = require('../controllers/dashboard.js');
 
 // Dashboard
 router.get('/',  (req, res) =>

@@ -30,13 +30,8 @@ const registerUser = function(req, res) {
     //Get any of the errors
     let errors = validationResult(req);
 
-    console.log(errors)
     //If errors exist, re-render the page, passing along the errors
     if (!errors.isEmpty()) {
-        // res.status(400).json({
-        //     success: false,
-        //     errors: errors.array()
-        // })
         res.status(400).render('register', {
             errors: errors.array(),
             name,
@@ -47,7 +42,7 @@ const registerUser = function(req, res) {
         User.findOne({email: email}).then(user => {
             if(user) {
                 errors = [{msg: 'Email already exists'}]
-                res.render('register', {
+                res.status(400).render('register', {
                     errors: errors,
                     name,
                     email
@@ -91,10 +86,21 @@ const registerUser = function(req, res) {
 
 //Login user function
 const loginUser = function(req, res, next) {
-    passport.authenticate('local', {
-        successRedirect: '/dashboard',
-        failureRedirect: '/users/login',
-        failureFlash: true
+    passport.authenticate('local', function(err, user, info) {
+        if (err) { return next(err) }
+        if (!user) {
+            // *** Display message without using flash option
+            // re-render the login form with a message
+            return res.status(401).render('login', { error: info.message })
+        }
+        req.login(user, function(err) {
+            if (err) { return next(err); }
+            req.flash(
+                'success_msg',
+                'Welcome '+user.name
+            );
+            return res.redirect('/dashboard');
+        });
     })(req,res,next);
 }
 
@@ -102,7 +108,7 @@ const loginUser = function(req, res, next) {
 const logoutUser = function(req, res){
     req.logout();
     req.flash('success_msg', 'You are logged out');
-    res.redirect('/users/login');
+    res.redirect('/dashboard');
 }
 
 

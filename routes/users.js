@@ -4,7 +4,7 @@ const {ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
 
 // Bring in User Controller
-const userController = require('../controllers/user-controller.js');
+const userController = require('../controllers/users.js');
 
 // Get Registration form
 router.get('/register', function(req, res){
@@ -15,12 +15,12 @@ router.get('/register', function(req, res){
 router.post('/register', userController.validationChecks, userController.registerUser);
 
 // Login Form
-router.get('/login', function(req, res) {
+router.get('/login', forwardAuthenticated, function(req, res) {
   res.render('login');
 });
 
-router.get('/', function(req, res) {
-  res.redirect('/');
+router.get('/', forwardAuthenticated, (req, res) => {
+  res.redirect('/dashboard')
 });
 
 // Login Process
@@ -31,7 +31,7 @@ router.get('/logout', userController.logoutUser);
 
 
 //*------------------ Preferences Routes -------------------* //
-const prefController = require('../controllers/preferences-controller.js');
+const prefController = require('../controllers/preferences.js');
 
 //Load preference form
 router.get('/preferences', ensureAuthenticated, prefController.userSubscribed);
