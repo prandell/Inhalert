@@ -19,10 +19,6 @@ router.get('/login', forwardAuthenticated, function(req, res) {
   res.render('login');
 });
 
-router.get('/', forwardAuthenticated, (req, res) => {
-  res.redirect('/dashboard')
-});
-
 // Login Process
 router.post('/login', userController.loginUser);
 
@@ -38,5 +34,10 @@ router.get('/preferences', ensureAuthenticated, prefController.userSubscribed);
 
 //Add Site preference
 router.post('/preferences', ensureAuthenticated, prefController.selectSite);
+
+router.all('*', (req, res) => {
+  req.flash('error_msg', '404: The page you tried to access doesn\'t exist');
+  res.redirect('/dashboard')
+});
 
 module.exports = router;

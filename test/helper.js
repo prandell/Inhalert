@@ -25,9 +25,12 @@ async function addUser() {
 
 async function removeUsers() {
     await User.deleteMany({},  function (err) {})
-    await User.collection.dropIndexes(function (err, results) {
-            console.log(results)
-    });
+    User.collection.dropIndexes(function (err, results) {});
+}
+
+async function removeSiteSubs() {
+    await SiteSub.deleteMany({},  function (err) {})
+    SiteSub.collection.dropIndexes(function (err, results) {});
 }
 
 async function loginUser() {
@@ -35,10 +38,11 @@ async function loginUser() {
     const res = await request(app)
         .post('/users/login')
         .send(user);
-    console.log(res)
 }
+
 
 
 module.exports.addUser = addUser
 module.exports.removeUsers = removeUsers
 module.exports.loginUser = loginUser
+module.exports.removeSiteSubs = removeSiteSubs

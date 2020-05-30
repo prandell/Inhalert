@@ -15,7 +15,6 @@ const selectSite = async function(req, res) {
 
 const addSiteSubs = async function (req, res) {
     const siteSelection = JSON.parse(req.body.siteSelection)
-
     var errors = []
     var success = []
     const ids = [];
@@ -72,7 +71,7 @@ const userSubscribed = async function (req, res) {
         await ids.push(subbed[i].siteId)
     }
     var subbedSites = await Site.find({siteId: {$in: ids}}).exec()
-    res.render('preferences', {
+    res.status(200).render('preferences', {
         user: req.user,
         subbed: subbedSites
     });

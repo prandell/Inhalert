@@ -12,7 +12,7 @@ mongoose.connect(process.env.DB_TEST_URI, {useNewUrlParser: true, useCreateIndex
         }
     });
 mongoose.connection.once('open', () => {
-    console.log("MongoDB database connection established successfully")
+    console.log("Testing MongoDB database connection established successfully")
 });
 
 require('../models/user');

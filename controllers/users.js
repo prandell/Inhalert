@@ -6,7 +6,6 @@ const {check, validationResult} = require('express-validator');
 // Bring in User Model
 const User = mongoose.model('User');
 
-
 //Express validator check array
 const validationChecks = [check("name", 'Name is required').notEmpty(),
     check("email", 'Email is required').notEmpty(),
@@ -53,15 +52,13 @@ const registerUser = function(req, res) {
                     email: email,
                     password: password
                 });
-
                 //Encrypting the password and saving the user's credentials
                 bcrypt.genSalt(10, (err, salt) => {
                     bcrypt.hash(newUser.password, salt, (err, hash) => {
                         if (err) throw err;
                         newUser.password = hash;
                         newUser
-                            .save()
-                            .then(user => {
+                            .save().then(user => {
                                 req.login(user, function (err) {
                                     if (! err) {
                                         req.flash(
