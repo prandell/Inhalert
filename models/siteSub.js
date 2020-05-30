@@ -13,6 +13,11 @@ const SiteSubSchema = new Schema({
         type: String,
         required: true,
         trim: true
+    },
+    status: {
+        type: Number,
+        required: true,
+        default: 3
     }
 }, {
     timestamps: true,

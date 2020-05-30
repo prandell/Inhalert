@@ -79,10 +79,7 @@ async function injectStatus(siteName, status) {
     var query = {siteName: siteName};
     var update = {status: status}
     var options = {
-        upsert: true,
-        new: true,
-        setDefaultsOnInsert: true,
-        rawResult: true
+        new: true
     };
     const result = await Site.findOneAndUpdate(query, update, options)
     return result
@@ -144,7 +141,7 @@ const updateDBWrapper = async function(req, res) {
 //Manually checks whether alerts need to be sent. Sends them out if they do and updates DB record
 // to indicate alerts have been sent
 const checkStatusWrapper = async function(req, res) {
-    var sites = checkStatus()
+    var sites = await checkStatus()
     if (sites.length > 0) {
         res.status(200).json({
             message: "Alerts sent out for subscribers of the following sites",
@@ -158,14 +155,13 @@ const checkStatusWrapper = async function(req, res) {
 
 
 //Manual wrapper for inject status so can be used as endpoint
-function injectStatusWrapper(req, res) {
-    let result = injectStatus(req.body.siteName, req.body.status)
+async function injectStatusWrapper(req, res) {
+    let result = await injectStatus(req.body.siteName, req.body.status)
     if (result) {
         res.status(200).json({
             message: "Injection successful",
             site: req.body.siteName,
-            status: req.body.status,
-            result: result
+            status: req.body.status
         })
     } else {
         res.status(400).json({

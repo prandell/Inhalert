@@ -43,6 +43,7 @@ async function gatherPreferences() {
 
 async function submitPreferences() {
     const siteToSub = await gatherPreferences()
+    const status = document.getElementById('status').value
 
     //Basically creating input for a form programmatically then submitting it
     //This was necessary to follow re-directs and display flash messages properly
@@ -51,7 +52,13 @@ async function submitPreferences() {
     preferences.name = 'siteSelection'
     preferences.value = JSON.stringify(siteToSub)
 
+    const statusThresh = document.createElement('input')
+    statusThresh.type = 'hidden';
+    statusThresh.name = 'statusSelection'
+    statusThresh.value = status
+
     const form = document.getElementById('preferences-form')
     form.appendChild(preferences)
+    form.appendChild(statusThresh)
     form.submit();
 }

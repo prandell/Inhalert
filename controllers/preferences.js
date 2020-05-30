@@ -15,6 +15,8 @@ const selectSite = async function(req, res) {
 
 const addSiteSubs = async function (req, res) {
     const siteSelection = JSON.parse(req.body.siteSelection)
+    const status = parseInt(req.body.statusSelection)
+
     var errors = []
     var success = []
     const ids = [];
@@ -29,22 +31,15 @@ const addSiteSubs = async function (req, res) {
             if (!site) {
                 await errors.push({msg: 'No site ID found for ' + selection.siteName})
             } else {
-                //determine if site was already subbed to, if not save it
-                await SiteSub.findOne({email: req.user.email, siteId: site.siteId}).then(async (siteSub) => {
-                    if (!siteSub) {
-                        let newSiteSub = await new SiteSub({
-                            email: req.user.email,
-                            siteId: site.siteId
-                        });
-                        await newSiteSub.save()
-                            .then(async siteSubResult => {
-                                await success.push(selection.siteName)
-                            })
-                            .catch(err => console.log(err));
-                    } else {
-                        //It exists already, leave it
-                    }
-                })
+                //Update existing sitesub or add new one
+                await SiteSub.findOneAndUpdate(
+                    {email: req.user.email, siteId: site.siteId},
+                    {status: status},
+                    {upsert: true, new: true, setDefaultsOnInsert: true})
+                    .then(async (siteSub) => {
+                        await success.push(selection.siteName)
+                    })
+                    .catch(err=> console.log(err))
             }
         })
             .catch(err => console.log(err))

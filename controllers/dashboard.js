@@ -15,7 +15,7 @@ const getSiteSummary = function(req, res, next, id) {
         url:
             "https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites/" + id + "/parameters",
         headers: {
-            "X-API-Key": "050c16c08ef84cadb8f92d5d73074b95",
+            "X-API-Key": process.env.EPA_API_KEY,
         },
     };
     request(options, function (error, response) {

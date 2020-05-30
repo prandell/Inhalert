@@ -15,6 +15,15 @@ block content
                 each val in subbed
                     li(class="selected" id=(val.siteId) name=(val.siteName.toString()) value = (val.siteId)) Already subbed to:  #{val.siteName}
                         span(class='close') x
+        h7.m-3
+            | For all sites, notify me when the status drops to
+            |
+            select#status(style={'display': 'inline-block'})
+                option.form-control.text-secondary(value=2) Moderate
+                option.form-control.text-secondary(value=3) Poor
+                option.form-control.text-secondary(value=4) Very poor
+                option.form-control.text-secondary(value=5) Hazardous
+            |  or below
         button.form-group.btn.btn-primary.btn-block(type='button', onclick='submitPreferences()', style={'background-color':'#b8daff', 'font-size':'120%', 'color':'black'})
             | Submit
         form#preferences-form(action='/users/preferences', method='POST')
