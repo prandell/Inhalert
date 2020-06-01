@@ -29,7 +29,6 @@ const getSiteSummary = function(req, res, next, id) {
             req.error="Error occured. Please enter postcode again."
             next();
         } else {
-            console.log("Made it")
             req.success_msg = 'Scroll down to see a scientific summary!'
             req.summary = resp;
             next();

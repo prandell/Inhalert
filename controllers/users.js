@@ -10,11 +10,11 @@ const User = mongoose.model('User');
 const validationChecks = [check("name", 'Name is required').notEmpty(),
     check("email", 'Email is required').notEmpty(),
     check("password", 'Password is required').notEmpty(),
-    check("password", 'Password must be at least 6 Characters').isLength({min:6}),
+    check("password", 'Password must be at least 6 Characters').if(check("password").notEmpty()).isLength({min:6}),
     //Email valid
     check("email", 'Email is not valid').isEmail(),
     //Passwords match
-    check("password2", 'Passwords do not match').custom((value, {req, loc, path}) => {
+    check("password2", 'Passwords do not match').if(check("password").notEmpty()).custom((value, {req, loc, path}) => {
         if (value !== req.body.password) {
             throw new Error("Passwords don't match");
         } else {
@@ -25,7 +25,6 @@ const validationChecks = [check("name", 'Name is required').notEmpty(),
 //Register user function
 const registerUser = function(req, res) {
     const {name, email, password, password2} = req.body
-
     //Get any of the errors
     let errors = validationResult(req);
 
