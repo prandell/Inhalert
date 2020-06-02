@@ -23,6 +23,7 @@ const updateDB = function() {
     };
     request(options, function (error, response) {
         if (error) throw new Error(error);
+        console.log("Updating DB ...")
         updateSites(JSON.parse(response.body).records)
     })
 }
@@ -59,6 +60,7 @@ const updateSites = function(records) {
 
 //Checks the DB to determine whether alerts need to be sent
 const checkStatus = async function() {
+    console.log("Checking status...")
     const toTrue = await Site.find({status: {$nin: ["Good", "Unavailable", "Camera", null]}, alerted: false}).exec()
     const toFalse = await Site.find({status: {$in: ["Good"]}, alerted: true}).exec()
     for (let s in toTrue) {
