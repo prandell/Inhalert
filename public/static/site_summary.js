@@ -48,6 +48,8 @@ function getSiteSummary() {
                     }
                 }
 
+                document.getElementById('updated').innerHTML = 'Last updated: ' + new Date().toLocaleTimeString();
+
                 //Hiding most of the entries
                 var hide = document.querySelectorAll('.rows2, .rows3, .rows4')
                 for (var i = 0; i < hide.length; i++) {
