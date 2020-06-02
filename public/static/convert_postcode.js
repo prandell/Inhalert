@@ -2,9 +2,9 @@ function convert_postcode() {
     let postcode = document.getElementById('whatsup').value
 
     //Checking bad values
-    if (postcode.length != 4 || isNaN(postcode)) {
-        window.location = '/dashboard/siteSummary';
-    }
+    // if (postcode.length != 4 || isNaN(postcode)) {
+    //     window.location = '/dashboard/siteSummary';
+    // }
     $.ajax({
         url: "https://cors-anywhere.herokuapp.com/http://v0.postcodeapi.com.au/suburbs/" + postcode +
             ".json",
@@ -19,7 +19,7 @@ function convert_postcode() {
         //Postcode doesnt exist
         if (!data[0]) {
             console.log("Failed at postcode")
-            window.location = '/dashboard/siteSummary';
+            // window.location = '/dashboard/siteSummary';
             return
         }
 
@@ -48,12 +48,13 @@ function convert_postcode() {
 
             //Display the summary
             var siteId = data.records[0].siteID
-            window.location.href = '/dashboard/siteSummary/'+siteId
+            // window.location.href = '/dashboard/siteSummary/'+siteId
         });
     }).fail( function() {
 
         //Any other failure
-        window.location = '/dashboard/siteSummary'
+        console.log("failed")
+        // window.location = '/dashboard/siteSummary'
         return
     });
 
