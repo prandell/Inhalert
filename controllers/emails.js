@@ -64,14 +64,6 @@ function sendEmail(req, res) {
 }
 
 async function getScientificSummary(siteId) {
-    var options = {
-        method: "GET",
-        url:
-            "https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites/" + siteId + "/parameters",
-        headers: {
-            "X-API-Key": process.env.EPA_API_KEY,
-        },
-    };
     let url = "https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites/" + siteId + "/parameters"
     let response = await axios.get(url,{headers: {
             "X-API-Key": process.env.EPA_API_KEY,

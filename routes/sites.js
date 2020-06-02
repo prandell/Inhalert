@@ -5,16 +5,16 @@ const siteController = require('../controllers/sites.js');
 
 
 //*----------------------- AUTOMATIC ------------------------*//
-//Updates DB every 2 minutes
-// setInterval(function() {
-//     siteController.updateDB();
-//
-//     //Checks for alerting every 2 minutes, offset by a minute
-//     setTimeout(function() {
-//         siteController.checkStatus();
-//     }, 60000)
-//
-// }, 120000);
+// Updates DB every 2 minutes
+setInterval(function() {
+    siteController.updateDB();
+
+    //Checks for alerting every 2 minutes, offset by a minute
+    setTimeout(function() {
+        siteController.checkStatus();
+    }, 60000)
+
+}, 120000);
 
 //
 // //Injects the bad status after a minute

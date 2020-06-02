@@ -6,12 +6,18 @@ const SiteSub = mongoose.model('SiteSub');
 const User = mongoose.model('User');
 
 // Records deletion and management
+// SiteSub.deleteMany({},  function (err) {})
 // Site.deleteMany({},  function (err) {})
-SiteSub.deleteMany({},  function (err) {})
 // User.deleteMany({},  function (err) {})
-SiteSub.collection.dropIndexes(function (err, results) {
-    console.log(results)
-});
+// SiteSub.collection.dropIndexes(function (err, results) {
+//     console.log(results)
+// });
+// Site.collection.dropIndexes(function (err, results) {
+//     console.log(results)
+// });
+// User.collection.dropIndexes(function (err, results) {
+//     console.log(results)
+// });
 
 //Upon Initialisation this script calls the EPA API and updates all site documents in the DB.
 //If there are new sites, it will add them.
