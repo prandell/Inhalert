@@ -1,0 +1,26 @@
+extends layout
+
+block content
+    .card.card-body
+        h1.text-center.mb-3
+            |   Account
+        include ./partials/messages
+        h3 Change email
+        form(action='/users/update', method='POST')
+            .form-group
+                label(for='passwordupdate') Password
+                input#passwordupdate.form-control(type='password', name='password', placeholder='Enter Password')
+            .form-group
+                label(for='emailupdate') New email
+                input#emailupdate.form-control(type='email', name='email', placeholder='Enter Email')
+            button.mb-3.btn.btn-block.btn-primary(type='submit', style={
+                'background-color': '#b8daff',
+                'font-size': '120%',
+                'color': 'black'
+            }) Confirm
+        h3 Delete account
+        form(action='/users/delete', method='POST')
+            .form-group
+                label(for='passworddelete') Password
+                input#passworddelete.form-control(type='password', name='password', placeholder='Enter Password')
+            button.btn.btn-block.btn-danger(type='submit', style={'font-size':'120%', 'color':'black', 'border-color': 'black'}) Confirm

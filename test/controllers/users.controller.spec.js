@@ -14,36 +14,7 @@ const userController =  require('../../controllers/users');
 const User = mongoose.model('User');
 
 describe('userController', async function () {
-
-    // // Below, we are going to test HTTP functions, so we need to create fake request and respond object!
-    const mockResponse = (fake) => {
-        return {
-            redirect: fake
-        };
-    }
-    //
-    // // this is just example how you can design the fake request, you can also add header property if your website needs one!
-    // // I'm not even going to use any of these stuff inside request
-    const mockRequest = (session, body) => ({
-        session: session,
-        body: body,
-        login: function(){}
-    });
-    //
-    // before(helper.removeUsers)
-    //
-    //
-    it("Should add a user to db", async function() {
-        const fake = sinon.fake();
-        const req = mockRequest({},{name: "Test", email: "test@test.test", password: "password", password2: "password"});
-        const res = mockResponse(fake);
-        await userController.registerUser(req, res);
-        var result = await User.find({}).exec()
-        console.log(result)
-        expect(result).to.have.lengthOf(1)
-        // expect(result[0]).to.include({name: "Test", email: "test@test.test"})
-    })
-
+    before(helper.removeUsers)
     describe('registerUser', function() {
 
         beforeEach(helper.removeUsers)

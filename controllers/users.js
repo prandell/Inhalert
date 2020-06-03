@@ -12,7 +12,7 @@ const validationChecks = [check("name", 'Name is required').notEmpty(),
     check("password", 'Password is required').notEmpty(),
     check("password", 'Password must be at least 6 Characters').if(check("password").notEmpty()).isLength({min:6}),
     //Email valid
-    check("email", 'Email is not valid').isEmail(),
+    check("email", 'Email is not valid').if(check("email").notEmpty()).isEmail(),
     //Passwords match
     check("password2", 'Passwords do not match').if(check("password").notEmpty()).custom((value, {req, loc, path}) => {
         if (value !== req.body.password) {
@@ -106,7 +106,6 @@ const logoutUser = function(req, res){
     req.flash('success_msg', 'You are logged out');
     res.redirect('/dashboard');
 }
-
 
 
 module.exports.registerUser = registerUser;

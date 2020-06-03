@@ -35,6 +35,23 @@ router.get('/preferences', ensureAuthenticated, prefController.userSubscribed);
 //Add Site preference
 router.post('/preferences', ensureAuthenticated, prefController.selectSite);
 
+
+//*------------------ Account Routes -------------------* //
+const accountController = require('../controllers/account.js');
+
+router.get('/account', ensureAuthenticated, (req, res) => {
+  res.render('account', {
+    user: req.user
+  })
+});
+
+//Delete account
+router.post('/delete', accountController.deletionChecks, accountController.deleteUser);
+
+//Update email
+router.post('/update', accountController.updateChecks, accountController.updateUser);
+
+//All other routes
 router.all('*', (req, res) => {
   req.flash('error_msg', '404: The page you tried to access doesn\'t exist');
   res.redirect('/dashboard')
