@@ -6,14 +6,24 @@ const {check, validationResult} = require('express-validator');
 const User = mongoose.model('User');
 const SiteSub = mongoose.model('SiteSub');
 
-//Form validation
+/**
+ * Form validation checking middleware. Occur prior to any database queries.
+ */
 const updateChecks = [check("email", 'Email is required').notEmpty(),
     check("password", 'Password is required').notEmpty(),
     check("email", 'Email is not valid').if(check("email").notEmpty()).isEmail()]
 
 const deletionChecks = [check("password", 'Password is required').notEmpty()]
 
-//Deleting user account
+/**
+ * Deletes a user account from the database.
+ * Args:
+ *  req: Http request object with form body values
+ *  res: Http response object
+ * Returns:
+ *  redirects to dashboard with 304 if validation passed
+ *  re-renders account page with relevant flash messages otherwise
+ */
 const deleteUser = function(req, res) {
     const {password} = req.body
 
@@ -56,7 +66,15 @@ const deleteUser = function(req, res) {
     }
 }
 
-//Updating user email
+/**
+ * Updating a user's email address
+ * Args:
+ *  req: Http request object with form body values
+ *  res: Http response object
+ * Returns:
+ *  redirects to dashboard with 304 if validation passed
+ *  re-renders account page with relevant flash messages otherwise
+ */
 const updateUser = function(req, res) {
     const {password, email} = req.body
 

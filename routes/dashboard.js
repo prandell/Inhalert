@@ -3,7 +3,9 @@ var router = express.Router();
 
 const dashController = require('../controllers/dashboard.js');
 
-// Dashboard
+/**
+ * Loads index page passing in user, if present, and any error messages.
+ */
 router.get('/',  (req, res) =>
     res.render('index', {
         errors: req.errors,
@@ -11,14 +13,21 @@ router.get('/',  (req, res) =>
     })
 );
 
-//Handling siteId parameter
+/**
+ * Middleware for siteId parameter
+ */
 router.param('siteId', dashController.getSiteSummary);
 
-//loading summary page
+/**
+ * siteSummary page
+ */
 router.get('/siteSummary/:siteId', dashController.sendSiteSummary);
 
+/**
+ * Used as a stepping stone to display error messages when bad input was passed to the search function.
+ */
 router.get('/siteSummary', function(req, res) {
-    req.flash('error_msg', 'Please enter a valid Victorian postcode or select a site from the list below.');
+    req.flash('error_msg', 'Please enter a valid Victorian postcode/suburb, or select a site from the list below.');
     res.redirect('/dashboard');
 });
 

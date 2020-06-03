@@ -1,5 +1,8 @@
 var mongoose = require('mongoose');
 
+/**
+ * Connect to test database
+ */
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }

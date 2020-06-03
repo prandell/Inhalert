@@ -110,7 +110,7 @@ footer.footer {
 
 
 /* CUSTOM EDITS */
-
+/* Cells in dashboard table */
 .status_cell {
   margin-top: 8px;
   font-size: 95%;
@@ -118,6 +118,7 @@ footer.footer {
   font-weight: 300;
 }
 
+/* accordion in summary page */
 .mb-0 > a {
   display: block;
   position: relative;

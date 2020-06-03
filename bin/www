@@ -3,7 +3,10 @@
 /**
  * Module dependencies.
  */
-//DB
+
+/**
+ * Database initialisation
+ */
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }

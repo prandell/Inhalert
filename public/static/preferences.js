@@ -1,5 +1,8 @@
-
+/**
+ * Populates the select form with options when selected
+ */
 function populateSelect() {
+    //Static site list.
     $.getJSON("/static/sites.json", function (data) {
         var select = document.getElementById('sel');
         for (var i = 0; i < data["sites"].length; i++) {
@@ -7,19 +10,29 @@ function populateSelect() {
                 "<option value=\"" + data["sites"][i]['siteID'] + "\"" + ">" + data["sites"][i]['siteName'] + '</option>';
         }
     })
+    //Assigns colour to current status threshold, if its present.
+    $.getJSON("/static/colours.json", function (data) {
+        var color = data[document.getElementById('threshold').innerText.trim()]
+        document.getElementById('threshold').style.color = color
+    })
 }
 
+/**
+ * Makes selected elements appear below the preference box.
+ */
 function show(select) {
-    //Changed variable name to 'select' as this is the element passed to show()
     var msg = document.getElementById('msg');
     var value = select.options[select.selectedIndex].value;
 
     var ele = document.getElementById(value);
     if (!ele) {
-        msg.innerHTML += "<li class= \"selected\" id="+ value + " name=" + "\"" + select.options[select.selectedIndex].text + "\"" + " value =" + select.value + "> Selected: " + select.options[select.selectedIndex].text + "<span class='close'>x</span></li>";
+        msg.innerHTML += "<li class= \"selected alert\" id="+ value + " name=" + "\"" + select.options[select.selectedIndex].text + "\"" + " value =" + select.value + " style=\"background-color:#b8daff;color:black;\"" + "> Selected: " + select.options[select.selectedIndex].text + "<span class='close'>x</span></li>";
     }
 }
 
+/**
+ * Removes selections when 'x' is clicked on an individual selection
+ */
 function removeSelected() {
     /* Get all elements with class="close" */
     let closebutton = document.getElementsByClassName('close');
@@ -31,7 +44,9 @@ function removeSelected() {
     }
 }
 
-
+/**
+ * Gathers all selections for submitting
+ */
 async function gatherPreferences() {
     const selected = document.getElementsByClassName('selected');
     let data = [];
@@ -41,12 +56,15 @@ async function gatherPreferences() {
     return data
 }
 
+/**
+ * Programmatically creating a form and submitting it. This was chosen instead of using a 'multi-select'
+ * form, which look much worse and dont behave in the same way.
+ * This was necessary to follow re-directs and display flash messages properly
+ */
 async function submitPreferences() {
     const siteToSub = await gatherPreferences()
     const status = document.getElementById('status').value
 
-    //Basically creating input for a form programmatically then submitting it
-    //This was necessary to follow re-directs and display flash messages properly
     const preferences = document.createElement('input')
     preferences.type = 'hidden';
     preferences.name = 'siteSelection'

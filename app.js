@@ -1,8 +1,13 @@
+/**
+ * Environment variables
+ */
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-//Default, check if using as I go
+/**
+ * Modules
+ */
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -10,39 +15,35 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
-//Suggested..?
-// const methodOverride = require('method-override')
-
-//App
 const app = express();
-
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(logger('dev'));
 app.use(express.json());
 
-//Body parser (req.body)
+/**
+ * Request body parser (req.body)
+ */
 app.use(express.urlencoded({ extended: false }));
 
-
-//DB
-// const mongoose = require('mongoose');
-// require('./models/db');
-
-
-//Passport Initialisation
+/**
+ * Passport initialisation
+ */
 const passport = require('passport');
 const initialisePassport = require('./config/passport')
 initialisePassport(passport)
 
-
-//View engine
+/**
+ * View engine set up
+ */
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 
-// Express Session Middleware - Makes sure session info encrypted (User credentials)
+/**
+ * Session middleware - encrypts information stored in sessions
+ */
 const session = require('express-session');
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -50,18 +51,26 @@ app.use(session({
   saveUninitialized: true
 }));
 
-//Passport-Middleware
+/**
+ * Passport middleware
+ */
 app.use(passport.initialize())
 app.use(passport.session())
 
-//Connect flash
+/**
+ * Flash messaging middleware
+ */
 const flash = require('connect-flash');
 app.use(flash())
 
-//CORS
+/**
+ * CORS allowing
+ */
 app.use(cors());
 
-//Express Messages Middleware
+/**
+ * Messaging configuration
+ */
 app.use(function (req, res, next) {
     // res.locals.messages = require('express-messages')(req, res); /// look into this
     res.locals.success_msg = req.flash('success_msg');
@@ -71,7 +80,9 @@ app.use(function (req, res, next) {
 });
 
 
-//Route Files
+/**
+ * All routes
+ */
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
 let dashRouter = require('./routes/dashboard');
@@ -84,13 +95,17 @@ app.use('/emails', emailsRouter);
 app.use('/sites', sitesRouter);
 
 
-// catch 404 and forward to error handler
+/**
+ * Catch 404 and forward to error handler
+ */
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
 
-// error handler
+/**
+ * Error handler
+ */
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;

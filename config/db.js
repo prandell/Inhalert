@@ -5,29 +5,33 @@ const Site = mongoose.model('Site');
 const SiteSub = mongoose.model('SiteSub');
 const User = mongoose.model('User');
 
-// Records deletion and management
-// SiteSub.deleteMany({},  function (err) {})
-// Site.deleteMany({},  function (err) {})
-// User.deleteMany({},  function (err) {})
-// SiteSub.collection.dropIndexes(function (err, results) {
-//     console.log(results)
-// });
-// Site.collection.dropIndexes(function (err, results) {
-//     console.log(results)
-// });
-// User.collection.dropIndexes(function (err, results) {
-//     console.log(results)
-// });
 
-//Upon Initialisation this script calls the EPA API and updates all site documents in the DB.
-//If there are new sites, it will add them.
+/**
+ * Resetting database when required. Commented out.
+ */
+/**
+SiteSub.deleteMany({},  function (err) {})
+Site.deleteMany({},  function (err) {})
+User.deleteMany({},  function (err) {})
+SiteSub.collection.dropIndexes(function (err, results) {
+    console.log(results)
+});
+Site.collection.dropIndexes(function (err, results) {
+    console.log(results)
+});
+User.collection.dropIndexes(function (err, results) {
+    console.log(results)
+});
+ */
+
+/**
+ * Initialisation of Site table from EPA.
+ */
 mongoose.set('useFindAndModify', false);
-var data_type = "air";
 var options = {
     method: "GET",
     url:
-        "https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites?environmentalSegment=" +
-        data_type +
+        "https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites?environmentalSegment=air"+
         "\n",
     headers: {
         "X-API-Key": process.env.EPA_API_KEY,
@@ -37,6 +41,7 @@ request(options, function (error, response) {
     if (error) throw new Error(error);
     var records = JSON.parse(response.body).records
 
+    //Add each site individually, taking into account its type and status
     for (let r in records) {
         var query = {siteId: records[r].siteID, siteName: records[r].siteName};
         if (records[r].siteHealthAdvices) {

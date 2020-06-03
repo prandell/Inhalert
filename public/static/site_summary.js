@@ -1,7 +1,9 @@
-//Ajax is imported in layout.pug. Wont work without importing ajax.
-//https://cors-anywhere.herokuapp.com/ is needed before url for CORS issues
-//Everything inside done was just to get it working
+/**
+ * Populates the the site table when entering /dashboard. Dynamically adds styling where necessary.
+ * Handles the consecutive calls when pressing "Refresh" button.
+ */
 function getSiteSummary() {
+    //Get sites from App.
     $.ajax({
         url: "/sites/fetchAll",
         type: "GET",
@@ -48,6 +50,7 @@ function getSiteSummary() {
                     }
                 }
 
+                //Added last updated text
                 document.getElementById('updated').innerHTML = 'Last updated: ' + new Date().toLocaleTimeString();
 
                 //Hiding most of the entries
@@ -62,12 +65,17 @@ function getSiteSummary() {
         })
 };
 
-//Custom sleep function used in the timing of scrolling on refresh
+/**
+ * Custom sleep function used in the timing of scrolling on refresh
+ */
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-//Show more button functionality
+/**
+ * Hides most of the elements in the table until 'Show more' button is clicked.
+ * Can be clicked 3 times until it changes to 'Show less', and resets.
+ */
 function loadMoreButton() {
 
     //Scroll first

@@ -1,10 +1,21 @@
 const mongoose = require('mongoose');
 const request = require("request");
+
 // Bring in User Model
 const Site = mongoose.model('Site');
 const SiteSub = mongoose.model('SiteSub')
 
-
+/**
+ * Middleware function that Loads the Site information to populate the summary page
+ * Args:
+ *  req: Http request object with Id in url.
+ *  res: Http response object
+ *  next: next function in the request chain
+ *  id: URL argument
+ * Returns:
+ *  next() passing summary object if success
+ *  next() passing error messages if failure
+ */
 const getSiteSummary = function(req, res, next, id) {
     if (!id) {
         req.error='Error occured. Please enter postcode again.'
@@ -36,6 +47,15 @@ const getSiteSummary = function(req, res, next, id) {
     })
 }
 
+/**
+ * GET processing function for summary page
+ * Args:
+ *  req: Http request object with summary or errors passed from middleware
+ *  res: Http response object
+ * Returns:
+ *  render with summary if success
+ *  render with error messages if failure
+ */
 const sendSiteSummary = function(req, res) {
     if (req.error) {
         res.render('summary', {

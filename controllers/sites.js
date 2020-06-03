@@ -8,14 +8,18 @@ const emailController = require('../controllers/emails')
 
 //* ------------------ AUTOMATED FUNCTIONS -------------------*//
 
-// Function called periodically, calls other functions and updates DB records of sites
+/**
+ * Updates the database with EPA's latest site data. Called periodically.
+ * Args:
+ *  None
+ * Returns:
+ *  Nothing, calls another function and exits
+ */
 const updateDB = function() {
-    let data_type = "air";
     let options = {
         method: "GET",
         url:
-            "https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites?environmentalSegment=" +
-            data_type +
+            "https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites?environmentalSegment=air" +
             "\n",
         headers: {
             "X-API-Key": process.env.EPA_API_KEY,
@@ -29,25 +33,33 @@ const updateDB = function() {
 }
 
 //Private function that loops through supplied records and updates Site DB
+/**
+ * Updates the database with supplied records
+ * Args:
+ *  records: EPA records object of Site data
+ * Returns:
+ *  Nothing, updates DB and exits
+ */
 const updateSites = function(records) {
 
     for (let r in records) {
-
         let record = records[r]
-
         let query = {siteId: record.siteID};
-
         let update = {siteId: record.siteID, siteName: record.siteName}
 
+        //If no health advice supplied, return Unavailable
         if (record.siteHealthAdvices) {
             if (record.siteHealthAdvices[0].healthAdvice) {
                 update.status = record.siteHealthAdvices[0].healthAdvice
             } else {
                 update.status = "Unavailable"
             }
+        // Special case for camera sites, which have no health advice.
         } else {
             update.status = "Camera"
         }
+
+        //Insert new sites if they are found
         let options = {upsert: true};
 
         Site.updateOne(query, update, options, function(error, result) {
@@ -58,11 +70,24 @@ const updateSites = function(records) {
     }
 }
 
-//Checks the DB to determine whether alerts need to be sent
+/**
+ * Checks Database for any updates which users should be notified about, and triggers these alerts.
+ * Args:
+ *  None
+ * Returns:
+ *  The list of Sites that alerts are to be sent out for
+ */
 const checkStatus = async function() {
     console.log("Checking status...")
+
+    //If A site is not Good, Unavailable, or Camera, and it hasnt already been notified about,
+    // it triggers the alert process
     const toTrue = await Site.find({status: {$nin: ["Good", "Unavailable", "Camera", null]}, alerted: false}).exec()
+
+    //If a site has been notified about, and it has returned to Good, it triggers the alert process
     const toFalse = await Site.find({status: {$in: ["Good"]}, alerted: true}).exec()
+
+    //Alerts
     for (let s in toTrue) {
         await emailController.sendSubMail(toTrue[s].siteId, toTrue[s].status, toTrue[s].siteName)
         await Site.updateOne({siteId: toTrue[s].siteId}, {alerted: true});
@@ -74,7 +99,14 @@ const checkStatus = async function() {
     return toTrue.concat(toFalse)
 }
 
-//Functionality testing function that injects the status "Poor" for Melbourne CBD
+/**
+ * Injects a status into the database for a particular site. Used for testing.
+ * Args:
+ *  siteName: The name of the site
+ *  status: The status to inject
+ * Returns:
+ *  The result of the update to the database.
+ */
 async function injectStatus(siteName, status) {
     // "4afe6adc-cbac-4bf1-afbe-ff98d59564f9"
     // "Melbourne CBD"
@@ -90,15 +122,20 @@ async function injectStatus(siteName, status) {
 
 //*------------------------ MANUAL FUNCTIONS ----------------------------*//
 
-//Update DB records of sites with new ones. Returns result summary
+/**
+ * A wrapper function for updateDB, for manual endpoint testing
+ * Args:
+ *  req: Http request object
+ *  res: Http response object
+ * Returns:
+ *  The summary of updated sites
+ */
 const updateDBWrapper = async function(req, res) {
 
-    let data_type = "air";
     let options = {
         method: "GET",
         url:
-            "https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites?environmentalSegment=" +
-            data_type +
+            "https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites?environmentalSegment=air" +
             "\n",
         headers: {
             "X-API-Key": process.env.EPA_API_KEY,
@@ -140,8 +177,14 @@ const updateDBWrapper = async function(req, res) {
     })
 }
 
-//Manually checks whether alerts need to be sent. Sends them out if they do and updates DB record
-// to indicate alerts have been sent
+/**
+ * Manually triggers A status check, which may trigger alerts
+ * Args:
+ *  req: Http request object
+ *  res: Http response object
+ * Returns:
+ *  A summary of alerts sent, or 304.
+ */
 const checkStatusWrapper = async function(req, res) {
     var sites = await checkStatus()
     if (sites.length > 0) {
@@ -155,8 +198,14 @@ const checkStatusWrapper = async function(req, res) {
     }
 }
 
-
-//Manual wrapper for inject status so can be used as endpoint
+/**
+ * Wrapper for manually injecting a site status.
+ * Args:
+ *  req: Http request object containing arguments for injectStatus in its body
+ *  res: Http response object
+ * Returns:
+ *  Whether the injection was successful or not
+ */
 async function injectStatusWrapper(req, res) {
     let result = await injectStatus(req.body.siteName, req.body.status)
     if (result) {
@@ -172,6 +221,14 @@ async function injectStatusWrapper(req, res) {
     }
 }
 
+/**
+ * Retrieves all sites in the database as an array of records
+ * Args:
+ *  req: Http request object
+ *  res: Http response object
+ * Returns:
+ *  Site records in database, sorted alphabetically.
+ */
 async function fetchSites(req, res) {
     let result = await Site.find().sort('siteName').exec()
     res.send(result)

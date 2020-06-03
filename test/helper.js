@@ -7,6 +7,9 @@ const Site = mongoose.model('Site');
 const SiteSub = mongoose.model('SiteSub');
 const User = mongoose.model('User');
 
+/**
+ * Add test user
+ */
 async function addUser() {
     const newUser = new User({
         name: 'Test',
@@ -23,16 +26,25 @@ async function addUser() {
     });
 }
 
+/**
+ * remove all users
+ */
 async function removeUsers() {
     await User.deleteMany({},  function (err) {})
     User.collection.dropIndexes(function (err, results) {});
 }
 
+/**
+ * remove all sitesubs
+ */
 async function removeSiteSubs() {
     await SiteSub.deleteMany({},  function (err) {})
     SiteSub.collection.dropIndexes(function (err, results) {});
 }
 
+/**
+ * Login a user
+ */
 async function loginUser() {
     const user = {email: "test@test.test", password: "password"}
     const res = await request(app)

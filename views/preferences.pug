@@ -10,12 +10,12 @@ block content
         select.form-group.form-control#sel(name="siteSelection" onchange="show(this) ; removeSelected()") Select Site
             option.form-control.text-secondary(value="") Choose...
 
-        ul#msg
+        ul(style={"list-style-type":"none"})#msg
             if subbed
                 each val in subbed
-                    li(class="selected" id=(val.siteId) name=(val.siteName.toString()) value = (val.siteId)) Already subbed to:  #{val.siteName}
+                    li.alert(class="selected" style ={'background-color': '#b8daff', 'color':'black'} id=(val.siteId) name=(val.siteName.toString()) value = (val.siteId)) Already subbed to:  #{val.siteName}
                         span(class='close') x
-        h7.m-3
+        h7.mt-3.mb-1
             | For all sites, notify me when the status drops to
             |
             select#status(style={'display': 'inline-block'})
@@ -24,6 +24,10 @@ block content
                 option.form-control.text-secondary(value=4) Very poor
                 option.form-control.text-secondary(value=5) Hazardous
             |  or below
+        if threshold
+            h7.mb-3.text-muted Current preference:
+                h7#threshold.d-inline  #{threshold}
+                h7.text-muted  or below
         button.form-group.btn.btn-primary.btn-block(type='button', onclick='submitPreferences()', style={'background-color':'#b8daff', 'font-size':'120%', 'color':'black'})
             | Submit
         form#preferences-form(action='/users/preferences', method='POST')

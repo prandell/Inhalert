@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Site Schema
-// Stores the Sensor Site along with its ID and current healthAdvice status
+/**
+ * Site model. Stores name, status, Id and a boolean representing whether alerts have been sent out
+ * for this particular site or not.
+ */
 const SiteSchema = new Schema({
     siteName: {
         type: String,
@@ -32,7 +34,3 @@ const SiteSchema = new Schema({
 
 mongoose.model('Site', SiteSchema);
 
-//There seems to be 40 different sites. Found by "All Air Monitoring Sites" queries.
-// https://gateway.api.epa.vic.gov.au/environmentMonitoring/v1/sites?environmentalSegment=air&location=[long,lat]
-//Unique names and Ids. Usually have a "healthAdvice" (= "status" above) parameter nested, but not always
-//These should be stored and updated

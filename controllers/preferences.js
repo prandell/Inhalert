@@ -2,10 +2,19 @@ const mongoose = require('mongoose');
 
 // Bring in User Model
 const Site = mongoose.model('Site');
-const SiteSub = mongoose.model('SiteSub')
+const SiteSub = mongoose.model('SiteSub');
+const statusNums = require('../models/statusNums').numKeys;
 
+/**
+ * Http handler function for updating site preferences
+ * Args:
+ *  req: Http request object with preference form information
+ *  res: Http response object
+ * Returns:
+ *  redirects to dashboard with successful update message
+ */
 const selectSite = async function(req, res) {
-    await addSiteSubs(req, res)
+    await addSiteSubs(req)
     req.flash(
         'success_msg',
         'Preferences Updated Successfully'
@@ -13,7 +22,15 @@ const selectSite = async function(req, res) {
     res.redirect('/dashboard')
 }
 
-const addSiteSubs = async function (req, res) {
+/**
+ * Preference update handler
+ * Args:
+ *  req: Http request object with preference form information
+ *  res: Http response object
+ * Returns:
+ *  Nothing. Handles the preference updating process and exits.
+ */
+const addSiteSubs = async function (req) {
     const siteSelection = JSON.parse(req.body.siteSelection)
     const status = parseInt(req.body.statusSelection)
 
@@ -59,16 +76,30 @@ const addSiteSubs = async function (req, res) {
     }
 }
 
+/**
+ * Finds the current user preferences and loads them into the preference page.
+ * Args:
+ *  req: Http request object
+ *  res: Http response object
+ * Returns:
+ *  renders preference page with current user preferences
+ */
 const userSubscribed = async function (req, res) {
     var subbed = await SiteSub.find({email: req.user.email}).exec()
     var ids = []
     for (let i=0; i<subbed.length; i++) {
         await ids.push(subbed[i].siteId)
     }
+
+    //Uses the site Ids to get the site names.
+    if (subbed[0]) {
+        var status = statusNums[subbed[0].status]
+    }
     var subbedSites = await Site.find({siteId: {$in: ids}}).exec()
     res.status(200).render('preferences', {
         user: req.user,
-        subbed: subbedSites
+        subbed: subbedSites,
+        threshold: status
     });
 }
 

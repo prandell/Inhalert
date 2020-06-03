@@ -14,9 +14,6 @@ const userController =  require('../../controllers/users');
 const User = mongoose.model('User');
 
 
-//
-// //Add Site preference
-// router.post('/preferences', ensureAuthenticated, prefController.selectSite);
 
 describe('usersRoute', async function () {
     //preferences route

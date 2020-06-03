@@ -6,7 +6,9 @@ const {check, validationResult} = require('express-validator');
 // Bring in User Model
 const User = mongoose.model('User');
 
-//Express validator check array
+/**
+ * Form validation checking middleware. Occur prior to any database queries.
+ */
 const validationChecks = [check("name", 'Name is required').notEmpty(),
     check("email", 'Email is required').notEmpty(),
     check("password", 'Password is required').notEmpty(),
@@ -22,7 +24,15 @@ const validationChecks = [check("name", 'Name is required').notEmpty(),
         }
     })]
 
-//Register user function
+/**
+ * Registers a new user and redirects to preferences
+ * Args:
+ *  req: Http request object, with registration form values
+ *  res: Http response object
+ * Returns:
+ *  re-renders register page if any validation fails
+ *  redirects to preferences and adds new user to database on success
+ */
 const registerUser = function(req, res) {
     const {name, email, password, password2} = req.body
     //Get any of the errors
@@ -80,13 +90,19 @@ const registerUser = function(req, res) {
 }
 
 
-//Login user function
+/**
+ * Authenticates a user session and redirects to dashboard
+ * Args:
+ *  req: Http request object, containing login form values
+ *  res: Http response object
+ * Returns:
+ *  re-renders login page on failed authentication
+ *  redirects to dashboard on success
+ */
 const loginUser = function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
         if (err) { return next(err) }
         if (!user) {
-            // *** Display message without using flash option
-            // re-render the login form with a message
             return res.status(401).render('login', { error: info.message })
         }
         req.login(user, function(err) {
@@ -100,7 +116,14 @@ const loginUser = function(req, res, next) {
     })(req,res,next);
 }
 
-//Logout user function
+/**
+ * Ends a user session
+ * Args:
+ *  req: Http request object
+ *  res: Http response object
+ * Returns:
+ *  redirects to dashboard with success message
+ */
 const logoutUser = function(req, res){
     req.logout();
     req.flash('success_msg', 'You are logged out');
