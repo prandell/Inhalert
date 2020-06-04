@@ -2,22 +2,95 @@
 Web Information Technology (INFO30005) group project repository. Inhalert is a Victorian air quality alert app, providing air quality summaries
 and allowing users to register to receive notifications when the air quality in their area is poor.
 
+Visit https://inhalert.herokuapp.com/
+# Functionalities
+Each of the core functionalities will be grouped together and explained below, as per submission guidelines.
+
+A sample user account has been made for use throughout the marking process, however _we strongly encourage signing up with your own
+email account to test the notification functionality_.
+
+Email: test@test.test\
+Password: password
+1. ## User Management
+    This functionalities allows users to create accounts, login, and subscribe to Site locations in Victoria for which they want to recieve notifications. It also includes an email change functionality, and a delete account functionality.
+    
+    _URL Endpoints_\
+        Registration: `/users/register`\
+        Login: `/users/login`\
+        Preferences: `users/preferences`\
+        Account: `users/account`\
+        Logout: `users/logout`
+    
+    The route for this functionality is `routes/users`. 
+    
+    The controllers for this functionality are
+    `controllers/users`, `controllers/preferences` and `controllers/account`.
+    
+    The models for this functionality are `models/user` and `models/siteSub`. 
+    
+    The views for this functionality are `views/register`, `views/login`, `views/preferences`,
+    and `views/account`. Other views also change depending on whether a user is logged in, but are not
+    part of the feature itself.
+    
+    A front-end javascript file is used `public/static/preferences`.
+ 
+2. ## Notifications
+    This functionality is responsible for updating internal site information, and sending out alerts to users when necessary.
+    
+    _URL Endpoints_\
+        None: This feature is a backend feature that is constantly running.
+    
+    The routes for this feature are `routes/sites` and `routes/emails`.
+    
+    The controllers for this functionality are
+    `controllers/sites` and `controllers/emails`.
+    
+    The models for this functionality are `models/site` and `models/siteSub`.
+    
+    `views/email` is used to embed Site summaries into email bodies. Arguably
+    `views/preferences` is associated with this feature.
+    
+3. ## Website Air Quality Summaries
+    This functionality is responsible for displaying Air quality information about each site on our 
+    website, with or without an account
+    
+    _URL Endpoints_\
+    Dashboard: `/dashboard`\
+    Summary: `/dashboard/siteSummary:siteId`\
+    About: `/about`
+    
+    The routes for this feature are `routes/dashboard` and `routes/index`.
+    
+    The controller for this functionality is `controllers/dashboard`
+    
+    There are no models for this functionality. Front end objects are used from `public/static/sites`
+    and `public/static/colours`
+    
+    The views for this functionality are `views/index`, `views/about` and `views/summary`.
+    
+    Some front-end javascript files are used, which are `public/static/site_summary` and `public/static/convert_postcode`.
+
+# Testing
+Testing has been implemented for the User Management functionality. However, only integration style testing has been completed. 
+Unit testing for controller functions proved very difficult, so much so that we could not complete it.
+
+To run tests, simply type `npm test` in a terminal at the top level directory.
+
+##
+> NOTE: Old README below
 # How to test if visiting website
 * Visit https://inhalert.herokuapp.com/
 * Register, first trying erroneous values to test validation of input. When you do register, make sure the email you are using is one you can check.
-* From here you will be re-directed to a preferences page. **For the sake of demonstration, make sure you select "Melbourne CBD"**
-and submit. This means you have subscribed to updates for Air quality at the Melbourne CBD site.
+* From here you will be re-directed to a preferences page. Choose any Site and status, keeping a note of what you have chosen.
 * From here you should be re-directed to the dashboard. The dashboard gets a live update on the summary of all major site locations in Victoria and displays them on the page.
-* ~~In roughly 2 minutes, you should receieve an email telling you that the weather at Melbourne CBD is "Poor" or "Moderate". Our app has been set to inject this status for the sake of demonstration.
-In another 2 minutes, the automatic updates should set it back to "Good" and you'll get another email.~~ This has been changed, as it would continuously send emails. Instead we recommend using the button after logging in or to manually inject a bad status using the manual endpoint.
+* Inject a bad weather status into a site you subscribed to using Postman or similar. Try this a few times, as you may have injected a status
+right before the app is updating its database. You want to inject the bad status right before triggering alerts. These loops are offset by 1 minute.
 * From the dashboard you may also:
-    * Press the "send email" button to send a stock email
-    * Add more sites by pressing "Change alert preferences"
+    * See full site summaries by entering your postcode or suburb, or clicking on a table name.
+    * Update preferences by clicking on "Preferences"
     * logout and log back in again, testing that functionality
-* _New functionalities now implemented:_
-    * Dashboard displays a list of all sites, the list has a show more and refresh button.
-    * Clicking on the name of these sites takes you to a summary page where scientific details can be seen for those sites
-    * Entering a Victorian postcode in the form at the top also takes you to a summary page for the closest site.
+    * Update your email or delete your account at "Account"
+    * Check out the About page
 
 # How to test using POSTMAN (have not tried other similar apps)
 * Set up the interceptor for Postman. It saves session cookies and will be needed to test certain endpoints. 
@@ -25,16 +98,6 @@ It is the satellite looking button in the top right corner of the desktop app. Y
 * Make sure you add the domain http://inhalert.herokuapp.com/ to the list of domains.
 * Make a post request to https://inhalert.herokuapp.com/users/register using
 url-encoded option containing name, email, password and password2 key-value pairs.
-* Make a post request to https://inhalert.herokuapp.com/users/login with url-encoded email and password key-value pairs. You should now have a session cookie stored.
-* Make a post request to https://inhalert.herokuapp.com/users/preferences with url-encoded key value pair:
-`selectedSite: 4afe6adc-cbac-4bf1-afbe-ff98d59564f9`
-* A get request can now be made to https://inhalert.herokuapp.com/emails/send to receive a stock email. 
-* Emails will be sent automatically be sent to your email address about Melbourne CBD same as explained in the website testing section, however there are also manual endpoints:
-    * POST to https://inhalert.herokuapp.com/sites/inject: Requires url-encoded siteName and status key-value pairs. Will return json informing whether the injection worked.
-    * GET to https://inhalert.herokuapp.com/sites/update: Updates DB records manually, lets you know how many were updated.
-    * GET to https://inhalert.herokuapp.com/sites/check: Checks if any DB Site records meet alert conditions and sends out alerts.
-    
-# Some important notes
-* Might be easiest to clone the repo, and comment out the automatic updating in `routes/sites` to then do manual site testing without interference to localhost, and visit the live website for everything else.
-* The automatic injection of a bad status for Melbourne CBD only happens 2 minutes after the website is launched, so that will need to be tested manually using the inject endpoint (has to be in the minute between checking and updating so try it a few times) or just press the send email button on the dashboard when logged in to see that that functionality is working.
+* Make a post request to https://inhalert.herokuapp.com/users/login with url-encoded email and password key-value pairs.
+* You should now have a session cookie stored and can make authenticated requests.
 
