@@ -147,6 +147,7 @@ describe('usersRoute', async function () {
 
         //Post account delete
         describe('/POST /users/delete', async function() {
+            before(helper.removeUsers)
             before(helper.addUser)
             var authSession = null;
             before(function (done) {
