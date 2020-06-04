@@ -83,11 +83,9 @@ describe('usersRoute', async function () {
 
     //preferences route
     describe('account', async function() {
-        beforeEach(helper.addUser)
-
         //Get account form
         describe('/GET /users/account', async function() {
-
+            before(helper.addUser)
             //When logged in
             describe('loggedIn', async function() {
                 var authSession = null;
@@ -121,6 +119,7 @@ describe('usersRoute', async function () {
 
         //Post account update
         describe('/POST /users/update', async function() {
+            before(helper.addUser)
             after(helper.removeUsers)
             var authSession = null;
             before(function (done) {
@@ -147,7 +146,6 @@ describe('usersRoute', async function () {
 
         //Post account delete
         describe('/POST /users/delete', async function() {
-            before(helper.removeUsers)
             before(helper.addUser)
             var authSession = null;
             before(function (done) {
