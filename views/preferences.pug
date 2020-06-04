@@ -10,11 +10,11 @@ block content
         select.form-group.form-control#sel(name="siteSelection" onchange="show(this) ; removeSelected()") Select Site
             option.form-control.text-secondary(value="") Choose...
 
-        ul(style={"list-style-type":"none"})#msg
+        ul(style={"list-style-type":"none", "padding-left": 0})#msg
             if subbed
                 each val in subbed
-                    li.alert(class="selected" style ={'background-color': '#b8daff', 'color':'black'} id=(val.siteId) name=(val.siteName.toString()) value = (val.siteId)) Already subbed to:  #{val.siteName}
-                        span(class='close') x
+                    li.alert(class="selected" style ={'background-color': '#b8daff', 'color':'#495057'} id=(val.siteId) name=(val.siteName.toString()) value = (val.siteId)) Already subbed to:  #{val.siteName}
+                        span(class='close') ×
         h7.mt-3.mb-1
             | For all sites, notify me when the status drops to
             |

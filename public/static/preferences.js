@@ -26,7 +26,7 @@ function show(select) {
 
     var ele = document.getElementById(value);
     if (!ele) {
-        msg.innerHTML += "<li class= \"selected alert\" id="+ value + " name=" + "\"" + select.options[select.selectedIndex].text + "\"" + " value =" + select.value + " style=\"background-color:#b8daff;color:black;\"" + "> Selected: " + select.options[select.selectedIndex].text + "<span class='close'>x</span></li>";
+        msg.innerHTML += "<li class= \"selected alert\" id="+ value + " name=" + "\"" + select.options[select.selectedIndex].text + "\"" + " value =" + select.value + " style=\"background-color:#b8daff;color:#495057;\"" + "> Selected: " + select.options[select.selectedIndex].text + "<span class='close'>×</span></li>";
     }
 }
 
