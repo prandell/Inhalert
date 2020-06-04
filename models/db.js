@@ -1,5 +1,8 @@
 var mongoose = require('mongoose');
 
+/**
+ * Connects to database, starts config script and loads in all models
+ */
 // mongoose.set('debug', true);
 mongoose.connect(process.env.DB_URI, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true},
     function(err) {

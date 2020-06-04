@@ -1,0 +1,145 @@
+doctype html
+html(lang='en')
+
+    //All this is essential
+    head
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+        script(type='text/javascript' src="/static/site_summary.js")
+        script(type='text/javascript' src="/static/convert_postcode.js")
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='')
+        meta(name='author', content='')
+        title Inhalert
+        // Bootstrap core CSS
+        link(href='/vendor/bootstrap/css/bootstrap.min.css', rel='stylesheet')
+        // Custom fonts for this template
+        link(href='/vendor/fontawesome-free/css/all.min.css', rel='stylesheet')
+        link(href='/vendor/simple-line-icons/css/simple-line-icons.css', rel='stylesheet', type='text/css')
+        link(href='https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic', rel='stylesheet', type='text/css')
+        // Custom styles for this template
+        link(href='/css/landing-page.min.css', rel='stylesheet')
+        script(type = 'text/javascript').
+            getSiteSummary();
+    body#page-top
+
+        //Nav bar should be pretty consistent, its now in layout template too
+        nav#mainNav.navbar.navbar-expand-sm.bg-light.navbar-light.justify-content-end.fixed-top
+            a.mr-auto.mr-1.navbar-brand.js-scroll-trigger(href='/dashboard') Inhalert
+            button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent')
+                span.navbar-toggler-icon
+            #navbarSupportedContent.collapse.navbar-collapse.flex-grow-0
+                ul.navbar-nav.text-right
+                    include ./partials/welcome_new
+
+        // Masthead
+        header#top.masthead.text-center.text-black
+            .overlay
+            .container
+                row
+                    .col-xl-9.mx-auto
+                        h1.mb(style={color:'#495057'}) What does it all mean?
+                        include ./partials/messages
+        // Icons Grid
+        section.features-icons.bg-light
+            .container
+                h3.text-center(style={color:'#495057'}) Air quality categories and general health advice
+                p.lead.text-center(style='font-size:110%;')
+                    | All information is provided by EPA Victoria. For more information visit their
+                    a.d-inline(href='https://www.epa.vic.gov.au')  website
+                    | .
+                br
+                h3(style={color:"#64a13c"}) Good
+                p It's a good day to be outside.
+                h3(style={color:"#eac51c"}) Moderate
+                p The air quality is okay, but it could change soon.
+                p It’s okay to be outside but watch for changes in air quality around you.
+                h3(style={color:"#d67900"}) Poor
+                p The air is probably dusty or smoky.
+                    a(href='https://www.epa.vic.gov.au/for-community/monitoring-your-environment/about-epa-airwatch/air-pollution-sensitivity')  Sensitive groups
+                    |  may experience symptoms like coughing or shortness of breath.
+                ul
+                    li If you are sensitive to air pollution, spend less time outside in the smoke or dust and follow your treatment plan. Reduce prolonged or heavy physical activity.
+                    li If you are coughing or short of breath, avoid being outside in the smoke or dust.
+                    li Close your windows and doors to keep smoke and dust out of your home.
+                    li If you are worried about your symptoms, see your doctor or call
+                        a(href='https://www2.health.vic.gov.au/primary-and-community-health/primary-care/nurse-on-call')  Nurse On Call
+                        |  on 1300 606 024.
+                    li Seek urgent medical help if anyone has trouble breathing or tightness in the chest. Call 000 for an ambulance.
+                h3(style={color:"#a90737"}) Very poor
+                p The air is probably very dusty or smoky. Everyone could be experiencing symptoms like coughing or shortness of breath.
+                ul
+                    li Listen to your
+                        a(href='https://www.abc.net.au/local/')  local emergency radio station
+                        |  or visit
+                        a(href='http://www.emergency.vic.gov.au/respond/')  Emergency Vic
+                        |  for advice.
+                    li Avoid being outside in the smoke or dust. Reduce prolonged or heavy physical activity.
+                    li If you are sensitive to air pollution, follow your treatment plan. Avoid physical activity outdoors.
+                    li Close your windows and doors to keep smoke and dust out of your home.
+                    li If you think the air in your home is uncomfortable, consider going to an air-conditioned building like a library or shopping centre for a break if it’s safe to do so.
+                    li If you are worried about your symptoms, see your doctor or call
+                        a(href='https://www2.health.vic.gov.au/primary-and-community-health/primary-care/nurse-on-call')  Nurse On Call
+                        |  on 1300 606 024.
+                    li Seek urgent medical help if anyone has trouble breathing or tightness in the chest. Call 000 for an ambulance.
+                h3(style={color:"#50051e"}) Hazardous
+                p The air is probably extremely dusty or smoky. Everyone could be experiencing symptoms like coughing or shortness of breath.
+                ul
+                    li Listen to your
+                        a(href='https://www.abc.net.au/local/')  local emergency radio station
+                        |  or visit
+                        a(href='http://www.emergency.vic.gov.au/respond/')  Emergency Vic
+                        |  for advice.
+                    li Stay indoors away from smoke and dust.
+                    li If you are sensitive to air pollution, follow your treatment plan. If you can, remain indoors and keep physical activity levels as low as possible.
+                    li Close your windows and doors to keep smoke and dust out of your home.
+                    li If you think the air in your home is uncomfortable, consider going to an air-conditioned building like a library or shopping centre for a break if it’s safe to do so.
+                    li If you are worried about your symptoms, see your doctor or call
+                        a(href='https://www2.health.vic.gov.au/primary-and-community-health/primary-care/nurse-on-call')  Nurse On Call
+                        |  on 1300 606 024.
+                    li Seek urgent medical help if anyone has trouble breathing or tightness in the chest. Call 000 for an ambulance.
+                h3(style={color:'#495057'}) More Information
+                ul
+                    li Information about how EPA air quality categories are calculated is available
+                        a(href='https://www.epa.vic.gov.au/for-community/monitoring-your-environment/about-epa-airwatch/calculate-air-quality-categories')  here.
+                    li Information about EPA's accreditation is available
+                        a(href='https://www.epa.vic.gov.au/for-community/monitoring-your-environment/about-epa-airwatch/accreditation-of-epa-air-quality-monitoring')  here.
+        // Image Showcases
+        section.showcase
+            .container-fluid.p-0
+                .row.no-gutters
+                    .col-lg-6.order-lg-2.text-white.showcase-img(style="background-image: url('/img/marc-wieland-zrj-TPjcRLA-unsplash.jpg');")
+                    .col-lg-6.order-lg-1.my-auto.showcase-text
+                        h2(style={color:'#495057'}) Register to receive alerts
+                        p.lead.mb-0
+                            | Inhalert is a Victorian air quality alert app, sending you notifications when the air quality in your local area
+                            | drops below recommended levels
+
+        // Footer
+        footer.footer.bg-light
+            .container
+                .row
+                    .col-lg-6.h-100.text-center.text-lg-left.my-auto
+                        ul.list-inline.mb-2
+                            li.list-inline-item
+                                a(href='/dashboard') Home
+                            li.list-inline-item ⋅
+                            li.list-inline-item
+                                a(href='#page-top') About
+                        p.text-muted.small.mb-0 All data and information obtained from the Environmental Protection Authority Victoria.
+                        p.text-muted.small.mb-4.mb-lg-0 Website template obtained from StartBootstrap.
+                    .col-lg-6.h-100.text-center.text-lg-right.my-auto
+                        ul.list-inline.mb-0
+                            li.list-inline-item.mr-3
+                                a(href='https://www.facebook.com/EPAVictoria/')
+                                    i.fab.fa-facebook.fa-2x.fa-fw
+                            li.list-inline-item.mr-3
+                                a(href='https://twitter.com/EPA_Victoria')
+                                    i.fab.fa-twitter-square.fa-2x.fa-fw
+        //Bootstrap core JavaScript
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+        script(src='/vendor/jquery/jquery.min.js')
+        script(src='vendor/jquery-easing/jquery.easing.min.js')
+        script(src='/vendor/bootstrap/js/bootstrap.bundle.min.js')
+        script(src='js/grayscale.min.js')
+

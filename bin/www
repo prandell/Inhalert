@@ -4,6 +4,15 @@
  * Module dependencies.
  */
 
+/**
+ * Database initialisation
+ */
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+const mongoose = require('mongoose');
+require('../models/db');
+
 var app = require('../app');
 var debug = require('debug')('info30005-w2:server');
 var http = require('http');

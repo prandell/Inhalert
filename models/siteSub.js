@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Site Sub Schema.
-// A new entry is created for each Site a user subscribes to.
+/**
+ * Site Subscription model. It has a Many to one relationship with both Site and User.
+ * It determines which users have subscribed to which sites, and the status number
+ * representing the threshold by which users wish to be notified for.
+ */
 const SiteSubSchema = new Schema({
     email: {
         type: String,
@@ -13,6 +16,11 @@ const SiteSubSchema = new Schema({
         type: String,
         required: true,
         trim: true
+    },
+    status: {
+        type: Number,
+        required: true,
+        default: 3
     }
 }, {
     timestamps: true,

@@ -1,35 +1,55 @@
 const express = require('express');
 const router = express.Router();
 
-const siteController = require('../controllers/site-controller.js');
+const siteController = require('../controllers/sites.js');
+
 
 //*----------------------- AUTOMATIC ------------------------*//
-//Updates DB every 2 minutes
+/**
+ * Updates DB records every 2 minutes
+ */
 setInterval(function() {
     siteController.updateDB();
 
-    //Checks for alerting every 2 minutes, offset by a minute
+    /**
+     * Checks the status for alerts every 2 minutes, on the off minute
+     */
     setTimeout(function() {
         siteController.checkStatus();
     }, 60000)
 
 }, 120000);
 
-//Injects the bad status after a minute
+/**
+ * Injects a bad weather status a minute after deployment.
+ * Not in use.
+ */
+/**
 setTimeout(function() {
     siteController.injectStatus("Melbourne CBD", "Poor")
 }, 150000)
-
+*/
 
 //*------------------------- MANUAL ----------------------------*//
-// Get site updates
+/**
+ * Update DB and get results
+ */
 router.get('/update', siteController.updateDBWrapper);
 
-//Trigger emails to be sent by checking DB for updates
+/**
+ * Check status and trigger any alerts
+ */
 router.get('/check', siteController.checkStatusWrapper);
 
-//Inject a status to a site (needs req.body.siteName and req.body.status)
+/**
+ * Inject status condition for a Site
+ */
 router.post('/inject', siteController.injectStatusWrapper);
+
+/**
+ * Retrieve all sites
+ */
+router.get('/fetchAll', siteController.fetchSites);
 
 
 module.exports = router;

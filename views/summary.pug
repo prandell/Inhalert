@@ -1,0 +1,165 @@
+doctype html
+html(lang='en')
+    head
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+        script(type='text/javascript' src="/static/site_summary.js")
+        script(type='text/javascript' src="/static/convert_postcode.js")
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='')
+        meta(name='author', content='')
+        title Inhalert
+        // Bootstrap core CSS
+        link(href='/vendor/bootstrap/css/bootstrap.min.css', rel='stylesheet')
+        // Custom fonts for this template
+        link(href='/vendor/fontawesome-free/css/all.min.css', rel='stylesheet')
+        link(href='/vendor/simple-line-icons/css/simple-line-icons.css', rel='stylesheet', type='text/css')
+        link(href='https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic', rel='stylesheet', type='text/css')
+        // Custom styles for this template
+        link(href='/css/landing-page.min.css', rel='stylesheet')
+        script(type = 'text/javascript').
+            $(document).keypress(function (e) {
+                if (e.which == 13) {
+                    convert_postcode();
+                }
+            });
+    body#page-top
+        nav#mainNav.navbar.navbar-expand-sm.bg-light.navbar-light.justify-content-end.fixed-top
+            a.mr-auto.mr-1.navbar-brand(href='/') Inhalert
+            button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent')
+                span.navbar-toggler-icon
+            #navbarSupportedContent.collapse.navbar-collapse.flex-grow-0
+                ul.navbar-nav.text-right
+                    include ./partials/welcome_new
+        // Masthead
+        header#top.masthead.text-black.text-center
+            .overlay
+            .container
+                .row
+                    .col-xl-8.mx-auto
+                        h3.mb-3(style={color:'#495057'}) Enter your postcode or suburb to get a local summary!
+                        include ./partials/messages
+                    .col-md-10.col-lg-8.col-xl-7.mx-auto
+                            .form-row
+                                .col-12.col-md-9.mb-2.mb-md-0
+                                    input#whatsup.form-control.form-control-md(type='text', placeholder='Enter your postcode...')
+                                .col-12.col-md-3
+                                    button#enter.btn.btn-block.btn-md.text-black(type='button', style={'background-color':'#b8daff'}, onclick='convert_postcode()') Show me!
+        // Icons Grid
+        section.features-icons.bg-light.text-center
+            .container
+                if summary
+                    h3(style={color:'#495057'}) Air Quality Report for #{summary.siteName}
+                    br
+                    #accordion
+                        .card
+                            #heading-3.card-header
+                                h5.mb-0
+                                    a(role='button', data-toggle='collapse', href='#collapse-3', aria-expanded='true', aria-controls='collapse-3')
+                                        | Site Details
+                            #collapse-3.collapse.show(aria-labelledby='heading-3')
+                                ul.list-group
+                                    li.list-group-item
+                                        | !{'<strong> Site Name: </strong>'} #{summary.siteName}
+                                    li.list-group-item
+                                        | !{'<strong> Site Type: </strong>'} #{summary.siteType}
+                        if summary.siteHealthAdvices
+                            .card
+                                #heading-2.card-header
+                                    h5.mb-0
+                                        a(role='button', data-toggle='collapse', href='#collapse-2', aria-expanded='true', aria-controls='collapse-2')
+                                            | Health Advice
+                                #collapse-2.collapse.show(aria-labelledby='heading-2')
+                                    ul.list-group
+                                        - var kolor = (summary.siteHealthAdvices[0].healthAdviceColor ? summary.siteHealthAdvices[0].healthAdviceColor : 'grey')
+                                        li.list-group-item(style={'color': kolor, 'font-weight': 'bold'}) #{summary.siteHealthAdvices[0].healthAdvice ? summary.siteHealthAdvices[0].healthAdvice : "Unavailable"}
+                                        li.list-group-item
+                                            | !{'<strong> Based on: </strong>'} #{summary.siteHealthAdvices[0].healthParameter ? summary.siteHealthAdvices[0].healthParameter : "N/A"}
+                                        li.list-group-item
+                                            | !{'<strong> Average Value: </strong>'} #{summary.siteHealthAdvices[0].averageValue ? summary.siteHealthAdvices[0].averageValue + " " : "N/A"}
+                                            | !{summary.siteHealthAdvices[0].unit}
+                        if summary.parameters
+                            .card
+                                #heading-1.card-header
+                                    h5.mb-0
+                                        a.collapsed(role='button', data-toggle='collapse', href='#collapse-1', aria-expanded='false', aria-controls='collapse-1')
+                                            | Parameters
+                                #collapse-1.collapse(aria-labelledby='heading-1')
+                                    .card-body
+                                        #accordion-1
+                                            each val, index in summary.parameters
+                                                .card
+                                                    .card-header(id="heading-1-" + (index + 1))
+                                                        h5.mb-0
+                                                            a.collapsed(role='button', data-toggle='collapse', href='#collapse-1-' + (index + 1), aria-expanded='false', aria-controls='collapse-1-' + (index + 1))
+                                                                | #{val.name}
+                                                    .collapse(aria-labelledby='heading-1-' + (index + 1), id='collapse-1-' + (index + 1))
+                                                        ul.list-group
+                                                            - var kolor = (val.timeSeriesReadings[0].readings[0].healthAdviceColor ? val.timeSeriesReadings[0].readings[0].healthAdviceColor : (val.timeSeriesReadings[1] ? (val.timeSeriesReadings[1].readings[0].healthAdviceColor ? val.timeSeriesReadings[1].readings[0].healthAdviceColor : "grey") : "grey"))
+                                                            li.list-group-item(style={
+                                                                color: kolor,
+                                                                'font-weight': 'bold'
+                                                            }) #{val.timeSeriesReadings[0].readings[0].healthAdvice? val.timeSeriesReadings[0].readings[0].healthAdvice: (val.timeSeriesReadings[1] ? (val.timeSeriesReadings[1].readings[0].healthAdvice ? val.timeSeriesReadings[1].readings[0].healthAdvice: "Unavailable") : "Unavailable") }
+                                                            li.list-group-item
+                                                                | !{'<strong> Average Value: </strong>'} #{val.timeSeriesReadings[0].readings[0].averageValue ? val.timeSeriesReadings[0].readings[0].averageValue + " " : (val.timeSeriesReadings[1] ? (val.timeSeriesReadings[1].readings[0].averageValue ? val.timeSeriesReadings[1].readings[0].averageValue: "N/A") : "N/A")}
+                                                                | !{val.timeSeriesReadings[0].readings[0].unit}
+                                                            li.list-group-item
+                                                                | !{'<strong> Confidence: </strong>'} #{val.timeSeriesReadings[0].readings[0].averageValue? val.timeSeriesReadings[0].readings[0].confidence: (val.timeSeriesReadings[1] ? val.timeSeriesReadings[1].readings[0].confidence: "0") }
+                        if summary.cameraImageURL || summary.timeLapseURL
+                            .card
+                                #heading-4.card-header
+                                    h5.mb-0
+                                        a.collapsed(role='button', data-toggle='collapse', href='#collapse-4', aria-expanded='false', aria-controls='collapse-4')
+                                            | Camera URL's
+                                #collapse-4.collapse(aria-labelledby='heading-4')
+                                    ul.list-group
+                                        - var camURL = (summary.cameraImageURL ? summary.cameraImageURL: "Unavailable")
+                                        - var tlURL = (summary.timeLapseURL ? summary.timeLapseURL: "Unavailable")
+                                        li.list-group-item
+                                            | !{'<strong> Camera Image: </strong>'}
+                                            a(href=camURL) #{summary.cameraImageURL}
+                                        li.list-group-item
+                                            | !{'<strong> Time Lapse: </strong>'}
+                                            a(href=tlURL) #{summary.timeLapseURL}
+
+
+                else
+                    p.lead.mb-0 Could not load content
+        // Image Showcases
+        section.showcase
+            .container-fluid.p-0
+                .row.no-gutters
+                    .col-lg-6.order-lg-2.text-white.showcase-img(style="background-image: url('/img/asya-tes-fX2vya_eKK8-unsplash.jpg');")
+                    .col-lg-6.order-lg-1.my-auto.showcase-text
+                        h3 What does each category mean?
+                        p.lead
+                            | See more on our
+                            a.d-inline(href='/about')  About page
+                            |.
+
+        // Footer
+        footer.footer.bg-light
+            .container
+                .row
+                    .col-lg-6.h-100.text-center.text-lg-left.my-auto
+                        ul.list-inline.mb-2
+                            li.list-inline-item
+                                a(href='/dashboard') Home
+                            li.list-inline-item ⋅
+                            li.list-inline-item
+                                a(href='/about') About
+                        p.text-muted.small.mb-0 All data and information obtained from the Environmental Protection Authority Victoria.
+                        p.text-muted.small.mb-4.mb-lg-0 Website template obtained from StartBootstrap.
+                    .col-lg-6.h-100.text-center.text-lg-right.my-auto
+                        ul.list-inline.mb-0
+                            li.list-inline-item.mr-3
+                                a(href='https://www.facebook.com/EPAVictoria/')
+                                    i.fab.fa-facebook.fa-2x.fa-fw
+                            li.list-inline-item.mr-3
+                                a(href='https://twitter.com/EPA_Victoria')
+                                    i.fab.fa-twitter-square.fa-2x.fa-fw
+        // Bootstrap core JavaScript
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+        script(src='/vendor/jquery/jquery.min.js')
+        script(src='/vendor/bootstrap/js/bootstrap.bundle.min.js')
+

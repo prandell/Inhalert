@@ -1,21 +1,37 @@
 extends layout
 
 block extraHeader
-    script(type='text/javascript' src="/static/sites.js")
+    script(type='text/javascript' src="/static/preferences.js")
 
 block content
-    .row.mt-5
-        .col-md-6.m-auto
-            .card.card-body
-                h1.text-center.mb-2 Choose Site to be Notified for
-                include ./partials/messages
-                form(action='/users/preferences', method='POST')
-                    select.form-group#sel(name="siteSelection" onchange="show(this)") Select Site
-                        option.form-control(value="") >-- Select --<
-                    button.btn.btn-primary.btn-block(type='submit')
-                        | Submit
+    .card.card-body
+        h4.text-center.mb-2 Choose Site to be Notified for
+        include ./partials/messages
+        select.form-group.form-control#sel(name="siteSelection" onchange="show(this) ; removeSelected()") Select Site
+            option.form-control.text-secondary(value="") Choose...
 
-    p#msg
+        ul(style={"list-style-type":"none", "padding-left": 0})#msg
+            if subbed
+                each val in subbed
+                    li.alert(class="selected" style ={'background-color': '#b8daff', 'color':'#495057'} id=(val.siteId) name=(val.siteName.toString()) value = (val.siteId)) Already subbed to:  #{val.siteName}
+                        span(class='close') ×
+        h7.mt-3.mb-1
+            | For all sites, notify me when the status drops to
+            |
+            select#status(style={'display': 'inline-block'})
+                option.form-control.text-secondary(value=2) Moderate
+                option.form-control.text-secondary(value=3) Poor
+                option.form-control.text-secondary(value=4) Very poor
+                option.form-control.text-secondary(value=5) Hazardous
+            |  or below
+        if threshold
+            h7.mb-3.text-muted Current preference:
+                h7#threshold.d-inline  #{threshold}
+                h7.text-muted  or below
+        button.form-group.btn.btn-primary.btn-block(type='button', onclick='submitPreferences()', style={'background-color':'#b8daff', 'font-size':'120%', 'color':'black'})
+            | Submit
+        form#preferences-form(action='/users/preferences', method='POST')
+
     script(type = 'text/javascript').
         $(document).ready(populateSelect());
-
+        $(document).ready(removeSelected());

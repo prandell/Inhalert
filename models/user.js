@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// User Schema
+/**
+ * User model. Users require a name, email and password (stored as a hash).
+ */
 const UserSchema = new Schema({
     name: {
         type: String,
@@ -21,5 +23,4 @@ const UserSchema = new Schema({
     timestamps: true,
     collection: 'users'
 });
-
 mongoose.model('User', UserSchema);

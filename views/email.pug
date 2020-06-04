@@ -1,0 +1,57 @@
+doctype html
+html
+    head
+        title Inhalert
+    body
+        if summary
+            h3 Air Quality Report for #{summary.siteName}
+            b
+            ul(style="list-style-type:none")
+                if summary.siteHealthAdvices
+                    - var kolor = (summary.siteHealthAdvices[0].healthAdviceColor ? summary.siteHealthAdvices[0].healthAdviceColor : 'grey')
+                    li !{'<strong> Health Advice: </strong>'}
+                        span(style={
+                            'color': kolor,
+                            'font-weight': 'bold'
+                        })  #{summary.siteHealthAdvices[0].healthAdvice ? summary.siteHealthAdvices[0].healthAdvice : "Unavailable"}
+                    li
+                        | !{'<strong> Based on: </strong>'} #{summary.siteHealthAdvices[0].healthParameter ? summary.siteHealthAdvices[0].healthParameter : "N/A"}
+                    li
+                        | !{'<strong> Average Value: </strong>'} #{summary.siteHealthAdvices[0].averageValue ? summary.siteHealthAdvices[0].averageValue + " " : "N/A"}
+                        | !{summary.siteHealthAdvices[0].unit}
+                if summary.parameters
+                    li !{'<strong> Other Parameters: </strong>'}
+                        ul
+                            each val, index in summary.parameters
+                                li !{'<strong>'} #{val.name} !{'</strong>'}
+                                - var kolor = (val.timeSeriesReadings[0].readings[0].healthAdviceColor ? val.timeSeriesReadings[0].readings[0].healthAdviceColor : (val.timeSeriesReadings[1] ? (val.timeSeriesReadings[1].readings[0].healthAdviceColor ? val.timeSeriesReadings[1].readings[0].healthAdviceColor : "grey") : "grey"))
+                                    ul(style="list-style-type:none")
+                                        li(style={
+                                            color: kolor,
+                                            'font-weight': 'bold'
+                                        }) #{val.timeSeriesReadings[0].readings[0].healthAdvice ? val.timeSeriesReadings[0].readings[0].healthAdvice : (val.timeSeriesReadings[1] ? (val.timeSeriesReadings[1].readings[0].healthAdvice ? val.timeSeriesReadings[1].readings[0].healthAdvice : "Unavailable") : "Unavailable") }
+                                        li
+                                            | Average Value: #{val.timeSeriesReadings[0].readings[0].averageValue ? val.timeSeriesReadings[0].readings[0].averageValue + " " : (val.timeSeriesReadings[1] ? (val.timeSeriesReadings[1].readings[0].averageValue ? val.timeSeriesReadings[1].readings[0].averageValue : "N/A") : "N/A")}
+                                            | !{val.timeSeriesReadings[0].readings[0].unit}
+                                        li
+                                            | Confidence: #{val.timeSeriesReadings[0].readings[0].averageValue ? val.timeSeriesReadings[0].readings[0].confidence : (val.timeSeriesReadings[1] ? val.timeSeriesReadings[1].readings[0].confidence : "0") }
+
+                if summary.cameraImageURL || summary.timeLapseURL
+                    li !{'<strong> Videos/Images </strong>'}
+                        ul
+                        - var camURL = (summary.cameraImageURL ? summary.cameraImageURL: "Unavailable")
+                        - var tlURL = (summary.timeLapseURL ? summary.timeLapseURL: "Unavailable")
+                            li
+                                | Camera Image:
+                                a(href=camURL) #{summary.cameraImageURL}
+                            li
+                                | Time Lapse:
+                                a(href=tlURL) #{summary.timeLapseURL}
+        else
+            h3 Air Quality Report Unavailable.
+            p Visit
+                a(href='https://inhalert.herokuapp.com/')  Inhalert
+            p to get a summary
+        b
+        p This message was sent to you by Inhalert. We'll notify you when the status changes.
+        a(href='https://inhalert.herokuapp.com/users/login') Login to change alert preferences.

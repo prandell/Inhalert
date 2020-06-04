@@ -1,13 +1,106 @@
-extends layout
+doctype html
+html(lang='en')
 
-block content
-  .row.mt-5
-    .col-md-6.m-auto
-      .card.card-body.text-center
-        h1
-          i.far.fa-bell.fa-3x
-          i.fas.fa-wind.fa-3x
-        p Create an account or login
-        a.btn.btn-primary.btn-block.mb-2(href='/users/register') Register
-        a.btn.btn-secondary.btn-block(href='/users/login') Login
-        a.btn.btn-dark.btn-block(href='/dashboard') Continue to Dashboard
+  //All this is essential
+  head
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+    script(type='text/javascript' src="/static/site_summary.js")
+    script(type='text/javascript' src="/static/convert_postcode.js")
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description', content='')
+    meta(name='author', content='')
+    title Inhalert
+    // Bootstrap core CSS
+    link(href='/vendor/bootstrap/css/bootstrap.min.css', rel='stylesheet')
+    // Custom fonts for this template
+    link(href='/vendor/fontawesome-free/css/all.min.css', rel='stylesheet')
+    link(href='/vendor/simple-line-icons/css/simple-line-icons.css', rel='stylesheet', type='text/css')
+    link(href='https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic', rel='stylesheet', type='text/css')
+    // Custom styles for this template
+    link(href='/css/landing-page.min.css', rel='stylesheet')
+    script(type = 'text/javascript').
+      getSiteSummary();
+      $(document).keypress(function (e) {
+        if (e.which == 13) {
+          convert_postcode();
+        }
+      });
+  body#page-top
+
+    //Nav bar should be pretty consistent, its now in layout template too
+    nav#mainNav.navbar.navbar-expand-sm.bg-light.navbar-light.justify-content-end.fixed-top
+      a.mr-auto.mr-1.navbar-brand.js-scroll-trigger(href='#page-top') Inhalert
+      button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent')
+        span.navbar-toggler-icon
+      #navbarSupportedContent.collapse.navbar-collapse.flex-grow-0
+        ul.navbar-nav.text-right
+          include ./partials/welcome_new
+
+    // Masthead
+    header#top.masthead.text-center.text-black
+      .overlay
+      .container
+        row
+          .col-xl-9.mx-auto
+            h1.mb-5(style={color:'#495057'}) Get a live Air Quality report for your area!
+            include ./partials/messages
+          .col-md-10.col-lg-8.col-xl-7.mx-auto
+              .form-row
+                .col-12.col-md-9.mb-2.mb-md-0
+                  input#whatsup.form-control.form-control-md(type='text', placeholder='Enter your postcode or suburb . . .')
+                .col-12.col-md-3
+                  button#enter.btn.btn-block.btn-md.text-black(type='button',style={'background-color':'#b8daff'}, onclick='convert_postcode()') Show me!
+    // Icons Grid
+    section.features-icons.bg-light.text-center
+      .container
+        h3(style={color:'#495057'}) Live Air Quality Report for Victoria
+        p.lead.mb-0 Click on site name to load scientific summary
+        br
+        table.table.table-bordered#summaryTable
+          thead.table-primary
+            tr
+              th(scope='col') Site
+              th(scope='col') Air Quality Status
+        p#updated.text-muted
+        a#loadmore.btn.btn-light(onclick='loadMoreButton()')  Show More
+        button.btn.btn-light(onclick='getSiteSummary()') Refresh
+    // Image Showcases
+    section.showcase
+      .container-fluid.p-0
+        .row.no-gutters
+          .col-lg-6.order-lg-2.text-white.showcase-img(style="background-image: url('/img/marc-wieland-zrj-TPjcRLA-unsplash.jpg');")
+          .col-lg-6.order-lg-1.my-auto.showcase-text
+            h2(style={color:'#495057'}) Register to receive alerts
+            p.lead.mb-0
+              | Inhalert is a Victorian air quality alert app, sending you notifications when the air quality in your local area
+              | drops below recommended levels
+
+    // Footer
+    footer.footer.bg-light
+      .container
+        .row
+          .col-lg-6.h-100.text-center.text-lg-left.my-auto
+            ul.list-inline.mb-2
+              li.list-inline-item
+                a(href='#page-top') Home
+              li.list-inline-item ⋅
+              li.list-inline-item
+                a(href='/about') About
+            p.text-muted.small.mb-0 All data and information obtained from the Environmental Protection Authority Victoria.
+            p.text-muted.small.mb-4.mb-lg-0 Website template obtained from StartBootstrap.
+          .col-lg-6.h-100.text-center.text-lg-right.my-auto
+            ul.list-inline.mb-0
+              li.list-inline-item.mr-3
+                a(href='https://www.facebook.com/EPAVictoria/')
+                  i.fab.fa-facebook.fa-2x.fa-fw
+              li.list-inline-item.mr-3
+                a(href='https://twitter.com/EPA_Victoria')
+                  i.fab.fa-twitter-square.fa-2x.fa-fw
+    //Bootstrap core JavaScript
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+    script(src='/vendor/jquery/jquery.min.js')
+    script(src='vendor/jquery-easing/jquery.easing.min.js')
+    script(src='/vendor/bootstrap/js/bootstrap.bundle.min.js')
+    script(src='js/grayscale.min.js')
+

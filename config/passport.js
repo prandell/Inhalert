@@ -6,6 +6,9 @@ const User = mongoose.model('User')
 
 //credit https://github.com/bradtraversy/node_passport_login
 
+/**
+ * Passport middleware for authenticating sessions (login).
+ */
 module.exports = function(passport) {
     passport.use(
         new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {

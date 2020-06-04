@@ -1,4 +1,7 @@
 // credit https://github.com/bradtraversy/node_passport_login
+/**
+ * Passport middleware functions prior to accessing certain routes
+ */
 module.exports = {
     ensureAuthenticated: function(req, res, next) {
         if (req.isAuthenticated()) {
