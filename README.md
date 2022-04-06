@@ -2,6 +2,9 @@
 Web Information Technology (INFO30005) group project repository. Inhalert is a Victorian air quality alert app, providing air quality summaries
 and allowing users to register to receive notifications when the air quality in their area is poor.
 
+> :warning: ** EPA's public API Spec was altered and this app no longer functions as expected. **
+
+
 Visit https://inhalert.herokuapp.com/
 # Functionalities
 Each of the core functionalities will be grouped together and explained below, as per submission guidelines.
